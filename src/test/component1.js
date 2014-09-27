@@ -14,15 +14,15 @@ Component1.prototype.draw = function() {
 
 	this.svg.append("text")
 			.attr("text-anchor", "middle")
-			.attr("x", 100)
-			.attr("y", 100)
+			.attr("x", 50)
+			.attr("y", 50)
 			.text("Click me");
 
 	this.circle.style("stroke", "black")  
 		 .style("opacity", .6) 
 		 .style("fill", "red")
-		 .attr("r", 100)
-		 .attr("transform", "translate(100, 100)")
+		 .attr("r", 50)
+		 .attr("transform", "translate(50, 50)")
 		 .on("mousedown", function() {
 		 	console.log("No callback setted yet");
 		 	d3.event.stopPropagation();

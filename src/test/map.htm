@@ -19,8 +19,8 @@
 		gm.createMap("map");	
 
 		// Create two svg with graphic manager
-		var svg1 = gm.addSvg(20,20, 200,200);
-		var svg2 = gm.addSvg(220, 20, 200,200);
+		var svg1 = gm.addSvg(0.5 ,0.1, 0.1, 0.1);
+		var svg2 = gm.addSvg(0.2, 0.1, 0.1, 0.1);
 
 		// Allocate javascript objects that will manage this SVGS
 		var c1 = new Component1(svg1);
@@ -33,6 +33,8 @@
 		// Set interactions
 		c1.setPressCallback(c2.changeColor.bind(c2));
 		c2.setPressCallback(c1.changeColor.bind(c1));
+
+		gm.updateWindow();
 
 		// Need this call in  order to inform the graphics manager that something changed
 		window.onresize=gm.updateWindow.bind(gm);

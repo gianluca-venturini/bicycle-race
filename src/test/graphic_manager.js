@@ -4,6 +4,8 @@ function GraphicManager() {
 	this.scale = 10;
 	this.mapId = null;
 
+	this.svgs = [];
+
 }
 
 /*
@@ -23,18 +25,27 @@ GraphicManager.prototype.createMap = function(htmlId) {
 }
 
 /*
-	Create an SVG in the fixed coordinates (x,y) with (width,height)
+	Create an SVG in the percentage coordinates (x,y) with (width,height)
+	ex: addSvg(0.1, 0.2, 0.25, 0.25) will position the svg at 10% 20% with width 25% and height 25% 
 */
 GraphicManager.prototype.addSvg = function(x, y, width, height) {
 
 	var svg = d3.select("#"+this.mapId).append("svg");
 
-	svg.attr("height", height+"px")
-		.attr("width", width+"px")
+	svg.attr("_height", height)
+	   .attr("_width", width)
+	   .attr("_x", x)
+	   .attr("_y", y)
+	   .style("position", "absolute")
+	   .attr("viewBox","0 0 100 100");
+
+	this.svgs.push(svg);
+	   /*
 		.style("position","relative")
 		.style("margin-left", x+"px")
 		.style("margin-top", y+"px")
 		.style("position", "absolute")
+		*/
 
 		// Decomment in order to disable drag under SVGs
 		/*.on("mousedown", function() {
@@ -42,6 +53,16 @@ GraphicManager.prototype.addSvg = function(x, y, width, height) {
 		})	// Disable mouse interacion*/
 
 	return svg;
+}
+
+GraphicManager.prototype.positionSVGs = function() {
+	for(var s in this.svgs) {
+		var svg = this.svgs[s];
+		svg.attr("height", svg.attr("_height") * this.mapHeight + "px")
+		   .attr("width", svg.attr("_width") * this.mapWidth + "px")
+		   .style("margin-left", svg.attr("_x") * this.mapWidth + "px")
+		   .style("margin-top", svg.attr("_y") * this.mapHeight + "px");
+	}
 }
 
 /*
@@ -52,4 +73,6 @@ GraphicManager.prototype.updateWindow = function() {
 	this.mapWidth = +d3.select("#"+this.mapId).style("width").slice(0, -2);
 	this.mapHeight = +d3.select("#"+this.mapId).style("height").slice(0, -2);
 	console.log(this.mapWidth, this.mapHeight);
+
+	this.positionSVGs();
 }
