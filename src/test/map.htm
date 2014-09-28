@@ -19,8 +19,9 @@
 	<div id="map"></div>
 
 	<script>
-		var gm = new GraphicManager();
-		gm.createMap("map","normal");	
+		var gm = new GraphicManager("map");
+		gm.createMap("normal");	
+		gm.createMap("satellitar");	
 
 		// Create two svg with graphic manager
 		var svg1 = gm.addSvg(0.5 ,0.1, 0.1, 0.1);
@@ -43,6 +44,8 @@
 
 		gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
 		gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
+
+		gm.addMarker(41.87395806, -87.62773949);
 
 		gm.updateWindow();
 
