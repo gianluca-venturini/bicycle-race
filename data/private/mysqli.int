@@ -1,0 +1,161 @@
+<?php
+
+//Mysql interface 1.0 write on date 21/06/2012
+//Mysql interface 1.1 write on date 09/04/2013
+//Mysqli interface 1.2 write on date 11/04/2013
+
+$DB_server = "localhost";
+$DB_username = "divvy";
+$DB_password = "divvy";
+$DB_database = "divvy";
+
+class DBException extends Exception{
+}
+
+class DataBaseMySQL
+{
+	private $mysqli = NULL;
+	private $result = NULL;
+	private $affectedRows = NULL;
+	
+	public function DataBaseMySQL()
+	{
+		$this->connect($GLOBALS['DB_server'], $GLOBALS['DB_username'], $GLOBALS['DB_password'], $GLOBALS['DB_database']);
+	}
+
+	public function connect($server,$username,$password,$database=NULL) 
+	{
+		$this->mysqli = new mysqli ($server, $username, $password, $database);
+		if($this->mysqli->connect_errno)
+			throw new DBException("Unable to connect to DB");
+
+		return true;	
+    }
+
+	public function open($file,$mode)
+	{
+		echo "MySQL doesn't support open function. Use connect instead";
+		throw new DBException;
+	}
+
+	public function close()
+	{
+		$this->mysqli->close();
+	}
+
+	public function query($query_string)	
+	{
+	
+		$this->result = $this->mysqli->query($query_string);
+		$this->affectedRows = $this->mysqli->affected_rows;	
+					
+		if ($this->mysqli->warning_count) {
+    		if ($result = $this->mysqli->query("SHOW WARNINGS")) 
+    		{
+    			while($row = @$result->fetch_row()) 
+    			{
+    				/*
+        			if($row[1] == 1366)	//This warning must be considered error!
+        			{
+        				throw new DBException();
+        			}
+        			*/
+        		}
+        		$result->close();
+    		}
+		}
+				
+		return $this->result;
+	}
+	
+	public function queryExec($query_string)	
+	{
+		
+		$this->mysqli->query($query_string);
+		$result = $this->affectedRows = $this->mysqli->affected_rows;	
+			
+		if ($this->mysqli->warning_count) {
+    		if ($result = $this->mysqli->query("SHOW WARNINGS")) 
+    		{
+    			while($row = @$result->fetch_row()) 
+    			{
+        			if($row[1] == 1366)
+        			{
+        				throw new DBException();
+        			}
+        		}
+        		$result->close();
+    		}
+		}
+				
+		return $result;
+	}
+	
+	//Variable number of parameters
+	public function escapedQuery()
+	{
+        $args = func_get_args();
+        
+        //Escaping parameters of query
+        for($i = 1 ; $i < func_num_args(); $i++)
+          $args[$i] = $this->mysqli->real_escape_string($args[$i]);
+        
+    	$query = call_user_func_array('sprintf', $args);
+    	$this->query($query);
+      
+	}
+	
+	//Variable number of parameters
+	public function escapedQueryExec()
+	{
+        $args = func_get_args();
+        
+        //Escaping parameters of query
+        for($i = 1 ; $i < func_num_args(); $i++)
+          $args[$i] = $this->mysqli->real_escape_string($args[$i]);
+        
+    	$query = call_user_func_array('sprintf', $args);
+    	$this->queryExec($query);
+      
+	}
+
+	public function fetch_next_row()
+	{
+		return mysqli_fetch_array ( $this->result );
+	}
+	
+	public function affectedRows() 
+	{
+		return $this->affectedRows;
+	}
+	
+	public function isEmpty()
+	{
+		if($this->result->num_rows == 0)
+			return true;
+		else
+			return false;
+	}
+
+	public function free_result() { $this->result->close(); }
+
+	public function error() { return $mysqli->error; }
+	
+	public function begin_transaction()
+	{
+		$this->mysqli->autocommit(FALSE);
+	}
+	
+	public function commit()
+	{
+		$this->mysqli->commit();
+		$this->mysqli->autocommit(TRUE);
+	}
+	
+	public function rollback()
+	{
+		$this->mysqli->rollback();
+	}
+}
+
+?>
