@@ -29,31 +29,31 @@
         gm.createMap("grey");
 
          // Create two svg with graphic manager
-         //var svg1 = gm.addSvg(0.5, 0.1, 0.1, 0.1);
-         //var svg2 = gm.addSvg(0.2, 0.1, 0.1, 0.1);
+        var svg1 = gm.addSvg(0.5, 0.1, 0.1, 0.1);
+        var svg2 = gm.addSvg(0.2, 0.1, 0.1, 0.1);
 
         var svgControls = gm.addSvg(0, 0, 0.07, 0.5);
 
         gm.updateWindow();
 
          // Allocate javascript objects that will manage this SVGS
-         //var c1 = new Component1(svg1);
-         //var c2 = new Component1(svg2);
+        var c1 = new Component1(svg1);
+        var c2 = new Component1(svg2);
         var controls = new Controls(svgControls);
 
          // Draw the SVGs
-         //c1.draw();
-         //c2.draw();
+        c1.draw();
+        c2.draw();
         controls.draw();
 
          // Set interactions
-         //c1.setPressCallback(c2.changeColor.bind(c2));
-         //c2.setPressCallback(c1.changeColor.bind(c1));
+        c1.setPressCallback(c2.changeColor.bind(c2));
+        c2.setPressCallback(c1.changeColor.bind(c1));
         controls.setCallback("text1_1", gm.changeLayer.bind(gm, "normal"));
         controls.setCallback("text1_2", gm.changeLayer.bind(gm, "grey"));
 
-         //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
-         //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
+        gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map4", "satellitar");
+        gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map5", "lol");
 
         gm.drawMarkers("popularity");
 

@@ -21,17 +21,16 @@ function GraphicManager(htmlId) {
 	map type:
 
 */
-GraphicManager.prototype.createMap = function (htmlId, type) {
-    this.mapId = htmlId;
-    this.map = L.map(htmlId, {
+GraphicManager.prototype.createMap = function (type) {
+    this.map = L.map(this.mapId , {
             zoomControl:false
         }).setView([this.lat, this.lon], this.scale);
 
     // Load the map
     this.addLayer(type);
 
-    this.mapWidth = +d3.select("#" + htmlId).style("width").slice(0, -2);
-    this.mapHeight = +d3.select("#" + htmlId).style("height").slice(0, -2);
+    this.mapWidth = +d3.select("#" + this.mapId ).style("width").slice(0, -2);
+    this.mapHeight = +d3.select("#" + this.mapId ).style("height").slice(0, -2);
 };
 
 GraphicManager.prototype.addLayer = function (type) {
