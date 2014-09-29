@@ -92,7 +92,8 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .attr("_y", y)
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
-        .style("background-color","rgba(100,100,100,0.4)");
+        //.style("background-color","rgba(89, 89, 89, 0.5)")
+    ;
 
     this.svgs.push(svg);
 

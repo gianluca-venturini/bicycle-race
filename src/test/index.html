@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Project2</title>
     <link rel="stylesheet" href="../style/leaflet.css" />
+    <link rel="stylesheet" href="../style/app.css" />
     <script src="../library/leaflet.js"></script>
     <script src="../library/d3.v3.min.js"></script>
     <script src="graphic_manager.js"></script>
@@ -48,8 +49,8 @@
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));
          //c2.setPressCallback(c1.changeColor.bind(c1));
-        controls.setCallback("text1", gm.changeLayer.bind(gm, "normal"));
-        controls.setCallback("text2", gm.changeLayer.bind(gm, "grey"));
+        controls.setCallback("text1_1", gm.changeLayer.bind(gm, "normal"));
+        controls.setCallback("text1_2", gm.changeLayer.bind(gm, "grey"));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
          //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
