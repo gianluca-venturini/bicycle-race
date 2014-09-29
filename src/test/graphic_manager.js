@@ -23,7 +23,9 @@ function GraphicManager(htmlId) {
 */
 GraphicManager.prototype.createMap = function (htmlId, type) {
     this.mapId = htmlId;
-    this.map = L.map(htmlId).setView([this.lat, this.lon], this.scale);
+    this.map = L.map(htmlId, {
+            zoomControl:false
+        }).setView([this.lat, this.lon], this.scale);
 
     // Load the map
     this.addLayer(type);
@@ -36,25 +38,32 @@ GraphicManager.prototype.addLayer = function (type) {
     switch (type) {
     case "normal":
         this.mapLayer = L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
-            attribution: ''
+            attribution: '',
+            minZoom: 10,
+            maxZoom: 16
         }).addTo(this.map);
         break;
 
     case "satellitar":
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: ''
+            attribution: '',
+            minZoom: 10,
+            maxZoom: 16
         }).addTo(this.map);
         break;
 
     case "grey":
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-            attribution: ''
+            attribution: '',
+            minZoom: 10,
+            maxZoom: 16
         }).addTo(this.map);
         break;
 
     default:
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
+            minZoom: 10,
             maxZoom: 16
         }).addTo(this.map);
     }
