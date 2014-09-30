@@ -2,6 +2,8 @@
 
 require_once 'private/mysqli.int';
 
+header('Access-Control-Allow-Origin: *'); 
+
 
 class Bike {
 	public $bikeid = "";

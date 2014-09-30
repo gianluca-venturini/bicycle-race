@@ -14,6 +14,8 @@ aggregate: DAY_WEEK | DAY_MONTH | HOUR_DAY
 
 require_once 'private/mysqli.int';
 
+header('Access-Control-Allow-Origin: *'); 
+
 
 class Travel {
 	public $count = "";

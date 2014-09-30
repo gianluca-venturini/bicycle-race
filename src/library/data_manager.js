@@ -11,6 +11,7 @@ function DataManager(tripUrl, stationUrl) {
 */
 DataManager.prototype.getStations = function(callback) {
 
+
 	if(this.stations != null)
 		callback(this.stations);
 	else
@@ -20,7 +21,8 @@ DataManager.prototype.getStations = function(callback) {
 
 			this.stations = json;
 
-			callback(json);
+			callback("lol");
+			callback(this.stations);
 		}.bind(this));
 }
 

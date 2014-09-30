@@ -8,6 +8,8 @@ station?station=1,2,3,4
 
 require_once 'private/mysqli.int';
 
+header('Access-Control-Allow-Origin: *'); 
+
 class Station {
 	public $id = NULL;
 	public $ages = NULL;

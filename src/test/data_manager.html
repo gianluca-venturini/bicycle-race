@@ -1,0 +1,25 @@
+<html>
+<head>
+	<link rel="stylesheet" href="../style/leaflet.css" />
+	<script src="/library/leaflet.js"></script>
+	<script src="/library/d3.v3.min.js"></script>
+	<script src="/library/data_manager.js"></script>
+	<script src="component1.js"></script>
+	<style>
+	</style>
+</head>
+<body>
+
+	<script>
+		var dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
+								 "http://data.divvybikeschicago.com/station.php");
+
+		function lol(data) {
+			console.log(data);
+		} 
+
+		dm.getStations(lol);
+		//dm.getTrips(lol);
+	</script>
+</body>
+</html>

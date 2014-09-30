@@ -185,7 +185,7 @@ GraphicManager.prototype.drawMarkers = function (type) {
         // TODO loop on all stations
         var marker = L.marker([41.868450, -87.666515], {
             icon: new Icon({
-                iconUrl: '/icons/stations_popularity/station_5.svg',
+                iconUrl: '/icon/stations_popularity/station_5.svg',
                 iconSize: [this.mapWidth / 15, this.mapHeight / 15],
                 iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
             }),

@@ -10,6 +10,8 @@ demographic: NONE | IN | OUT
 
 require_once 'private/mysqli.int';
 
+header('Access-Control-Allow-Origin: *'); 
+
 
 class Station {
 	public $id = "";
@@ -42,7 +44,6 @@ $database = new DataBaseMySQL();
 switch($demographic) {
 
 	case "NONE":
-		echo "none";
 		$database->query("	SELECT id, name, latitude, longitude, launch_date
 							FROM STATION
 							WHERE (id IN ($ids) OR '$idDisabled'='1')
@@ -50,7 +51,6 @@ switch($demographic) {
 		break;
 
 	case "IN":
-		echo "IN";
 		$database->query("	SELECT id, 
 								   name, 
 								   latitude, 
@@ -71,6 +71,33 @@ switch($demographic) {
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE from_station_id = S.id
+								   	AND usertype = 'Subscriber') AS subscriber
+									FROM STATION S
+									WHERE (id IN ($ids) OR '$idDisabled'='1')
+						");
+		break;
+
+	case "OUT":
+		$database->query("	SELECT id, 
+								   name, 
+								   latitude, 
+								   longitude, 
+								   launch_date, 
+								   (SELECT COUNT(*)
+								    FROM TRIP
+								   	WHERE to_station_id = S.id
+								   	AND gender = 'Male'	) AS male,
+								   	(SELECT COUNT(*)
+								   	FROM TRIP
+								   	WHERE to_station_id = S.id
+								   	AND gender = 'Female') AS female,
+								   	(SELECT COUNT(*)
+								   	FROM TRIP
+								   	WHERE to_station_id = S.id
+								   	AND usertype = 'Customer') AS customer,
+								   	(SELECT COUNT(*)
+								   	FROM TRIP
+								   	WHERE to_station_id = S.id
 								   	AND usertype = 'Subscriber') AS subscriber
 									FROM STATION S
 									WHERE (id IN ($ids) OR '$idDisabled'='1')
