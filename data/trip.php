@@ -14,6 +14,8 @@ aggregate: DAY_WEEK | DAY_MONTH | HOUR_DAY
 
 require_once 'private/mysqli.int';
 
+header('Access-Control-Allow-Origin: *'); 
+
 
 class Travel {
 	public $count = "";
@@ -48,11 +50,13 @@ $database = new DataBaseMySQL();
 switch($aggregate) {
 
 	case "DAY_WEEK":
-		$database->query("SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%a') as day 
-						  FROM TRIP 
-						  WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
-						  	AND (startdate >= '$from' AND startdate <= '$to')
-						  GROUP BY DATE_FORMAT(startdate,'%a')");
+		$database->query("
+							SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%a') as day 
+							FROM TRIP 
+						 	WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
+								AND (startdate >= '$from' AND startdate <= '$to')
+						 	GROUP BY DATE_FORMAT(startdate,'%a')
+						 ");
 		breaK;
 
 	case "DAY_MONTH":
