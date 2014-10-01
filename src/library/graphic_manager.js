@@ -14,6 +14,10 @@ function GraphicManager(htmlId) {
     this.graphicManagers = [];
     this.markers = [];
 
+    this.communityAreaMapURL = "chicago_community_district_map.json";
+
+    this.communityAreaLayer = null;
+
 }
 
 /*
@@ -36,7 +40,7 @@ GraphicManager.prototype.createMap = function (type) {
 GraphicManager.prototype.addLayer = function (type) {
     switch (type) {
     case "normal":
-        this.mapLayer = L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
+        this.mapLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16
@@ -66,6 +70,18 @@ GraphicManager.prototype.addLayer = function (type) {
             maxZoom: 16
         }).addTo(this.map);
     }
+    var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
+        attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
+        subdomains: '0123',
+        minZoom: 2,
+        maxZoom: 18
+    });
+    /*
+    var topPane = this.map._createPane('leaflet-top-pane', this.map.getPanes().mapPane);
+    var topLayer = Acetate_roads.addTo(this.map);
+    topPane.appendChild(topLayer.getContainer());
+    topLayer.setZIndex(4);
+    */
 };
 
 GraphicManager.prototype.removeLayer = function () {
@@ -196,3 +212,69 @@ GraphicManager.prototype.drawMarkers = function (type) {
     }
 
 };
+
+GraphicManager.prototype.addCommunityMap = function() {
+
+    if(this.communityAreaLayer != null) {
+        this.map.addLayer(this.communityAreaLayer);
+        this.communityAreaLayer.bringToFront();
+    }
+    else
+        d3.json(this.communityAreaMapURL, function(error, geojsonFeature) {
+
+            function onEachFeature(feature, layer) {
+                // A function to reset the colors when a neighborhood is not longer 'hovered'
+                function resetHighlight(e) {
+                  var layer = e.target;
+                  layer.setStyle({
+                    weight: 1,
+                    opacity: 1,
+                    color: '#09F',
+                    //dashArray: '3',
+                    fillOpacity: 0.7,
+                    fillColor: '#FEB24C'
+                  });
+                }
+                // Set hover colors
+                function highlightFeature(e) {
+                  var layer = e.target;
+                  layer.setStyle({
+                    weight: 2,
+                    opacity: 1,
+                    color: '#09F',
+                    //dashArray: '3',
+                    fillOpacity: 0.7,
+                    fillColor: '#1abc9c'
+                  });
+                }
+
+                layer.bindPopup(feature.id);
+                layer.on({
+                    mouseover: highlightFeature,
+                    mouseout: resetHighlight
+                });
+            }
+
+            this.communityAreaLayer = L.geoJson(geojsonFeature,{
+                            onEachFeature: onEachFeature,
+                            weight: 1,
+                            opacity: 1,
+                            color: '#09F',
+                            //dashArray: '3',
+                            fillOpacity: 0.7,
+                            fillColor: '#FEB24C'
+                        }).addTo(this.map);
+
+        }.bind(this));
+    
+}
+
+GraphicManager.prototype.removeCommunityMap = function() {
+    if(this.communityAreaLayer != null)
+        this.map.removeLayer(this.communityAreaLayer);
+}
+
+GraphicManager.prototype.pointInArea = function(point, coordinates) {
+    return gju.pointInMultiPolygon({"type":"Point","coordinates": point},
+                 {"type":"MultiPolygon", "coordinates": coordinates})
+}

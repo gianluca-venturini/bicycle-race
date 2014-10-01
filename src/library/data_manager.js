@@ -7,6 +7,8 @@ function DataManager(tripUrl, stationUrl) {
 	this.stations = null;
 	this.trips = null;
 	this.bikeWeeks = null;
+	this.bikeHours = null;
+	this.bike = null;
 }
 
 /*
@@ -44,7 +46,7 @@ DataManager.prototype.getTrips = function(callback) {
 		}.bind(this));
 }
 
-// Get bikes out per day of the week of the selected stations
+// Get bikes out per day of the week for the selected stations
 DataManager.prototype.getBikesWeek = function(callback) {
 
 	var url = this.tripUrl+"?aggregate=DAY_WEEK";
@@ -67,6 +69,62 @@ DataManager.prototype.getBikesWeek = function(callback) {
 				console.log("can't download file " + this.tripUrl);
 
 			this.bikeWeeks = json;
+
+			callback(json);
+		}.bind(this));
+}
+
+// Get bikes out per hour of the day for the selected stations
+DataManager.prototype.getBikesHourDay = function(callback) {
+
+	var url = this.tripUrl+"?aggregate=HOUR_DAY";
+
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s];
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	if(this.bikeHours != null)
+		callback(this.trips);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.tripUrl);
+
+			this.bikeHours = json;
+
+			callback(json);
+		}.bind(this));
+}
+
+// Get bikes out for the selected stations
+DataManager.prototype.getBikes = function(callback) {
+
+	var url = this.tripUrl;
+
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s];
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	if(this.bike != null)
+		callback(this.trips);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.tripUrl);
+
+			this.bike = json;
 
 			callback(json);
 		}.bind(this));
