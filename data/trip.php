@@ -8,7 +8,7 @@ stations: list of stations
 from: initial date
 to: final date
 
-aggregate: DAY_WEEK | DAY_MONTH | HOUR_DAY
+aggregate: DAY_WEEK | DAY_YEAR | HOUR_DAY
 
 */
 
@@ -23,6 +23,8 @@ class Travel {
 	public $day = "";
 	public $fromStation = "";
 	public $toStation  = "";
+	public $starttime = "";
+	public $stoptime = "";
 }
 
 $ids = htmlentities($_GET['stations']);
@@ -51,37 +53,42 @@ switch($aggregate) {
 
 	case "DAY_WEEK":
 		$database->query("
-							SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%a') as day 
+							SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%a') as day, from_station_id
 							FROM TRIP 
-						 	WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
+						 	WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
 								AND (startdate >= '$from' AND startdate <= '$to')
-						 	GROUP BY DATE_FORMAT(startdate,'%a')
-						 ");
+						 	GROUP BY DATE_FORMAT(startdate,'%a'), from_station_id
+						");
 		breaK;
 
-	case "DAY_MONTH":
-		$database->query("SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%e') as day 
-						  FROM TRIP 
-						  WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
+	case "DAY_YEAR":
+		$database->query("SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%Y-%c-%e') as day, from_station_id
+						  FROM TRIP
+						  WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
 						  	AND (startdate >= '$from' AND startdate <= '$to')
-						  GROUP BY DATE_FORMAT(startdate,'%e')");
+						  GROUP BY DATE_FORMAT(startdate,'%Y-%c-%e'), from_station_id
+						");
 		breaK;
 
 	case "HOUR_DAY":
-		$database->query("SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%k') as hour 
+		$database->query("SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%k') as hour, from_station_id
 						  FROM TRIP 
-						  WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
+						  WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
 						  	AND (startdate >= '$from' AND startdate <= '$to')
-						  GROUP BY DATE_FORMAT(startdate,'%k')");
+						  GROUP BY DATE_FORMAT(startdate,'%k'), from_station_id
+						");
 		breaK;
 
 	default:
 
-		$database->query("SELECT COUNT(*) as count, from_station_id, to_station_id 
+		$database->query("SELECT from_station_id, 
+								 to_station_id, 
+								 DATE_FORMAT(startdate, '%k:%i') as starttime,
+								 DATE_FORMAT(stopdate, '%k:%i') as stoptime
 						  FROM TRIP 
 						  WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
 						  	AND (startdate >= '$from' AND startdate <= '$to')
-						  GROUP BY from_station_id, to_station_id");
+						");
 }
 
 $reply = [];
@@ -95,6 +102,8 @@ while($row) {
 	$t->toStation = $row['to_station_id'];
 	$t->day = $row['day'];
 	$t->hour = $row['hour'];
+	$t->starttime = $row['starttime'];
+	$t->stoptime = $row['stoptime'];
   
 	$row = $database->fetch_next_row();
 
