@@ -26,7 +26,7 @@ DataManager.prototype.getStations = function(callback) {
 
 			this.stations = json;
 
-			callback("lol");
+			//callback("lol");
 			callback(this.stations);
 		}.bind(this));
 }

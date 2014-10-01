@@ -1,13 +1,13 @@
 function GraphicManager(htmlId) {
-	this.lat = 41.8749077;
-	this.lon = -87.6368363;
-	this.scale = 10;
+    this.lat = 41.8749077;
+    this.lon = -87.6368363;
+    this.scale = 10;
 
-	this.mapId = htmlId;
+    this.mapId = htmlId;
 
-
-	this.map = null;
-	this.mapLayer = null;
+    this.map = null;
+    this.mapLayer = null;
+    this.type = "popularity";
 
     this.svgs = [];
     this.divs = [];
@@ -18,6 +18,9 @@ function GraphicManager(htmlId) {
 
     this.communityAreaLayer = null;
 
+    this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
+        "http://data.divvybikeschicago.com/station.php");
+
 }
 
 /*
@@ -26,15 +29,15 @@ function GraphicManager(htmlId) {
 
 */
 GraphicManager.prototype.createMap = function (type) {
-    this.map = L.map(this.mapId , {
-            zoomControl:false
-        }).setView([this.lat, this.lon], this.scale);
+    this.map = L.map(this.mapId, {
+        zoomControl: false
+    }).setView([this.lat, this.lon], this.scale);
 
     // Load the map
     this.addLayer(type);
 
-    this.mapWidth = +d3.select("#" + this.mapId ).style("width").slice(0, -2);
-    this.mapHeight = +d3.select("#" + this.mapId ).style("height").slice(0, -2);
+    this.mapWidth = +d3.select("#" + this.mapId).style("width").slice(0, -2);
+    this.mapHeight = +d3.select("#" + this.mapId).style("height").slice(0, -2);
 };
 
 GraphicManager.prototype.addLayer = function (type) {
@@ -107,7 +110,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .attr("_y", y)
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
-        //.style("background-color","rgba(89, 89, 89, 0.5)")
+    //.style("background-color","rgba(89, 89, 89, 0.5)")
     ;
 
     this.svgs.push(svg);
@@ -125,12 +128,12 @@ GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type)
         .attr("id", mapId)
         .attr("class", "submap");
 
-	var gm = new GraphicManager(mapId);
+    var gm = new GraphicManager(mapId);
 
     this.divs.push(div);
     this.positionDIVs();
 
-	gm.createMap(type);
+    gm.createMap(type);
 
     this.graphicManagers.push(gm);
 };
@@ -196,56 +199,61 @@ GraphicManager.prototype.updateWindow = function () {
  *
  */
 GraphicManager.prototype.drawMarkers = function (type) {
-    switch (type) {
-    case "popularity":
-        // TODO loop on all stations
-        var marker = L.marker([41.868450, -87.666515], {
-            icon: new Icon({
-                iconUrl: '/icon/stations_popularity/station_5.svg',
-                iconSize: [this.mapWidth / 15, this.mapHeight / 15],
-                iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
-            }),
-        }).addTo(this.map);
-        this.markers.push(marker);
+    this.type = type;
+    this.dm.getStations(this.drawMarkersCallback.bind(this));
+};
 
+GraphicManager.prototype.drawMarkersCallback = function (stations) {
+    switch (this.type) {
+    case "popularity":
+        for (var s in stations) {
+            var marker = L.marker([stations[s].latitude, stations[s].longitude], {
+                icon: new Icon({
+                    iconUrl: '/icon/stations_popularity/station_5.svg',
+                    iconSize: [this.mapWidth / 15, this.mapHeight / 15],
+                    iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
+                }),
+            }).addTo(this.map);
+            this.markers.push(marker);
+        }
         break;
     }
 
 };
 
-GraphicManager.prototype.addCommunityMap = function() {
 
-    if(this.communityAreaLayer != null) {
+GraphicManager.prototype.addCommunityMap = function () {
+
+    if (this.communityAreaLayer !== null) {
         this.map.addLayer(this.communityAreaLayer);
         this.communityAreaLayer.bringToFront();
-    }
-    else
-        d3.json(this.communityAreaMapURL, function(error, geojsonFeature) {
+    } else
+        d3.json(this.communityAreaMapURL, function (error, geojsonFeature) {
 
             function onEachFeature(feature, layer) {
                 // A function to reset the colors when a neighborhood is not longer 'hovered'
                 function resetHighlight(e) {
-                  var layer = e.target;
-                  layer.setStyle({
-                    weight: 1,
-                    opacity: 1,
-                    color: '#09F',
-                    //dashArray: '3',
-                    fillOpacity: 0.7,
-                    fillColor: '#FEB24C'
-                  });
+                    var layer = e.target;
+                    layer.setStyle({
+                        weight: 1,
+                        opacity: 1,
+                        color: '#09F',
+                        //dashArray: '3',
+                        fillOpacity: 0.7,
+                        fillColor: '#FEB24C'
+                    });
                 }
                 // Set hover colors
                 function highlightFeature(e) {
-                  var layer = e.target;
-                  layer.setStyle({
-                    weight: 2,
-                    opacity: 1,
-                    color: '#09F',
-                    //dashArray: '3',
-                    fillOpacity: 0.7,
-                    fillColor: '#1abc9c'
-                  });
+                    var layer = e.target;
+                    layer.setStyle({
+                        weight: 2,
+                        opacity: 1,
+                        color: '#09F',
+                        //dashArray: '3',
+                        fillOpacity: 0.7,
+                        fillColor: '#1abc9c'
+                    });
                 }
 
                 layer.bindPopup(feature.id);
@@ -255,26 +263,31 @@ GraphicManager.prototype.addCommunityMap = function() {
                 });
             }
 
-            this.communityAreaLayer = L.geoJson(geojsonFeature,{
-                            onEachFeature: onEachFeature,
-                            weight: 1,
-                            opacity: 1,
-                            color: '#09F',
-                            //dashArray: '3',
-                            fillOpacity: 0.7,
-                            fillColor: '#FEB24C'
-                        }).addTo(this.map);
+            this.communityAreaLayer = L.geoJson(geojsonFeature, {
+                onEachFeature: onEachFeature,
+                weight: 1,
+                opacity: 1,
+                color: '#09F',
+                //dashArray: '3',
+                fillOpacity: 0.7,
+                fillColor: '#FEB24C'
+            }).addTo(this.map);
 
         }.bind(this));
-    
-}
 
-GraphicManager.prototype.removeCommunityMap = function() {
-    if(this.communityAreaLayer != null)
+};
+
+GraphicManager.prototype.removeCommunityMap = function () {
+    if (this.communityAreaLayer !== null)
         this.map.removeLayer(this.communityAreaLayer);
-}
+};
 
-GraphicManager.prototype.pointInArea = function(point, coordinates) {
-    return gju.pointInMultiPolygon({"type":"Point","coordinates": point},
-                 {"type":"MultiPolygon", "coordinates": coordinates})
-}
+GraphicManager.prototype.pointInArea = function (point, coordinates) {
+    return gju.pointInMultiPolygon({
+        "type": "Point",
+        "coordinates": point
+    }, {
+        "type": "MultiPolygon",
+        "coordinates": coordinates
+    });
+};
