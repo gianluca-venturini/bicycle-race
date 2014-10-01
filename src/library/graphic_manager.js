@@ -221,7 +221,6 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
 };
 
-
 GraphicManager.prototype.addCommunityMap = function () {
 
     if (this.communityAreaLayer !== null) {

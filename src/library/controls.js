@@ -54,17 +54,25 @@ Controls.prototype.draw = function () {
         .attr('id', 'text2_1')
         .attr("text-anchor", "middle")
         .attr('x', +this.marginLeft + (+this.rect2.attr("width") / 2))
-        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.33))
+        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.25))
         .attr("dominant-baseline", "central")
-        .text("Show CAs");
+        .text("Select all stations");
 
     this.text2_2 = this.svg.append("text")
         .attr('id', 'text2_2')
         .attr("text-anchor", "middle")
         .attr('x', +this.marginLeft + (+this.rect2.attr("width") / 2))
-        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.66))
+        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.50))
         .attr("dominant-baseline", "central")
-        .text("Select all stations");
+        .text("Deselect all stations");
+    
+    this.text2_3 = this.svg.append("text")
+        .attr('id', 'text2_2')
+        .attr("text-anchor", "middle")
+        .attr('x', +this.marginLeft + (+this.rect2.attr("width") / 2))
+        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.75))
+        .attr("dominant-baseline", "central")
+        .text("Show CAs");
 
 };
 
