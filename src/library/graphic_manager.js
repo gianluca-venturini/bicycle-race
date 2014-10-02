@@ -14,7 +14,7 @@ function GraphicManager(htmlId) {
     this.graphicManagers = [];
     this.markers = [];
 
-    this.communityAreaMapURL = "chicago_community_district_map.json";
+    this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
     this.communityAreaLayer = null;
 
