@@ -221,12 +221,16 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
 };
 
+<<<<<<< HEAD
+GraphicManager.prototype.addCommunityMap = function () {
+=======
 
 /*
     Add the community area layer and set the callback.
     When an area will be selected the callback will be called.
 */
 GraphicManager.prototype.addCommunityMap = function(callback) {
+>>>>>>> b36a531527c0ffde0cbab9b42de8a9400ef6b187
 
     if(this.communityAreaLayer != null) {
         this.map.addLayer(this.communityAreaLayer);
