@@ -36,7 +36,7 @@
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
 
         var svgDayControl = gm.addSvg(0.075, 0, 0.07, 0.24);
-        //var svgZoomControl = gm.addSvg(0, 0, 0.24, 0.07);
+        var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
 
         gm.updateWindow();
 
@@ -45,17 +45,20 @@
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
         var dayControl = new DayControl(svgDayControl);
-        //var zoomControl = new ZoomControl(svgZoomControl);
+        var zoomControl = new ZoomControl(svgZoomControl);
 
         selectionControl.setCallbackShowCA(gm.addCommunityMap.bind(gm));
         selectionControl.setCallbackHideCA(gm.removeCommunityMap.bind(gm));
+
+        zoomControl.setCallbackZoomIn(gm.zoomIn.bind(gm));
+        zoomControl.setCallbackZoomOut(gm.zoomOut.bind(gm));
 
          // Draw the SVGs
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
         dayControl.draw();
-        //zoomControl.draw();
+        zoomControl.draw();
 
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));

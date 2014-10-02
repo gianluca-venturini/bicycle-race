@@ -30,7 +30,8 @@ function GraphicManager(htmlId) {
 */
 GraphicManager.prototype.createMap = function (type) {
     this.map = L.map(this.mapId, {
-        zoomControl: false
+        zoomControl: false,
+        doubleClickZoom: false
     }).setView([this.lat, this.lon], this.scale);
 
     // Load the map
@@ -326,3 +327,14 @@ GraphicManager.prototype.selectAllStationsInArea = function (areaId) {
 GraphicManager.prototype.drawLinesBetweenStations = function (data) {
 
 };
+
+GraphicManager.prototype.zoomIn = function() {
+    this.map.zoomIn(1);
+}
+
+GraphicManager.prototype.zoomOut = function() {
+    this.map.zoomOut(1);
+}
+
+
+
