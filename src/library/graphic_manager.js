@@ -19,7 +19,7 @@ function GraphicManager(htmlId) {
     this.communityAreaLayer = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-        "http://data.divvybikeschicago.com/station.php");
+                              "http://data.divvybikeschicago.com/station.php");
 
 }
 
@@ -218,11 +218,32 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                 }),
             }).addTo(this.map);
             this.markers.push(marker);
+
+            //Set the station id
+            marker.id = stations[s].id;
+
+            //Add callback
+            marker.on("mousedown", function(e) {
+                this.selectedStation(e.target.id);
+            }.bind(this));
         }
         break;
     }
 
 };
+
+GraphicManager.prototype.selectedStation = function (stationId) {
+    console.log(stationId);
+
+    var selectedStations = this.dm.selectedStations;
+    if(selectedStations.indexOf(stationId) == -1) {
+        // Add the stations to selected
+        selectedStations.push(stationId);
+    } 
+    else {
+        selectedStations.slice(selectedStations.indexOf(stationId), 1);
+    }
+}
 
 /*
     Add the community area layer and set the callback.
