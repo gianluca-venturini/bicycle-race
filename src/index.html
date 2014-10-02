@@ -30,32 +30,32 @@
         gm.createMap("grey");
 
          // Create two svg with graphic manager
-         //var svg1 = gm.addSvg(0.5, 0.1, 0.1, 0.1);
-         //var svg2 = gm.addSvg(0.2, 0.1, 0.1, 0.1);
+         //var svgControls = gm.addSvg(0, 0, 0.07, 0.5);
+        var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
+        var svgSelectionControl = gm.addSvg(0, 0.12, 0.07, 0.12); // y taken from previous svg's height
+        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2, 0.07, 0.06);
 
-        //var svgControls = gm.addSvg(0, 0, 0.07, 0.5);
-
-        var svgLayerControl = gm.addSvg(0, 0, 0.2, 0.1);
+        var svgDayControl = gm.addSvg(0.065, 0, 0.07, 0.24);
 
         gm.updateWindow();
 
          // Allocate javascript objects that will manage this SVGS
-         //var c1 = new Component1(svg1);
-         //var c2 = new Component1(svg2);
-        //var controls = new Controls(svgControls);
         var layerControl = new LayerControl(svgLayerControl);
+        var selectionControl = new SelectionControl(svgSelectionControl);
+        var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
+        var dayControl = new DayControl(svgDayControl);
 
          // Draw the SVGs
-         //c1.draw();
-         //c2.draw();
-        //controls.draw();
         layerControl.draw();
+        selectionControl.draw();
+        enableCalendarControl.draw();
+        dayControl.draw();
 
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));
          //c2.setPressCallback(c1.changeColor.bind(c1));
-        layerControl.setCallback("text1_1", gm.changeLayer.bind(gm, "normal"));
-        layerControl.setCallback("text1_2", gm.changeLayer.bind(gm, "grey"));
+        layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
+        layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
          //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
@@ -64,7 +64,6 @@
 
          // Need this call in  order to inform the graphics manager that something changed
         window.onresize = gm.updateWindow.bind(gm);
-
     </script>
 </body>
 
