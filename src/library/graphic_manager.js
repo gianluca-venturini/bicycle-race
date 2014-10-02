@@ -213,7 +213,12 @@ GraphicManager.prototype.drawMarkers = function (type) {
 
 };
 
-GraphicManager.prototype.addCommunityMap = function() {
+
+/*
+    Add the community area layer and set the callback.
+    When an area will be selected the callback will be called.
+*/
+GraphicManager.prototype.addCommunityMap = function(callback) {
 
     if(this.communityAreaLayer != null) {
         this.map.addLayer(this.communityAreaLayer);
@@ -230,7 +235,6 @@ GraphicManager.prototype.addCommunityMap = function() {
                     weight: 1,
                     opacity: 1,
                     color: '#09F',
-                    //dashArray: '3',
                     fillOpacity: 0.7,
                     fillColor: '#FEB24C'
                   });
@@ -242,7 +246,6 @@ GraphicManager.prototype.addCommunityMap = function() {
                     weight: 2,
                     opacity: 1,
                     color: '#09F',
-                    //dashArray: '3',
                     fillOpacity: 0.7,
                     fillColor: '#1abc9c'
                   });
@@ -251,7 +254,10 @@ GraphicManager.prototype.addCommunityMap = function() {
                 layer.bindPopup(feature.id);
                 layer.on({
                     mouseover: highlightFeature,
-                    mouseout: resetHighlight
+                    mouseout: resetHighlight,
+                    click: function(e) {
+                      callback(feature.id);  
+                    } 
                 });
             }
 
@@ -260,7 +266,6 @@ GraphicManager.prototype.addCommunityMap = function() {
                             weight: 1,
                             opacity: 1,
                             color: '#09F',
-                            //dashArray: '3',
                             fillOpacity: 0.7,
                             fillColor: '#FEB24C'
                         }).addTo(this.map);
@@ -277,4 +282,8 @@ GraphicManager.prototype.removeCommunityMap = function() {
 GraphicManager.prototype.pointInArea = function(point, coordinates) {
     return gju.pointInMultiPolygon({"type":"Point","coordinates": point},
                  {"type":"MultiPolygon", "coordinates": coordinates})
+}
+
+GraphicManager.prototype.selectAllStationsInArea = function(areaId) {
+    // TODO for cycle on all the stations and add to the selected if pointInArea TRUE
 }
