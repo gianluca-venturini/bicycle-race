@@ -295,3 +295,7 @@ GraphicManager.prototype.pointInArea = function(point, coordinates) {
 GraphicManager.prototype.selectAllStationsInArea = function(areaId) {
     // TODO for cycle on all the stations and add to the selected if pointInArea TRUE
 }
+
+GraphicManager.prototype.drawLinesBetweenStations = function(data) {
+    
+}
