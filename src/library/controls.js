@@ -10,12 +10,12 @@ function LayerControl(svg) {
     this.height = +svg.attr("height").replace("px", "");
     this.marginLeft = '5'; // TODO 
     this.marginTop = '5';
-    svg.attr("viewBox", "0 0 100 50")
-        .attr('preserveAspectRatio', 'xMinYMin meet');
+    svg.attr("viewBox", "0 0 100 50");
 }
 
 LayerControl.prototype.draw = function () {
 
+    /*
     this.rect1 = this.svg.append("rect")
         .style('margin-left', this.marginLeft)
         .style('margin-top', this.marginTop)
@@ -25,6 +25,7 @@ LayerControl.prototype.draw = function () {
         .attr("height", 50 - this.marginTop)
         .attr('x', this.marginLeft)
         .attr('y', this.marginTop);
+    */
 
     this.text1 = this.svg.append("text")
         .attr('id', 'text_layer_1')
@@ -69,11 +70,11 @@ function SelectionControl(svg) {
     this.callbackShowCA = null;
     this.callbackHideCA = null;
     this.activeCa = false;
-    svg.attr("viewBox", "0 0 100 50")
-        .attr('preserveAspectRatio', 'xMinYMin meet');
+    svg.attr("viewBox", "0 0 100 50");
 }
 
 SelectionControl.prototype.draw = function () {
+    /*
     if(this.rect2 != null)
         this.rect2.remove();
     this.rect2 = this.svg.append("rect")
@@ -85,6 +86,7 @@ SelectionControl.prototype.draw = function () {
         .attr("height", 50 - this.marginTop)
         .attr('x', this.marginLeft)
         .attr('y', this.marginTop);
+    */
 
     if(this.text1 != null)
         this.text1.remove();
@@ -161,12 +163,12 @@ function EnableCalendarControl(svg) {
     this.height = +svg.attr("height").replace("px", "");
     this.marginLeft = '5'; // TODO 
     this.marginTop = '5';
-    svg.attr("viewBox", "0 0 100 25")
-        .attr('preserveAspectRatio', 'xMinYMin meet');
+    svg.attr("viewBox", "0 0 100 25");
 }
 
 EnableCalendarControl.prototype.draw = function () {
 
+    /*
     this.rect1 = this.svg.append("rect")
         .style('margin-left', this.marginLeft)
         .style('margin-top', this.marginTop)
@@ -176,6 +178,7 @@ EnableCalendarControl.prototype.draw = function () {
         .attr("height", 25 - this.marginTop)
         .attr('x', this.marginLeft)
         .attr('y', this.marginTop);
+    */
 
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
@@ -204,12 +207,12 @@ function DayControl(svg) {
     this.height = +svg.attr("height").replace("px", "");
     this.marginLeft = '5'; // TODO 
     this.marginTop = '5';
-    svg.attr("viewBox", "0 0 100 100")
-        .attr('preserveAspectRatio', 'xMinYMin meet');
+    svg.attr("viewBox", "0 0 100 100");
 }
 
 DayControl.prototype.draw = function () {
 
+    /*
     this.rect1 = this.svg.append("rect")
         .style('margin-left', this.marginLeft)
         .style('margin-top', this.marginTop)
@@ -219,6 +222,7 @@ DayControl.prototype.draw = function () {
         .attr("height", 100 - this.marginTop)
         .attr('x', this.marginLeft)
         .attr('y', this.marginTop);
+    */
 
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
@@ -240,3 +244,27 @@ DayControl.prototype.setCallback = function (element, callback) {
 };
 
 ///////////////////////
+
+function ZoomControl(svg) {
+    this.svg = svg;
+    this.callbackZoonIn = null;
+    this.callbackZoonOut = null;
+    svg.attr("viewBox", "0 0 50 100");
+}
+
+ZoomControl.prototype.draw = function () {
+    this.svg.append("rect")
+        .attr("x", "10")
+        .attr("y", "10")
+        .attr("width", "30")
+        .attr("height", "30")
+        .attr("fill","blue");
+}
+
+ZoomControl.prototype.setCallbackZoomIn = function(callback) {
+    this.callbackZoonIn = callback;
+}
+
+ZoomControl.prototype.setCallbackZoomOut = function(callback) {
+    this.callbackZoonOut = callback;
+}
