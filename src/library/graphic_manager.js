@@ -207,9 +207,11 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
     switch (this.type) {
     case "popularity":
         for (var s in stations) {
+            var level = Math.floor(stations[s].popularity * 5);
+            if (level === 5) level = 4; // to restrict the most popular to the last level
             var marker = L.marker([stations[s].latitude, stations[s].longitude], {
                 icon: new Icon({
-                    iconUrl: '/icon/stations_popularity/station_5.svg',
+                    iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.svg',
                     iconSize: [this.mapWidth / 15, this.mapHeight / 15],
                     iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
                 }),
@@ -221,62 +223,60 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
 };
 
-
 /*
     Add the community area layer and set the callback.
     When an area will be selected the callback will be called.
 */
-GraphicManager.prototype.addCommunityMap = function(callback) {
+GraphicManager.prototype.addCommunityMap = function (callback) {
 
-    if(this.communityAreaLayer != null) {
+    if (this.communityAreaLayer !== null) {
         this.map.addLayer(this.communityAreaLayer);
         this.communityAreaLayer.bringToFront();
-    }
-    else
-        d3.json(this.communityAreaMapURL, function(error, geojsonFeature) {
+    } else
+        d3.json(this.communityAreaMapURL, function (error, geojsonFeature) {
 
             function onEachFeature(feature, layer) {
                 // A function to reset the colors when a neighborhood is not longer 'hovered'
                 function resetHighlight(e) {
-                  var layer = e.target;
-                  layer.setStyle({
-                    weight: 1,
-                    opacity: 1,
-                    color: '#09F',
-                    fillOpacity: 0.7,
-                    fillColor: '#FEB24C'
-                  });
+                    var layer = e.target;
+                    layer.setStyle({
+                        weight: 1,
+                        opacity: 1,
+                        color: '#09F',
+                        fillOpacity: 0.7,
+                        fillColor: '#FEB24C'
+                    });
                 }
                 // Set hover colors
                 function highlightFeature(e) {
-                  var layer = e.target;
-                  layer.setStyle({
-                    weight: 2,
-                    opacity: 1,
-                    color: '#09F',
-                    fillOpacity: 0.7,
-                    fillColor: '#1abc9c'
-                  });
+                    var layer = e.target;
+                    layer.setStyle({
+                        weight: 2,
+                        opacity: 1,
+                        color: '#09F',
+                        fillOpacity: 0.7,
+                        fillColor: '#1abc9c'
+                    });
                 }
 
                 layer.bindPopup(feature.id);
                 layer.on({
                     mouseover: highlightFeature,
                     mouseout: resetHighlight,
-                    click: function(e) {
-                      callback(feature.id);  
-                    } 
+                    click: function (e) {
+                        callback(feature.id);
+                    }
                 });
             }
 
-            this.communityAreaLayer = L.geoJson(geojsonFeature,{
-                            onEachFeature: onEachFeature,
-                            weight: 1,
-                            opacity: 1,
-                            color: '#09F',
-                            fillOpacity: 0.7,
-                            fillColor: '#FEB24C'
-                        }).addTo(this.map);
+            this.communityAreaLayer = L.geoJson(geojsonFeature, {
+                onEachFeature: onEachFeature,
+                weight: 1,
+                opacity: 1,
+                color: '#09F',
+                fillOpacity: 0.7,
+                fillColor: '#FEB24C'
+            }).addTo(this.map);
 
         }.bind(this));
 
@@ -287,15 +287,20 @@ GraphicManager.prototype.removeCommunityMap = function () {
         this.map.removeLayer(this.communityAreaLayer);
 };
 
-GraphicManager.prototype.pointInArea = function(point, coordinates) {
-    return gju.pointInMultiPolygon({"type":"Point","coordinates": point},
-                 {"type":"MultiPolygon", "coordinates": coordinates})
-}
+GraphicManager.prototype.pointInArea = function (point, coordinates) {
+    return gju.pointInMultiPolygon({
+        "type": "Point",
+        "coordinates": point
+    }, {
+        "type": "MultiPolygon",
+        "coordinates": coordinates
+    });
+};
 
-GraphicManager.prototype.selectAllStationsInArea = function(areaId) {
+GraphicManager.prototype.selectAllStationsInArea = function (areaId) {
     // TODO for cycle on all the stations and add to the selected if pointInArea TRUE
-}
+};
 
-GraphicManager.prototype.drawLinesBetweenStations = function(data) {
-    
-}
+GraphicManager.prototype.drawLinesBetweenStations = function (data) {
+
+};
