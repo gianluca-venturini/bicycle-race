@@ -8,8 +8,6 @@ function LayerControl(svg) {
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
-    this.marginLeft = '5'; // TODO 
-    this.marginTop = '5';
     svg.attr("viewBox", "0 0 100 50");
 }
 
@@ -30,16 +28,16 @@ LayerControl.prototype.draw = function () {
     this.text1 = this.svg.append("text")
         .attr('id', 'text_layer_1')
         .attr("text-anchor", "middle")
-        .attr('x', +this.marginLeft + (+this.rect1.attr("width") / 2))
-        .attr('y', +this.rect1.attr('y') + (+this.rect1.attr("height") * 0.33))
+        .attr('x', 50)
+        .attr('y', 16)
         .attr("dominant-baseline", "central")
         .text("Map 1");
 
     this.text2 = this.svg.append("text")
         .attr('id', 'text_layer_2')
         .attr("text-anchor", "middle")
-        .attr('x', +this.marginLeft + (+this.rect1.attr("width") / 2))
-        .attr('y', +this.rect1.attr('y') + (+this.rect1.attr("height") * 0.66))
+        .attr('x', 50)
+        .attr('y', 33)
         .attr("dominant-baseline", "central")
         .text("Map 2");
 
@@ -61,8 +59,6 @@ function SelectionControl(svg) {
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
-    this.marginLeft = '5'; // TODO 
-    this.marginTop = '5';
     this.rect2 = null;
     this.text1 = null;
     this.text2 = null;
@@ -92,8 +88,8 @@ SelectionControl.prototype.draw = function () {
         this.text1.remove();
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
-        .attr('x', +this.marginLeft + (+this.rect2.attr("width") / 2))
-        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.25))
+        .attr('x', 50)
+        .attr('y', 12.5)
         .attr("dominant-baseline", "central")
         .attr("id", "select_all_stations")
         .style('font-size', '0.8em')
@@ -103,8 +99,8 @@ SelectionControl.prototype.draw = function () {
         this.text2.remove();
     this.text2 = this.svg.append("text")
         .attr("text-anchor", "middle")
-        .attr('x', +this.marginLeft + (+this.rect2.attr("width") / 2))
-        .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.50))
+        .attr('x', 50)
+        .attr('y', 25)
         .attr("dominant-baseline", "central")
         .attr("id", "deselect_all_stations")
         .style('font-size', '0.8em')
@@ -114,8 +110,8 @@ SelectionControl.prototype.draw = function () {
             this.text3.remove();
         this.text3 = this.svg.append("text")
             .attr("text-anchor", "middle")
-            .attr('x', +this.marginLeft + (+this.rect2.attr("width") / 2))
-            .attr('y', +this.rect2.attr('y') + (+this.rect2.attr("height") * 0.75))
+            .attr('x', 50)
+            .attr('y', 37.5)
             .attr("dominant-baseline", "central")
             .style('font-size', '0.8em')
     if( this.activeCa ) {
@@ -161,8 +157,6 @@ function EnableCalendarControl(svg) {
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
-    this.marginLeft = '5'; // TODO 
-    this.marginTop = '5';
     svg.attr("viewBox", "0 0 100 25");
 }
 
@@ -182,8 +176,8 @@ EnableCalendarControl.prototype.draw = function () {
 
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
-        .attr('x', +this.marginLeft + (+this.rect1.attr("width") / 2))
-        .attr('y', +this.rect1.attr('y') + (+this.rect1.attr("height") * 0.5))
+        .attr('x', 50)
+        .attr('y', 12.5)
         .attr("dominant-baseline", "central")
         .text("Calendar +");
 
@@ -205,8 +199,6 @@ function DayControl(svg) {
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
-    this.marginLeft = '5'; // TODO 
-    this.marginTop = '5';
     svg.attr("viewBox", "0 0 100 100");
 }
 
@@ -226,8 +218,8 @@ DayControl.prototype.draw = function () {
 
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
-        .attr('x', +this.marginLeft + (+this.rect1.attr("width") / 2))
-        .attr('y', +this.rect1.attr('y') + (+this.rect1.attr("height") * 0.5))
+        .attr('x', 50)
+        .attr('y', 10)
         .attr("dominant-baseline", "central")
         .text("Day 1");
 

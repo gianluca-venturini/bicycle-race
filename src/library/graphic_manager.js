@@ -110,7 +110,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .attr("_y", y)
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
-        .attr('preserveAspectRatio', 'xMinYMin meet')
+        .attr('preserveAspectRatio', 'xMidYMid meet')
         .style("background-color","rgba(89, 89, 89, 0.5)")
     ;
 

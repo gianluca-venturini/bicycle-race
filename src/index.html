@@ -32,11 +32,11 @@
          // Create two svg with graphic manager
          //var svgControls = gm.addSvg(0, 0, 0.07, 0.5);
         var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
-        var svgSelectionControl = gm.addSvg(0, 0.12, 0.07, 0.12); // y taken from previous svg's height
-        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2, 0.07, 0.06);
+        var svgSelectionControl = gm.addSvg(0, 0.125, 0.07, 0.12); // y taken from previous svg's height
+        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
 
-        var svgDayControl = gm.addSvg(0.065, 0, 0.07, 0.24);
-        var svgZoomControl = gm.addSvg(0, 0, 0.24, 0.07);
+        var svgDayControl = gm.addSvg(0.075, 0, 0.07, 0.24);
+        //var svgZoomControl = gm.addSvg(0, 0, 0.24, 0.07);
 
         gm.updateWindow();
 
@@ -45,7 +45,7 @@
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
         var dayControl = new DayControl(svgDayControl);
-        var zoomControl = new ZoomControl(svgZoomControl);
+        //var zoomControl = new ZoomControl(svgZoomControl);
 
         selectionControl.setCallbackShowCA(gm.addCommunityMap.bind(gm));
         selectionControl.setCallbackHideCA(gm.removeCommunityMap.bind(gm));
@@ -55,7 +55,7 @@
         selectionControl.draw();
         enableCalendarControl.draw();
         dayControl.draw();
-        zoomControl.draw();
+        //zoomControl.draw();
 
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));
@@ -67,6 +67,7 @@
          //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
 
         gm.drawMarkers("popularity");
+        gm.updateWindow();
 
          // Need this call in  order to inform the graphics manager that something changed
         window.onresize = gm.updateWindow.bind(gm);
