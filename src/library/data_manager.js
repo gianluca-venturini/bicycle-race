@@ -110,7 +110,7 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 // Get bikes out for the selected stations
 DataManager.prototype.getBikes = function(callback) {
 
-	var url = this.getTripUrl();
+	var url = this.getTripUrl(true);
 	console.log(url);
 
 	if(this.selectedStations.length > 0)
@@ -124,7 +124,7 @@ DataManager.prototype.getBikes = function(callback) {
 		}
 
 	if(this.bike != null)
-		callback(this.trips);
+		callback(this.bike);
 	else
 		d3.json(url, function(error, json) {
 			if(error)
@@ -136,11 +136,12 @@ DataManager.prototype.getBikes = function(callback) {
 		}.bind(this));
 }
 
-DataManager.prototype.getTripUrl = function() {
+DataManager.prototype.getTripUrl = function(coordinates) {
 	var url = this.tripUrl;
 
 	if(this.date != null ||
-	   this.selectedStations != null)
+	   this.selectedStations != null ||
+	   coordinates == true)
 		url += "?";
 
 
@@ -149,6 +150,11 @@ DataManager.prototype.getTripUrl = function() {
 		url += "from="+this.date;
 		url += "&";
 		url += "to="+this.date;
+	}
+
+	if(coordinates == true) {
+		url += "&";
+		url += "coordinates=TRUE";
 	}
 	return url;
 } 

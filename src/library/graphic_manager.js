@@ -345,7 +345,7 @@ GraphicManager.prototype.drawBikes = function() {
 
     // Remove all bikes
     for(var b in this.bikes) {
-        map.removeLayer(this.bikes[b]);
+        this.map.removeLayer(this.bikes[b]);
     }
 
 
@@ -377,10 +377,10 @@ GraphicManager.prototype.bikesCallback = function(data) {
         var minStart = parseInt(d.starttime.substring(0,2))*60 + parseInt(d.starttime.substring(3,5));
         var minStop = parseInt(d.stoptime.substring(0,2))*60 + parseInt(d.stoptime.substring(3,5));
         var min = parseInt(this.dm.hour.substring(0,2))*60 + parseInt(this.dm.hour.substring(3,5));
-        var latStart = d.from_lat;
-        var lonStart = d.from_lon;
-        var latStop = d.to_lat;
-        var lonStop = d.to_lon;
+        var latStart = parseFloat(d.from_lat);
+        var lonStart = parseFloat(d.from_lon);
+        var latStop = parseFloat(d.to_lat);
+        var lonStop = parseFloat(d.to_lon);
 
         // If it is not in the interval
         if(minStart > min || minStop < min)
@@ -395,6 +395,8 @@ GraphicManager.prototype.bikesCallback = function(data) {
         // Add to bikes coordinates
         this.bikesCoordinate.push([curLat, curLon]);
     }
+
+    console.log(this.bikesCoordinate);
 
     this.drawBikes();
 }
