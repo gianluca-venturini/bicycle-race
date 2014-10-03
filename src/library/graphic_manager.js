@@ -13,13 +13,15 @@ function GraphicManager(htmlId) {
     this.divs = [];
     this.graphicManagers = [];
     this.markers = [];
+    this.bikesCoordinate = [];
+    this.bikes = [];
 
     this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
     this.communityAreaLayer = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-        "http://data.divvybikeschicago.com/station.php");
+                              "http://data.divvybikeschicago.com/station.php");
 
 }
 
@@ -30,7 +32,8 @@ function GraphicManager(htmlId) {
 */
 GraphicManager.prototype.createMap = function (type) {
     this.map = L.map(this.mapId, {
-        zoomControl: false
+        zoomControl: false,
+        doubleClickZoom: false
     }).setView([this.lat, this.lon], this.scale);
 
     // Load the map
@@ -226,11 +229,32 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                 }),
             }).addTo(this.map);
             this.markers.push(marker);
+
+            //Set the station id
+            marker.id = stations[s].id;
+
+            //Add callback
+            marker.on("mousedown", function(e) {
+                this.selectedStation(e.target.id);
+            }.bind(this));
         }
         break;
     }
 
 };
+
+GraphicManager.prototype.selectedStation = function (stationId) {
+    console.log(stationId);
+
+    var selectedStations = this.dm.selectedStations;
+    if(selectedStations.indexOf(stationId) == -1) {
+        // Add the stations to selected
+        selectedStations.push(stationId);
+    } 
+    else {
+        selectedStations.slice(selectedStations.indexOf(stationId), 1);
+    }
+}
 
 /*
     Add the community area layer and set the callback.
@@ -313,3 +337,83 @@ GraphicManager.prototype.selectAllStationsInArea = function (areaId) {
 GraphicManager.prototype.drawLinesBetweenStations = function (data) {
 
 };
+
+GraphicManager.prototype.zoomIn = function() {
+    this.map.zoomIn(1);
+}
+
+GraphicManager.prototype.zoomOut = function() {
+    this.map.zoomOut(1);
+}
+
+/*
+    Draw bikes
+*/
+GraphicManager.prototype.drawBikes = function() {
+
+    // Remove all bikes
+    for(var b in this.bikes) {
+        this.map.removeLayer(this.bikes[b]);
+    }
+
+
+    // Draw new bikes
+    for(var b in this.bikesCoordinate) {
+        var coordinate = this.bikesCoordinate[b];
+        var circle = L.circle(coordinate, 20, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5
+        }).addTo(this.map);
+
+        this.bikes.push(circle);
+    }
+}
+
+GraphicManager.prototype.drawBikesInMoment = function() {
+    this.dm.getBikes(this.bikesCallback.bind(this));
+}
+
+GraphicManager.prototype.bikesCallback = function(data) {
+
+    // Empty bikes coordinates
+    this.bikesCoordinate = [];
+
+    // Parse every row and find the position of the bike
+    for(i in data) {
+        var d = data[i];
+        var minStart = parseInt(d.starttime.substring(0,2))*60 + parseInt(d.starttime.substring(3,5));
+        var minStop = parseInt(d.stoptime.substring(0,2))*60 + parseInt(d.stoptime.substring(3,5));
+        var min = parseInt(this.dm.hour.substring(0,2))*60 + parseInt(this.dm.hour.substring(3,5));
+        var latStart = parseFloat(d.from_lat);
+        var lonStart = parseFloat(d.from_lon);
+        var latStop = parseFloat(d.to_lat);
+        var lonStop = parseFloat(d.to_lon);
+
+        // If it is not in the interval
+        if(minStart > min || minStop < min)
+            continue;
+
+        // Interpolate coordinates
+        var curLat = latStart * (1 - (min - minStart)/(minStop - minStart)) +
+                     latStop * (min - minStart)/(minStop - minStart);
+        var curLon = lonStart * (1 - (min - minStart)/(minStop - minStart)) +
+                     lonStop * (min - minStart)/(minStop - minStart);
+
+        // Add to bikes coordinates
+        this.bikesCoordinate.push([curLat, curLon]);
+    }
+
+    console.log(this.bikesCoordinate);
+
+    this.drawBikes();
+}
+
+GraphicManager.prototype.removeBikes = function() {
+    // Empty bikes coordinates
+    this.bikesCoordinate = [];
+    this.drawBikes();
+}
+
+
+

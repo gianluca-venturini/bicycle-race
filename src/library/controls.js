@@ -245,12 +245,29 @@ function ZoomControl(svg) {
 }
 
 ZoomControl.prototype.draw = function () {
-    this.svg.append("rect")
+    var zin = this.svg.append("rect")
         .attr("x", "10")
         .attr("y", "10")
         .attr("width", "30")
         .attr("height", "30")
         .attr("fill","blue");
+
+    zin.on("mousedown", function () {
+        this.callbackZoonIn();
+        d3.event.stopPropagation();
+    }.bind(this));
+
+    var zout = this.svg.append("rect")
+        .attr("x", "10")
+        .attr("y", "60")
+        .attr("width", "30")
+        .attr("height", "30")
+        .attr("fill","red");
+
+    zout.on("mousedown", function () {
+        this.callbackZoonOut();
+        d3.event.stopPropagation();
+    }.bind(this));
 }
 
 ZoomControl.prototype.setCallbackZoomIn = function(callback) {
