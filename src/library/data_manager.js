@@ -4,6 +4,11 @@ function DataManager(tripUrl, stationUrl) {
 
 	this.selectedStations = [];
 
+	// Filters
+	this.date = null;
+	this.hour = null;
+
+	// Data cache
 	this.stations = null;
 	this.trips = null;
 	this.bikeWeeks = null;
@@ -105,7 +110,8 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 // Get bikes out for the selected stations
 DataManager.prototype.getBikes = function(callback) {
 
-	var url = this.tripUrl;
+	var url = this.getTripUrl();
+	console.log(url);
 
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
@@ -129,3 +135,20 @@ DataManager.prototype.getBikes = function(callback) {
 			callback(json);
 		}.bind(this));
 }
+
+DataManager.prototype.getTripUrl = function() {
+	var url = this.tripUrl;
+
+	if(this.date != null ||
+	   this.selectedStations != null)
+		url += "?";
+
+
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+	return url;
+} 

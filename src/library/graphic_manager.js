@@ -13,6 +13,8 @@ function GraphicManager(htmlId) {
     this.divs = [];
     this.graphicManagers = [];
     this.markers = [];
+    this.bikesCoordinate = [];
+    this.bikes = [];
 
     this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
@@ -334,6 +336,73 @@ GraphicManager.prototype.zoomIn = function() {
 
 GraphicManager.prototype.zoomOut = function() {
     this.map.zoomOut(1);
+}
+
+/*
+    Draw bikes
+*/
+GraphicManager.prototype.drawBikes = function() {
+
+    // Remove all bikes
+    for(var b in this.bikes) {
+        map.removeLayer(this.bikes[b]);
+    }
+
+
+    // Draw new bikes
+    for(var b in this.bikesCoordinate) {
+        var coordinate = this.bikesCoordinate[b];
+        var circle = L.circle(coordinate, 20, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5
+        }).addTo(this.map);
+
+        this.bikes.push(circle);
+    }
+}
+
+GraphicManager.prototype.drawBikesInMoment = function() {
+    this.dm.getBikes(this.bikesCallback.bind(this));
+}
+
+GraphicManager.prototype.bikesCallback = function(data) {
+
+    // Empty bikes coordinates
+    this.bikesCoordinate = [];
+
+    // Parse every row and find the position of the bike
+    for(i in data) {
+        var d = data[i];
+        var minStart = parseInt(d.starttime.substring(0,2))*60 + parseInt(d.starttime.substring(3,5));
+        var minStop = parseInt(d.stoptime.substring(0,2))*60 + parseInt(d.stoptime.substring(3,5));
+        var min = parseInt(this.dm.hour.substring(0,2))*60 + parseInt(this.dm.hour.substring(3,5));
+        var latStart = d.from_lat;
+        var lonStart = d.from_lon;
+        var latStop = d.to_lat;
+        var lonStop = d.to_lon;
+
+        // If it is not in the interval
+        if(minStart > min || minStop < min)
+            continue;
+
+        // Interpolate coordinates
+        var curLat = latStart * (1 - (min - minStart)/(minStop - minStart)) +
+                     latStop * (min - minStart)/(minStop - minStart);
+        var curLon = lonStart * (1 - (min - minStart)/(minStop - minStart)) +
+                     lonStop * (min - minStart)/(minStop - minStart);
+
+        // Add to bikes coordinates
+        this.bikesCoordinate.push([curLat, curLon]);
+    }
+
+    this.drawBikes();
+}
+
+GraphicManager.prototype.removeBikes = function() {
+    // Empty bikes coordinates
+    this.bikesCoordinate = [];
+    this.drawBikes();
 }
 
 

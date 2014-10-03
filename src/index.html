@@ -60,6 +60,11 @@
         dayControl.draw();
         zoomControl.draw();
 
+        // Test bikes
+        gm.dm.hour = "13:00";
+        gm.dm.date = "2013-08-01";
+        gm.drawBikesInMoment();
+
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));
          //c2.setPressCallback(c1.changeColor.bind(c1));

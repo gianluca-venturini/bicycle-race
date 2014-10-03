@@ -90,8 +90,8 @@ switch($aggregate) {
 		if($coordinates == "TRUE") {
 			$database->query("SELECT from_station_id, 
 									 to_station_id, 
-									 DATE_FORMAT(startdate, '%k:%i') as starttime,
-									 DATE_FORMAT(stopdate, '%k:%i') as stoptime,
+									 DATE_FORMAT(startdate, '%H:%i') as starttime,
+									 DATE_FORMAT(stopdate, '%H:%i') as stoptime,
 									 S1.latitude as from_lat,
 									 S1.longitude as from_lon,
 									 S2.latitude as to_lat,
@@ -106,8 +106,8 @@ switch($aggregate) {
 		else
 			$database->query("SELECT from_station_id, 
 									 to_station_id, 
-									 DATE_FORMAT(startdate, '%k:%i') as starttime,
-									 DATE_FORMAT(stopdate, '%k:%i') as stoptime
+									 DATE_FORMAT(startdate, '%H:%i') as starttime,
+									 DATE_FORMAT(stopdate, '%H:%i') as stoptime
 							  FROM TRIP 
 							  WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
 							  	AND (startdate >= '$from' AND startdate <= '$to 23:59')
