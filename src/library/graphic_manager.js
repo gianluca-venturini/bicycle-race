@@ -111,8 +111,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
-        .style("background-color","rgba(89, 89, 89, 0.5)")
-    ;
+        .style("background-color", "rgba(89, 89, 89, 0.5)");
 
     this.svgs.push(svg);
 
@@ -169,10 +168,14 @@ GraphicManager.prototype.positionDIVs = function () {
  *  Refresh the markers, updating their size and position based on windows size
  */
 GraphicManager.prototype.refreshMarkers = function () {
+    this.iconWidth = this.mapHeight / 18;
+    this.iconHeight = this.mapHeight / 18 / (268 / 383);
     for (var m in this.markers) {
         var marker = this.markers[m];
-        marker.options.icon.options.iconSize = [this.mapWidth / 15, this.mapHeight / 15];
-        marker.options.icon.options.iconAnchor = [this.mapWidth / 15 / 2, this.mapHeight / 15];
+        //marker.options.icon.options.iconSize = [this.mapWidth / 15, this.mapHeight / 15];
+        //marker.options.icon.options.iconAnchor = [this.mapWidth / 15 / 2, this.mapHeight / 15];
+        marker.options.icon.options.iconSize = [this.iconWidth, this.iconHeight];
+        marker.options.icon.options.iconAnchor = [this.iconWidth / 2, this.iconHeight];
         marker.setIcon(marker.options.icon);
     }
 };
@@ -205,6 +208,8 @@ GraphicManager.prototype.drawMarkers = function (type) {
 };
 
 GraphicManager.prototype.drawMarkersCallback = function (stations) {
+    this.iconWidth = this.mapHeight / 18;
+    this.iconHeight = this.mapHeight / 18 / (268 / 383);
     switch (this.type) {
     case "popularity":
         for (var s in stations) {
@@ -212,9 +217,12 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
             if (level === 5) level = 4; // to restrict the most popular to the last level
             var marker = L.marker([stations[s].latitude, stations[s].longitude], {
                 icon: new Icon({
-                    iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.svg',
-                    iconSize: [this.mapWidth / 15, this.mapHeight / 15],
-                    iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
+                    //iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.svg',
+                    //iconSize: [this.mapHeight / 15, this.mapHeight / 15],
+                    //iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
+                    iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.png',
+                    iconSize: [this.iconWidth, this.iconHeight],
+                    iconAnchor: [this.iconWidth / 2, this.iconHeight], // to point exactly at lat/lon
                 }),
             }).addTo(this.map);
             this.markers.push(marker);

@@ -1,4 +1,8 @@
-.control_rect{
+@import url(http://fonts.googleapis.com/css?family=Roboto:700|Exo+2:300,600);
+ .control_rect {
     margin-left: 1em;
     margin-top: 1em;
+}
+body {
+    font-family: 'Roboto Slab', "Helvetica Neue", Helvetica, sans-serif;
 }
