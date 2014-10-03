@@ -12,6 +12,7 @@ function BarChart (svg, name){
 		top: 5, 
 		bottom: 70 
 	};
+	this.svg.attr("viewBox","-100 0 300 100");
 }
 
 BarChart.prototype.setData = function(json) {
