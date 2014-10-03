@@ -1,0 +1,50 @@
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Project2</title>
+    <link rel="stylesheet" href="../style/leaflet.css" />
+    <link rel="stylesheet" href="../style/app.css" />
+    <link rel="stylesheet" href="BarChart.css" />
+    <script src="../library/leaflet.js"></script>
+    <script src="../library/d3.v3.min.js"></script>
+    <script src="../library/graphic_manager.js"></script>
+    <script src="BarChart.js"></script>
+   
+    <style>
+
+        #map {
+            height: 100%;
+        }
+        .submap {
+            border: solid 1px black;
+        }
+        .daysOfWeek{
+            fill:rgba(160,210,180,0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        //Example data for bargraph
+        /*This data gives days of the week in a random order, hence the bar graph also displays the same order. Since it should be general enough, I have not included sorting of days within the BarChart code. Can we take care of this at the data level?*/
+        var json = [{"count":730,"hour":null,"day":"Fri","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":730,"hour":null,"day":"Mon","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":854,"hour":null,"day":"Sat","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":744,"hour":null,"day":"Sun","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":667,"hour":null,"day":"Thu","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":660,"hour":null,"day":"Tue","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":645,"hour":null,"day":"Wed","fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null}];
+
+        var gm = new GraphicManager("map");
+        gm.createMap("grey");
+        var bar1 = gm.addSvg(0,0,0.40,0.30); // Maintain 4:3 ratio between width and height
+
+        gm.updateWindow();
+
+        var barChart1 = new BarChart(bar1,"daysOfWeek"); //(svg, name of the graph class: used for css styling: .daysOfWeek)
+        barChart1.setData(json);
+        barChart1.setAxes("day","Days of the Week", "count", "Rides"); //X and Y axes respectively
+        barChart1.draw();
+        window.onresize = gm.updateWindow.bind(gm);
+    </script>
+
+</body>
+</html>
