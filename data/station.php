@@ -16,6 +16,7 @@ header('Access-Control-Allow-Origin: *');
 class Station {
 	public $id = "";
 	public $name = "";
+	public $popularity = "";
 	public $latitude  = "";
 	public $longitude  = "";
 	public $launch_date  = "";
@@ -44,7 +45,7 @@ $database = new DataBaseMySQL();
 switch($demographic) {
 
 	case "NONE":
-		$database->query("	SELECT id, name, latitude, longitude, launch_date
+		$database->query("	SELECT id, name, latitude, longitude, launch_date, popularity
 							FROM STATION
 							WHERE (id IN ($ids) OR '$idDisabled'='1')
 						");
@@ -115,6 +116,7 @@ while($row) {
 	$t->name = $row['name'];
 	$t->latitude = $row['latitude'];
 	$t->longitude = $row['longitude'];
+	$t->popularity = $row['popularity'];
 	$t->launch_date = $row['launch_date'];
 	$t->male = $row['male'];
 	$t->female = $row['female'];

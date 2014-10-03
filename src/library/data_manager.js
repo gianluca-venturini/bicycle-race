@@ -4,9 +4,16 @@ function DataManager(tripUrl, stationUrl) {
 
 	this.selectedStations = [];
 
+	// Filters
+	this.date = null;
+	this.hour = null;
+
+	// Data cache
 	this.stations = null;
 	this.trips = null;
 	this.bikeWeeks = null;
+	this.bikeHours = null;
+	this.bike = null;
 }
 
 /*
@@ -24,7 +31,7 @@ DataManager.prototype.getStations = function(callback) {
 
 			this.stations = json;
 
-			callback("lol");
+			//callback("lol");
 			callback(this.stations);
 		}.bind(this));
 }
@@ -44,7 +51,7 @@ DataManager.prototype.getTrips = function(callback) {
 		}.bind(this));
 }
 
-// Get bikes out per day of the week of the selected stations
+// Get bikes out per day of the week for the selected stations
 DataManager.prototype.getBikesWeek = function(callback) {
 
 	var url = this.tripUrl+"?aggregate=DAY_WEEK";
@@ -71,3 +78,83 @@ DataManager.prototype.getBikesWeek = function(callback) {
 			callback(json);
 		}.bind(this));
 }
+
+// Get bikes out per hour of the day for the selected stations
+DataManager.prototype.getBikesHourDay = function(callback) {
+
+	var url = this.tripUrl+"?aggregate=HOUR_DAY";
+
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s];
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	if(this.bikeHours != null)
+		callback(this.trips);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.tripUrl);
+
+			this.bikeHours = json;
+
+			callback(json);
+		}.bind(this));
+}
+
+// Get bikes out for the selected stations
+DataManager.prototype.getBikes = function(callback) {
+
+	var url = this.getTripUrl(true);
+	console.log(url);
+
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s];
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	if(this.bike != null)
+		callback(this.bike);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.tripUrl);
+
+			this.bike = json;
+
+			callback(json);
+		}.bind(this));
+}
+
+DataManager.prototype.getTripUrl = function(coordinates) {
+	var url = this.tripUrl;
+
+	if(this.date != null ||
+	   this.selectedStations != null ||
+	   coordinates == true)
+		url += "?";
+
+
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
+	if(coordinates == true) {
+		url += "&";
+		url += "coordinates=TRUE";
+	}
+	return url;
+} 
