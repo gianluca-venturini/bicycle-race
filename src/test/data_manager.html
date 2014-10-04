@@ -19,9 +19,11 @@
 		} 
 
 		//dm.selectedStations.push("13");
-		dm.getBikesWeek(lol);
-		dm.getBikesHourDay(lol);
-		dm.getBikes(lol);
+		dm.getBikesWeek(function(d) {
+			console.log(d);
+		});
+		//dm.getBikesHourDay(lol);
+		//dm.getBikes(lol);
 		//dm.getTrips(lol);
 	</script>
 </body>

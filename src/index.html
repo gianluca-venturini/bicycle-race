@@ -5,6 +5,7 @@
     <title>Project2</title>
     <link rel="stylesheet" href="/style/leaflet.css" />
     <link rel="stylesheet" href="/style/app.css" />
+    <link rel="stylesheet" href="/style/chart.css" />
     <script src="/library/leaflet.js"></script>
     <script src="/library/d3.v3.min.js"></script>
     <script src="/library/geojson-utils.js"></script>
@@ -12,6 +13,8 @@
     <script src="/library/data_manager.js"></script>
     <script src="/library/controls.js"></script>
     <script src="/library/marker.js"></script>
+    <script src="/library/BarChart.js"></script>
+    <script src="/library/LineChart.js"></script>
     <style>
         #map {
             height: 100%;
@@ -19,11 +22,24 @@
         .submap {
             border: solid 1px black;
         }
+        .daysOfWeek{
+            fill:rgba(160,210,180,0.8);
+        }
+        .hourOfDay{
+            fill:none;
+            stroke:rgba(200,100,90,0.9);
+            stroke-width:1px;
+        }
+        .blur {
+            -webkit-filter: blur(10px);
+        }
     </style>
 </head>
 
 <body>
-    <div id="map"></div>
+    <div id="lol">
+        <div id="map"></div>
+    </div>
 
     <script>
         var gm = new GraphicManager("map");
@@ -69,7 +85,14 @@
         gm.addExternalSVGs(gm.updateWindow.bind(gm));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
-         //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
+         //gm.addSubMap(0, 0, 0.07, 0.12, "map3", "lol");
+
+        /*
+            Graph integration
+        */
+        var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);
+        var barChart1 = new BarChart(bar1,"daysOfWeek");
+        gm.dayWeekBarGraph = barChart1;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();

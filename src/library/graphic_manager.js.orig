@@ -9,6 +9,11 @@ function GraphicManager(htmlId) {
     this.mapLayer = null;
     this.type = "popularity";
 
+    // Graphs
+    this.dayWeekBarGraph = null;
+    this.bikesHourDay = null;
+    this.bikesDayYear = null;
+
     this.svgs = [];
     this.divs = [];
     this.graphicManagers = [];
@@ -21,8 +26,7 @@ function GraphicManager(htmlId) {
     this.communityAreaLayer = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-                              "http://data.divvybikeschicago.com/station.php");
-
+        "http://data.divvybikeschicago.com/station.php");
 }
 
 /*
@@ -107,18 +111,63 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
 
     var svg = d3.select("#" + this.mapId).append("svg");
 
-    svg.attr("_height", height)
+    svg
+        .attr("_height", height)
         .attr("_width", width)
         .attr("_x", x)
         .attr("_y", y)
-        .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
+<<<<<<< HEAD
+        .style("position", "absolute")
         .style("background-color", "rgba(89, 89, 89, 0.5)");
+=======
+        .style("background-color", "rgba(89, 89, 89, 0.6)");
+>>>>>>> 01755314d8a5a334289770773dbfea6befbcaca8
 
     this.svgs.push(svg);
 
     return svg;
+};
+
+GraphicManager.prototype.addExternalSVGs = function (callback) {
+    var self = this;
+    d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
+        d3.xml("/icon/zoom.svg", "image/svg+xml", function (xmlZoom) {
+
+            document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
+            var svg = d3.select("#calendar");
+
+            svg.attr("_height", 0.24)
+                .attr("_width", 0.07)
+                .attr("_x", 0)
+                .attr("_y", 0.31 + 0.005)
+                .style("position", "absolute")
+                .style("background-color", "rgba(89, 89, 89, 0.6)");
+
+            self.svgs.push(svg);
+
+            var calendarControl = new CalendarControl();
+            calendarControl.draw();
+
+            document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
+            svg = d3.select("#zoom");
+
+            svg.attr("_height", 0.24)
+                .attr("_width", 0.035)
+                .attr("_x", 0)
+                .attr("_y", 1 - 0.24)
+                .style("position", "absolute")
+                .style("background-color", "rgba(89, 89, 89, 0.6)");
+
+            self.svgs.push(svg);
+
+            zoomControl.draw();
+
+            callback();
+        });
+    });
+
 };
 
 GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type) {
@@ -147,9 +196,11 @@ GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type)
 GraphicManager.prototype.positionSVGs = function () {
     for (var s in this.svgs) {
         var svg = this.svgs[s];
-        svg.attr("height", svg.attr("_height") * this.mapHeight + "px")
-            .attr("width", svg.attr("_width") * this.mapWidth + "px")
-            .style("margin-left", svg.attr("_x") * this.mapWidth + "px")
+        if (svg.attr("_height") !== null) {
+            svg.attr("height", svg.attr("_height") * this.mapHeight + "px")
+                .attr("width", svg.attr("_width") * this.mapWidth + "px");
+        }
+        svg.style("margin-left", svg.attr("_x") * this.mapWidth + "px")
             .style("margin-top", svg.attr("_y") * this.mapHeight + "px");
     }
 };
@@ -234,7 +285,7 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
             marker.id = stations[s].id;
 
             //Add callback
-            marker.on("mousedown", function(e) {
+            marker.on("mousedown", function (e) {
                 this.selectedStation(e.target.id);
             }.bind(this));
         }
@@ -247,14 +298,15 @@ GraphicManager.prototype.selectedStation = function (stationId) {
     console.log(stationId);
 
     var selectedStations = this.dm.selectedStations;
-    if(selectedStations.indexOf(stationId) == -1) {
+    if (selectedStations.indexOf(stationId) == -1) {
         // Add the stations to selected
         selectedStations.push(stationId);
-    } 
-    else {
+    } else {
         selectedStations.slice(selectedStations.indexOf(stationId), 1);
     }
-}
+
+    this.updateGraphs();
+};
 
 /*
     Add the community area layer and set the callback.
@@ -336,32 +388,29 @@ GraphicManager.prototype.selectAllStationsInArea = function (areaId) {
 
 GraphicManager.prototype.drawLinesBetweenStations = function (data) {
 
-<<<<<<< HEAD
-};
-=======
 };
 
-GraphicManager.prototype.zoomIn = function() {
+GraphicManager.prototype.zoomIn = function () {
     this.map.zoomIn(1);
-}
+};
 
-GraphicManager.prototype.zoomOut = function() {
+GraphicManager.prototype.zoomOut = function () {
     this.map.zoomOut(1);
-}
+};
 
 /*
     Draw bikes
 */
-GraphicManager.prototype.drawBikes = function() {
+GraphicManager.prototype.drawBikes = function () {
 
     // Remove all bikes
-    for(var b in this.bikes) {
+    for (var b in this.bikes) {
         this.map.removeLayer(this.bikes[b]);
     }
 
 
     // Draw new bikes
-    for(var b in this.bikesCoordinate) {
+    for (var b in this.bikesCoordinate) {
         var coordinate = this.bikesCoordinate[b];
         var circle = L.circle(coordinate, 20, {
             color: 'red',
@@ -371,37 +420,37 @@ GraphicManager.prototype.drawBikes = function() {
 
         this.bikes.push(circle);
     }
-}
+};
 
-GraphicManager.prototype.drawBikesInMoment = function() {
+GraphicManager.prototype.drawBikesInMoment = function () {
     this.dm.getBikes(this.bikesCallback.bind(this));
-}
+};
 
-GraphicManager.prototype.bikesCallback = function(data) {
+GraphicManager.prototype.bikesCallback = function (data) {
 
     // Empty bikes coordinates
     this.bikesCoordinate = [];
 
     // Parse every row and find the position of the bike
-    for(i in data) {
+    for (i in data) {
         var d = data[i];
-        var minStart = parseInt(d.starttime.substring(0,2))*60 + parseInt(d.starttime.substring(3,5));
-        var minStop = parseInt(d.stoptime.substring(0,2))*60 + parseInt(d.stoptime.substring(3,5));
-        var min = parseInt(this.dm.hour.substring(0,2))*60 + parseInt(this.dm.hour.substring(3,5));
+        var minStart = parseInt(d.starttime.substring(0, 2)) * 60 + parseInt(d.starttime.substring(3, 5));
+        var minStop = parseInt(d.stoptime.substring(0, 2)) * 60 + parseInt(d.stoptime.substring(3, 5));
+        var min = parseInt(this.dm.hour.substring(0, 2)) * 60 + parseInt(this.dm.hour.substring(3, 5));
         var latStart = parseFloat(d.from_lat);
         var lonStart = parseFloat(d.from_lon);
         var latStop = parseFloat(d.to_lat);
         var lonStop = parseFloat(d.to_lon);
 
         // If it is not in the interval
-        if(minStart > min || minStop < min)
+        if (minStart > min || minStop < min)
             continue;
 
         // Interpolate coordinates
-        var curLat = latStart * (1 - (min - minStart)/(minStop - minStart)) +
-                     latStop * (min - minStart)/(minStop - minStart);
-        var curLon = lonStart * (1 - (min - minStart)/(minStop - minStart)) +
-                     lonStop * (min - minStart)/(minStop - minStart);
+        var curLat = latStart * (1 - (min - minStart) / (minStop - minStart)) +
+            latStop * (min - minStart) / (minStop - minStart);
+        var curLon = lonStart * (1 - (min - minStart) / (minStop - minStart)) +
+            lonStop * (min - minStart) / (minStop - minStart);
 
         // Add to bikes coordinates
         this.bikesCoordinate.push([curLat, curLon]);
@@ -412,12 +461,28 @@ GraphicManager.prototype.bikesCallback = function(data) {
     this.drawBikes();
 }
 
-GraphicManager.prototype.removeBikes = function() {
+GraphicManager.prototype.removeBikes = function () {
     // Empty bikes coordinates
     this.bikesCoordinate = [];
     this.drawBikes();
 }
 
+/*
+    This function will update all graphs
+*/
+GraphicManager.prototype.updateGraphs = function() {
+    if( this.dayWeekBarGraph != null)
+        this.dm.getBikesWeek( function(data) {
+            this.dayWeekBarGraph.setData(data);
+            this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
+            this.dayWeekBarGraph.draw();
 
+            document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
+        }.bind(this));
+    /*
+    this.dayWeekBarGraph = null;
+    this.bikesHourDay = null;
+    this.bikesDayYear = null;
+    */
+}
 
->>>>>>> 02f8ff04ebf9f70d1e65613c652d52e232866a64

@@ -66,17 +66,18 @@ DataManager.prototype.getBikesWeek = function(callback) {
 				url+=","+station;
 		}
 
+	/* NO CACHE FOR NOW
 	if(this.bikeWeeks != null)
-		callback(this.trips);
-	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.tripUrl);
+		callback(this.bikeWeeks);
+	else */
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
 
-			this.bikeWeeks = json;
+		this.bikeWeeks = json;
 
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 // Get bikes out per hour of the day for the selected stations
