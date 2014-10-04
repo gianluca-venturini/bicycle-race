@@ -2,6 +2,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg id="zoom" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 51 101" width="51pt" height="101pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
+    <defs>
+        <font-face font-family="Helvetica Neue" font-size="30" panose-1="2 0 2 6 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="525" cap-height="730" ascent="930.99976" descent="-212.99744" font-weight="200">
+            <font-face-src><font-face-name name="HelveticaNeue-UltraLight" /></font-face-src>
+        </font-face>
+    </defs>
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <title>Canvas 2</title>
         <g>
@@ -9,13 +14,12 @@
         </g>
         <g>
             <title>Layer 1</title>
-            <circle id="zoom_plus" cx="25.000016" cy="25.85041" r="17.91343" fill="white" fill-opacity="0" />
             <circle cx="25.000016" cy="25.85041" r="17.91343" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" />
-            <circle id="zoom_minus" cx="25.000016" cy="74.039384" r="17.91343" fill="white" fill-opacity="0" />
+            <text id="zoom_plus" transform="translate(15.669295 5.842533)" fill="black">
+                <tspan font-family="Helvetica Neue" font-size="30" font-weight="200" fill="black" x=".3307214" y="28" textLength="18">+</tspan>
+            </text>
             <circle cx="25.000016" cy="74.039384" r="17.91343" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" />
-            <line x1="18.323973" y1="75.11811" x2="31.676059" y2="75.11811" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".7" />
-            <line x1="18.323973" y1="26.645669" x2="31.676059" y2="26.645669" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".7" />
-            <line x1="25.228346" y1="19.842519" x2="25.228346" y2="33.194605" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".7" />
+            <line id="zoom_minus" x1="18.323973" y1="75.11811" x2="31.676059" y2="75.11811" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".7" />
         </g>
     </g>
 </svg>

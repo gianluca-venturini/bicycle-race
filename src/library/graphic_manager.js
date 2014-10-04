@@ -140,20 +140,19 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
             var calendarControl = new CalendarControl();
             calendarControl.draw();
-            
+
             document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
             svg = d3.select("#zoom");
 
             svg.attr("_height", 0.24)
-                .attr("_width", 0.07)
+                .attr("_width", 0.035)
                 .attr("_x", 0)
-                .attr("_y", 0.7)
+                .attr("_y", 1 - 0.24)
                 .style("position", "absolute")
                 .style("background-color", "rgba(89, 89, 89, 0.6)");
 
             self.svgs.push(svg);
 
-            var zoomControl = new ZoomControl();
             zoomControl.draw();
 
             callback();

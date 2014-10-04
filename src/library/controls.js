@@ -277,36 +277,27 @@ DayControl.prototype.setCallback = function (element, callback) {
 ///////////////////////
 
 function ZoomControl(svg) {
-    this.svg = svg;
+
     this.callbackZoonIn = null;
     this.callbackZoonOut = null;
-    svg.attr("viewBox", "0 0 50 100");
 }
 
 ZoomControl.prototype.draw = function () {
-    var zin = this.svg.append("rect")
-        .attr("x", "10")
-        .attr("y", "10")
-        .attr("width", "30")
-        .attr("height", "30")
-        .attr("fill", "blue");
+    var self = this;
 
-    zin.on("mousedown", function () {
-        this.callbackZoonIn();
+    d3.select('#zoom_plus').on("mousedown", function () {
+        self.callbackZoonIn();
         d3.event.stopPropagation();
-    }.bind(this));
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
 
-    var zout = this.svg.append("rect")
-        .attr("x", "10")
-        .attr("y", "60")
-        .attr("width", "30")
-        .attr("height", "30")
-        .attr("fill", "red");
 
-    zout.on("mousedown", function () {
-        this.callbackZoonOut();
+    d3.select('#zoom_minus').on("mousedown", function () {
+        self.callbackZoonOut();
         d3.event.stopPropagation();
-    }.bind(this));
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+
 };
 
 ZoomControl.prototype.setCallbackZoomIn = function (callback) {
