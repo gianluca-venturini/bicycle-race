@@ -121,21 +121,30 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
     return svg;
 };
 
-GraphicManager.prototype.addCalendarSvg = function (x, y, callback) {
+GraphicManager.prototype.addExternalSVGs = function (callback) {
     var self = this;
-    d3.xml("/icon/calendar.svg", "image/svg+xml", function (xml) {
+    d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
+        d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
 
-        document.getElementById(self.mapId).appendChild(xml.documentElement);
-        var svg = d3.select("#calendar");
+            document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
+            var svg = d3.select("#calendar");
 
-        svg.attr("_x", x)
-            .attr("_y", y)
-            .style("position", "absolute");
+            svg.attr("_height", 0.24)
+                .attr("_width", 0.07)
+                .attr("_x", 0)
+                .attr("_y", 0.6)
+                .style("position", "absolute")
+                .style("background-color", "rgba(89, 89, 89, 0.5)");
 
-        self.svgs.push(svg);
-        callback();
-        return svg;
+            self.svgs.push(svg);
+
+            var calendarControl = new CalendarControl();
+            calendarControl.draw();
+
+            callback();
+        });
     });
+
 };
 
 GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type) {

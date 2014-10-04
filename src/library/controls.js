@@ -194,35 +194,42 @@ EnableCalendarControl.prototype.setCallback = function (element, callback) {
 
 ///////////////////////
 
-function CalendarControl(svg) {
-    this.svg = svg;
+function CalendarControl() {
     this.dayCounter = 1;
-    // this.width = +svg.attr("width").replace("px", "");
-    // this.height = +svg.attr("height").replace("px", "");
-    // svg.attr("viewBox", "0 0 100 100");
+    //d3.select('#calendar').attr("viewBox", "0 0 100 100");
+
 }
 
 CalendarControl.prototype.draw = function () {
-
+    var self = this;
+    // Set the callbacks
+    d3.select('#cal_plus').on("mousedown", function () {
+        self.addDay();
+        d3.event.stopPropagation();
+    })
+        .style('-webkit-user-select', 'none');
+    d3.select('#cal_minus').on("mousedown", function () {
+        self.subDay();
+        d3.event.stopPropagation();
+    })
+        .style('-webkit-user-select', 'none');
 
 };
 
 CalendarControl.prototype.addDay = function () {
-    console.log("plus");
     this.dayCounter++;
-    d3.select('#cal_plus').text(this.dayCounter);
+    var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
+    d3.select('#cal_day').text(text);
     if (this.dayCounter === 31)
         this.dayCounter = 0;
 };
 
-CalendarControl.prototype.setCallback = function (element, callback) {
-    this.callback = callback;
-
-    // Set the callback
-    d3.select('#' + element).on("mousedown", function () {
-        callback();
-        d3.event.stopPropagation();
-    });
+CalendarControl.prototype.subDay = function () {
+    this.dayCounter--;
+    var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
+    d3.select('#cal_day').text(text);
+    if (this.dayCounter === 1)
+        this.dayCounter = 32;
 };
 
 ///////////////////////
