@@ -5,11 +5,13 @@
     <title>Project2</title>
     <link rel="stylesheet" href="../style/leaflet.css" />
     <link rel="stylesheet" href="../style/app.css" />
-    <link rel="stylesheet" href="BarChart.css" />
+    <link rel="stylesheet" href="chart.css" />
     <script src="../library/leaflet.js"></script>
     <script src="../library/d3.v3.min.js"></script>
     <script src="../library/graphic_manager.js"></script>
+    <script src="../library/data_manager.js"></script>
     <script src="BarChart.js"></script>
+    <script src="LineChart.js"></script>
    
     <style>
 
@@ -22,6 +24,17 @@
         .daysOfWeek{
             fill:rgba(160,210,180,0.8);
         }
+        .hourOfDay{
+            fill:none;
+            stroke:rgba(200,100,90,0.9);
+            stroke-width:1px;
+        }
+        .hourOfDay{
+            fill:none;
+            stroke:rgba(200,100,90,0.9);
+            stroke-width:1px;
+        }
+
     </style>
 </head>
 
@@ -35,15 +48,37 @@
 
         var gm = new GraphicManager("map");
         gm.createMap("grey");
-        var bar1 = gm.addSvg(0,0,0.40,0.30); // Maintain 4:3 ratio between width and height
-
+        var bar1 = gm.addSvg(0,0,0.40,0.40); // Maintain 4:3 ratio between width and height
+        var line1 = gm.addSvg(0,0.5,0.30,0.30);
+        var line2 = gm.addSvg(0.5,0.5,0.30,0.30);
         gm.updateWindow();
 
         var barChart1 = new BarChart(bar1,"daysOfWeek"); //(svg, name of the graph class: used for css styling: .daysOfWeek)
         barChart1.setData(json);
-        barChart1.setAxes("day","Days of the Week", "count", "Rides"); //X and Y axes respectively
+        barChart1.setAxes("day","Day", "count", "Rides"); //X and Y axes respectively
         barChart1.draw();
         window.onresize = gm.updateWindow.bind(gm);
+
+        var jsonLine = [{"count":53,"hour":"0","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":29,"hour":"1","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":241,"hour":"10","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":284,"hour":"11","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":321,"hour":"12","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":308,"hour":"13","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":300,"hour":"14","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":301,"hour":"15","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":403,"hour":"16","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":406,"hour":"17","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":286,"hour":"18","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":271,"hour":"19","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":20,"hour":"2","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":210,"hour":"20","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":157,"hour":"21","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":158,"hour":"22","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":74,"hour":"23","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":15,"hour":"3","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":11,"hour":"4","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":15,"hour":"5","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":125,"hour":"6","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":152,"hour":"7","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":529,"hour":"8","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null},{"count":361,"hour":"9","day":null,"fromStation":"5","toStation":null,"starttime":null,"stoptime":null,"from_lat":null,"from_lon":null,"to_lat":null,"to_lon":null}];
+
+        
+        var lineChart1 = new LineChart(line1,"hourOfDay");
+        lineChart1.setData(jsonLine.sort(function(a,b){
+            return (+a.hour) - (+b.hour);
+        }));
+        lineChart1.setAxes("hour","Hour", "count", "Rides"); //X and Y axes respectively
+        lineChart1.draw();
+
+        d3.json("data.json",function(error,json){ //data.json at the time of this writing contains info about stations 5,25, and 50
+            var multiJson = json.array;
+            var lineChart2 = new LineChart(line2,"hourOfDay");
+            lineChart2.setData(multiJson.sort(function(a,b){
+                return (+a.hour) - (+b.hour);
+            }), "fromStation", "Station" );
+            lineChart2.setAxes("hour","Hour", "count", "Rides"); //X and Y axes respectively
+            lineChart2.draw();
+        });
+        
     </script>
 
 </body>
