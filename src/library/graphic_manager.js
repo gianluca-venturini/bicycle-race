@@ -9,6 +9,11 @@ function GraphicManager(htmlId) {
     this.mapLayer = null;
     this.type = "popularity";
 
+    // Graphs
+    this.dayWeekBarGraph = null;
+    this.bikesHourDay = null;
+    this.bikesDayYear = null;
+
     this.svgs = [];
     this.divs = [];
     this.graphicManagers = [];
@@ -22,7 +27,6 @@ function GraphicManager(htmlId) {
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php");
-
 }
 
 /*
@@ -107,13 +111,14 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
 
     var svg = d3.select("#" + this.mapId).append("svg");
 
-    svg.attr("_height", height)
+    svg
+        .attr("_height", height)
         .attr("_width", width)
         .attr("_x", x)
         .attr("_y", y)
-        .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style("position", "absolute")
         .style("background-color", "rgba(89, 89, 89, 0.5)");
 
     this.svgs.push(svg);
@@ -272,6 +277,8 @@ GraphicManager.prototype.selectedStation = function (stationId) {
     } else {
         selectedStations.slice(selectedStations.indexOf(stationId), 1);
     }
+
+    this.updateGraphs();
 };
 
 /*
@@ -432,3 +439,23 @@ GraphicManager.prototype.removeBikes = function () {
     this.bikesCoordinate = [];
     this.drawBikes();
 }
+
+/*
+    This function will update all graphs
+*/
+GraphicManager.prototype.updateGraphs = function() {
+    if( this.dayWeekBarGraph != null)
+        this.dm.getBikesWeek( function(data) {
+            this.dayWeekBarGraph.setData(data);
+            this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
+            this.dayWeekBarGraph.draw();
+
+            document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
+        }.bind(this));
+    /*
+    this.dayWeekBarGraph = null;
+    this.bikesHourDay = null;
+    this.bikesDayYear = null;
+    */
+}
+
