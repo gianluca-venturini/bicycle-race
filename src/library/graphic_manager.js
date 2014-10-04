@@ -332,7 +332,9 @@ GraphicManager.prototype.selectedStation = function (stationId) {
     Add the community area layer and set the callback.
     When an area will be selected the callback will be called.
 */
-GraphicManager.prototype.addCommunityMap = function (callback) {
+GraphicManager.prototype.addCommunityMap = function () {
+
+    var callback = this.selectAllStationsInArea.bind(this);
 
     if (this.communityAreaLayer !== null) {
         this.map.addLayer(this.communityAreaLayer);
@@ -402,9 +404,39 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
     });
 };
 
-GraphicManager.prototype.selectAllStationsInArea = function (areaId) {
-    // TODO for cycle on all the stations and add to the selected if pointInArea TRUE
-};
+GraphicManager.prototype.selectAllStationsInArea = function(area) {
+    this.selectedArea = area;
+    this.dm.getStations(this.selectStationsInAreaCallback.bind(this));
+}
+
+
+GraphicManager.prototype.selectStationsInAreaCallback = function(stations) {
+    this.stations = stations;
+    d3.json(this.communityAreaMapURL, function (error, geojsonFeature) {
+        var multipoligon = null;
+        var features = geojsonFeature.features;
+        for(var i in features) {
+            var feature = features[i];
+            if(feature.id == this.selectedArea) {
+                multipoligon = feature.geometry.coordinates;
+                break;
+            }
+        }
+        if(multipoligon == null)
+            return;
+
+        console.log(this.stations);
+        for(var i in this.stations) {
+            var station = this.stations[i];
+            var coord = [station.latitude, station.longitude];
+
+            if(this.pointInArea(coord, multipoligon)) {
+                this.dm.selectedStations.push(station);
+            }
+        }
+        this.updateGraphs();
+    }.bind(this));
+}
 
 GraphicManager.prototype.drawLinesBetweenStations = function (data) {
 
