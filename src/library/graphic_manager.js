@@ -27,6 +27,9 @@ function GraphicManager(htmlId) {
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php");
+
+    this.lastSelected = null;
+    this.showStation = false;
 }
 
 /*
@@ -177,6 +180,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                 self.svgs.push(svg);
 
+                stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
                 stationControl.draw();
 
                 ////////////////////////////////////
@@ -281,6 +285,7 @@ GraphicManager.prototype.drawMarkers = function (type) {
 };
 
 GraphicManager.prototype.drawMarkersCallback = function (stations) {
+    var self = this;
     this.iconWidth = this.mapHeight / 18;
     this.iconHeight = this.mapHeight / 18 / (268 / 383);
     switch (this.type) {
@@ -288,6 +293,7 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
         for (var s in stations) {
             var level = Math.floor(stations[s].popularity * 5);
             if (level === 5) level = 4; // to restrict the most popular to the last level
+            stations[s].popularityLevel = level + 1; // store value
             var marker = L.marker([stations[s].latitude, stations[s].longitude], {
                 icon: new Icon({
                     //iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.svg',
@@ -298,14 +304,44 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                     iconAnchor: [this.iconWidth / 2, this.iconHeight], // to point exactly at lat/lon
                 }),
             }).addTo(this.map);
+            stations[s].marker = marker;
             this.markers.push(marker);
 
             //Set the station id
             marker.id = stations[s].id;
+            marker.deselectedUrl = '/icon/stations_popularity/station_' + (level + 1) + '.png';
+            marker.selectedUrl = '/icon/stations_popularity/station_' + (level + 1) + '_selected.png';
+            marker.selected = false;
 
             //Add callback
             marker.on("mousedown", function (e) {
-                this.selectedStation(e.target.id);
+
+                try {
+                    if (self.lastSelected.id !== e.target.id) {
+                        // Invert previous marker's icon and selection
+                        if (!self.lastSelected.selected) {
+                            //self.lastSelected.options.icon.options.iconUrl = self.lastSelected.selectedUrl;
+                            //self.lastSelected.setIcon(self.lastSelected.options.icon);
+                        } else {
+                            self.lastSelected.options.icon.options.iconUrl = self.lastSelected.deselectedUrl;
+                            self.lastSelected.setIcon(self.lastSelected.options.icon);
+                            self.lastSelected.selected = !self.lastSelected.selected;
+                        }
+                        //console.log("invert old  to " + self.lastSelected.selected);
+                    }
+                } catch (err) {
+                    // do nothing
+                }
+
+                // Change status of the current station
+                e.target.selected = !e.target.selected;
+                // Update last selected
+                self.lastSelected = e.target;
+                //console.log("invert this  to " + e.target.selected + "  -------");
+
+                // Redraw current station's info
+                self.selectedStation(e.target, stations);
+
             }.bind(this));
         }
         break;
@@ -313,7 +349,32 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
 };
 
-GraphicManager.prototype.selectedStation = function (stationId) {
+GraphicManager.prototype.selectedStation = function (marker, stations) {
+
+    var station = null;
+    for (var s in stations) {
+        if (+stations[s].id === +marker.id) {
+            station = stations[s];
+            break;
+        }
+    }
+
+    if (marker.selected) {
+        d3.select('#stationControl').style('opacity', '1');
+        marker.options.icon.options.iconUrl = marker.selectedUrl;
+        marker.setIcon(marker.options.icon);
+    } else {
+        d3.select('#stationControl').style('opacity', '0');
+        marker.options.icon.options.iconUrl = marker.deselectedUrl;
+        marker.setIcon(marker.options.icon);
+    }
+
+    //Show station info
+    this.updateStationControl(marker.id, stations);
+
+};
+
+GraphicManager.prototype.selectCompareAll = function (stationId) {
     console.log(stationId);
 
     var selectedStations = this.dm.selectedStations;
@@ -325,6 +386,19 @@ GraphicManager.prototype.selectedStation = function (stationId) {
     }
 
     this.updateGraphs();
+};
+
+GraphicManager.prototype.updateStationControl = function (stationId, stations) {
+    var station = null;
+    for (var s in stations) {
+        if (+stations[s].id === +stationId) {
+            station = stations[s];
+            break;
+        }
+    }
+    d3.select('#station_name').text(station.name);
+    d3.select('#station_id').text(station.id);
+
 };
 
 /*
@@ -489,9 +563,9 @@ GraphicManager.prototype.removeBikes = function () {
 /*
     This function will update all graphs
 */
-GraphicManager.prototype.updateGraphs = function() {
-    if( this.dayWeekBarGraph != null)
-        this.dm.getBikesWeek( function(data) {
+GraphicManager.prototype.updateGraphs = function () {
+    if (this.dayWeekBarGraph != null)
+        this.dm.getBikesWeek(function (data) {
             this.dayWeekBarGraph.setData(data);
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
@@ -504,4 +578,3 @@ GraphicManager.prototype.updateGraphs = function() {
     this.bikesDayYear = null;
     */
 }
-
