@@ -114,7 +114,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
-        .style("background-color", "rgba(89, 89, 89, 0.5)");
+        .style("background-color", "rgba(89, 89, 89, 0.6)");
 
     this.svgs.push(svg);
 
@@ -124,7 +124,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
 GraphicManager.prototype.addExternalSVGs = function (callback) {
     var self = this;
     d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
-        d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
+        d3.xml("/icon/zoom.svg", "image/svg+xml", function (xmlZoom) {
 
             document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
             var svg = d3.select("#calendar");
@@ -132,14 +132,29 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
             svg.attr("_height", 0.24)
                 .attr("_width", 0.07)
                 .attr("_x", 0)
-                .attr("_y", 0.6)
+                .attr("_y", 0.31 + 0.005)
                 .style("position", "absolute")
-                .style("background-color", "rgba(89, 89, 89, 0.5)");
+                .style("background-color", "rgba(89, 89, 89, 0.6)");
 
             self.svgs.push(svg);
 
             var calendarControl = new CalendarControl();
             calendarControl.draw();
+            
+            document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
+            svg = d3.select("#zoom");
+
+            svg.attr("_height", 0.24)
+                .attr("_width", 0.07)
+                .attr("_x", 0)
+                .attr("_y", 0.7)
+                .style("position", "absolute")
+                .style("background-color", "rgba(89, 89, 89, 0.6)");
+
+            self.svgs.push(svg);
+
+            var zoomControl = new ZoomControl();
+            zoomControl.draw();
 
             callback();
         });
