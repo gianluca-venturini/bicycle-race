@@ -7,12 +7,13 @@ function BarChart (svg, name){
 	this.svg = svg;
 	this.chartName = name;
 	this.border = {
-		left: -65, 
-		right: 190, 
+		left: -75, 
+		right: 180, 
 		top: 5, 
-		bottom: 70 
+		bottom: 85 
 	};
 	this.svg.attr("viewBox","-100 0 300 100");
+	
 }
 
 BarChart.prototype.setData = function(json) {
@@ -59,16 +60,16 @@ BarChart.prototype.draw = function(){
 		})
 	// create X axis
 	this.svg.append("g")
-	    .attr("class", "graphAxis")
+	    .attr("class", "x axis")
 	    .attr("transform", "translate(" + 0 +","+ (this.border.bottom) + ")")
 	    .call(this.xAxis)
 	    .append("text")
-	    	.attr("x", (this.border.right + this.border.left)/2.0 )
-	    	.attr("y", 25)
+	    	.attr("x", this.border.right-5 )
+	    	.attr("y", -this.border.top)
 	    	.style("text-anchor", "middle")
 	    	.text(this.labelX);
 	this.svg.append("g")
-	    .attr("class", "graphAxis")
+	    .attr("class", "y axis")
 	    .attr("transform", "translate(" + (this.border.left) +","+ 0+ ")")
 	    .call(this.yAxis)
 	    .append("text")
