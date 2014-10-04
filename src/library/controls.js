@@ -161,18 +161,6 @@ function EnableCalendarControl(svg) {
 
 EnableCalendarControl.prototype.draw = function () {
 
-    /*
-    this.rect1 = this.svg.append("rect")
-        .style('margin-left', this.marginLeft)
-        .style('margin-top', this.marginTop)
-        .style("opacity", 0.5)
-        .style("fill", "#595959")
-        .attr("width", 100 - this.marginLeft)
-        .attr("height", 25 - this.marginTop)
-        .attr('x', this.marginLeft)
-        .attr('y', this.marginTop);
-    */
-
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
         .attr('x', 50)
@@ -243,18 +231,6 @@ function DayControl(svg) {
 
 DayControl.prototype.draw = function () {
 
-    /*
-    this.rect1 = this.svg.append("rect")
-        .style('margin-left', this.marginLeft)
-        .style('margin-top', this.marginTop)
-        .style("opacity", 0.5)
-        .style("fill", "#595959")
-        .attr("width", 100 - this.marginLeft)
-        .attr("height", 100 - this.marginTop)
-        .attr('x', this.marginLeft)
-        .attr('y', this.marginTop);
-    */
-
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
         .attr('x', 50)
@@ -276,7 +252,19 @@ DayControl.prototype.setCallback = function (element, callback) {
 
 ///////////////////////
 
-function ZoomControl(svg) {
+function StationControl(){
+    
+}
+
+StationControl.prototype.draw = function () {
+    
+};
+
+
+///////////////////////
+
+
+function ZoomControl() {
 
     this.callbackZoonIn = null;
     this.callbackZoonOut = null;

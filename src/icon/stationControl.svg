@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="stationControl" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-1 0 102 187" width="102pt" height="187pt" xmlns:dc="http://purl.org/dc/elements/1.1/" preserveAspectRatio="xMidYMid meet">
+
+    <defs>
+        <font-face font-family="Helvetica Neue" font-size="15" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
+        </font-face>
+        <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
+        </font-face>
+        <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 11 4 3 2 2 2 2 2 4" units-per-em="1000" underline-position="-75" underline-thickness="50" slope="0" x-height="514" cap-height="714" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Thin" /></font-face-src>
+        </font-face>
+    </defs>
+    <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+        <title>Canvas 2</title>
+        <g>
+            <title>Layer 2</title>
+            <rect x="0" y="0" width="93.11811" height="186.23622" fill="#616161" fill-opacity="0" />
+        </g>
+        <g>
+            <title>Layer 1</title>
+            <text transform="translate(5 6.7125987)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="15" font-weight="300" fill="white" x="24.390032" y="15" textLength="41.22">NAME</tspan>
+            </text>
+            <text transform="translate(5 31.645669)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="29.892975" y="8" textLength="8.296">id:</tspan>
+            </text>
+            <text transform="translate(46.952755 31.645669)" fill="white">
+                <tspan id="station_id" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="6.696">ID</tspan>
+            </text>
+            <text transform="translate(5 43.834645)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="2.332975" y="8" textLength="35.856">popularity:</tspan>
+            </text>
+            <text transform="translate(46.952755 43.834645)" fill="white">
+                <tspan id="station_pop" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="15.384">POP</tspan>
+            </text>
+        </g>
+        <g>
+            <title>box1</title>
+            <rect x="10.559055" y="64.06299" width="72" height="40.251967" fill="#616161" fill-opacity=".81" />
+            <text id="station_outflow" transform="translate(15.559055 67.188974)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="18.479999" y="8" textLength="14.664">outfl</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="33.143999" y="8" textLength="10.376">ow</tspan>
+            </text>
+            <text id="station_inflow" transform="translate(15.559055 79.188974)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="21.147999" y="8" textLength="9.328">infl</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="30.475999" y="8" textLength="10.376">ow</tspan>
+            </text>
+            <text id="station_demographics" transform="translate(15.559055 91.188974)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="6.327999" y="8" textLength="49.344">demographics</tspan>
+            </text>
+        </g>
+        <g>
+            <title>box2</title>
+            <rect x="10.559055" y="109.543303" width="72" height="29" fill="#616161" fill-opacity=".81" />
+            <text id="station_compareAll" transform="translate(15.559055 114.043303)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="19.811999" y="8" textLength="22.376">add to</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="11.063999" y="18" textLength="26.528">compar</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="37.448" y="18" textLength="13.488">e all</tspan>
+            </text>
+        </g>
+        <g>
+            <title>box3</title>
+            <rect x="10.559055" y="143.77165" width="72" height="29" fill="#616161" fill-opacity=".81" />
+            <text id="station_compare2" transform="translate(15.559055 148.27165)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="19.811999" y="8" textLength="22.376">add to</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="12.395999" y="18" textLength="26.528">compar</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="38.78" y="18" textLength="10.824">e 2</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

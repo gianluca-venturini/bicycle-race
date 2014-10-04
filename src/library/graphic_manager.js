@@ -125,39 +125,62 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
     var self = this;
     d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
         d3.xml("/icon/zoom.svg", "image/svg+xml", function (xmlZoom) {
+            d3.xml("/icon/stationControl.svg", "image/svg+xml", function (xmlStation) {
 
-            document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
-            var svg = d3.select("#calendar");
+                document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
+                var svg = d3.select("#calendar");
 
-            svg.attr("_height", 0.24)
-                .attr("_width", 0.07)
-                .attr("_x", 0)
-                .attr("_y", 0.31 + 0.005)
-                .style("position", "absolute")
-                .style("background-color", "rgba(89, 89, 89, 0.6)");
+                svg.attr("_height", 0.24)
+                    .attr("_width", 0.07)
+                    .attr("_x", 0)
+                    .attr("_y", 0.31 + 0.005)
+                    .style("position", "absolute")
+                    .style("background-color", "rgba(89, 89, 89, 0.6)");
 
-            self.svgs.push(svg);
+                self.svgs.push(svg);
 
-            var calendarControl = new CalendarControl();
-            calendarControl.draw();
+                var calendarControl = new CalendarControl();
+                calendarControl.draw();
 
-            document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
-            svg = d3.select("#zoom");
+                ////////////////////////////////////
 
-            svg.attr("_height", 0.24)
-                .attr("_width", 0.035)
-                .attr("_x", 0)
-                .attr("_y", 1 - 0.24)
-                .style("position", "absolute")
-                .style("background-color", "rgba(89, 89, 89, 0.6)");
+                document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
+                svg = d3.select("#zoom");
 
-            self.svgs.push(svg);
+                svg.attr("_height", 0.24)
+                    .attr("_width", 0.035)
+                    .attr("_x", 0)
+                    .attr("_y", 1 - 0.24)
+                    .style("position", "absolute")
+                    .style("background-color", "rgba(89, 89, 89, 0.6)");
 
-            zoomControl.draw();
+                self.svgs.push(svg);
 
-            callback();
+                zoomControl.draw();
+
+                ////////////////////////////////////
+
+                document.getElementById(self.mapId).appendChild(xmlStation.documentElement);
+                svg = d3.select("#stationControl");
+
+                svg.attr("_height", 0.45)
+                    .attr("_width", 0.07)
+                    .attr("_x", 0.072)
+                    .attr("_y", 0.250)
+                    .style("position", "absolute")
+                    .style("background-color", "rgba(89, 89, 89, 0.6)");
+
+                self.svgs.push(svg);
+
+                stationControl.draw();
+
+                ////////////////////////////////////
+
+                callback();
+            });
         });
     });
+
 
 };
 
