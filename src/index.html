@@ -52,8 +52,7 @@
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
 
         var svgDayControl = gm.addSvg(0.072, 0, 0.07, 0.24 + 0.005);
-        var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
-        var svgCalendarControl = gm.addCalendarSvg(0, 0.6, gm.updateWindow.bind(gm));
+         //var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
 
         gm.updateWindow();
 
@@ -62,8 +61,7 @@
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
         var dayControl = new DayControl(svgDayControl);
-        var zoomControl = new ZoomControl(svgZoomControl);
-        var calendarControl = new CalendarControl(svgCalendarControl);
+        var zoomControl = new ZoomControl();
 
         selectionControl.setCallbackShowCA(gm.addCommunityMap.bind(gm));
         selectionControl.setCallbackHideCA(gm.removeCommunityMap.bind(gm));
@@ -76,15 +74,14 @@
         selectionControl.draw();
         enableCalendarControl.draw();
         dayControl.draw();
-        zoomControl.draw();
-        calendarControl.draw();
 
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));
          //c2.setPressCallback(c1.changeColor.bind(c1));
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
         layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
-        calendarControl.setCallback("cal_plus", calendarControl.addDay);
+
+        gm.addExternalSVGs(gm.updateWindow.bind(gm));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
          //gm.addSubMap(0, 0, 0.07, 0.12, "map3", "lol");

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg id="calendar" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 -1 100 102" width="100pt" height="102pt" xmlns:dc="http://purl.org/dc/elements/1.1/" preserveAspectRatio="xMidYMid meet">
+<svg id="calendar" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="352 126 101 101" width="101pt" height="101pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
     <defs>
         <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
@@ -14,50 +14,50 @@
         </font-face>
     </defs>
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
-        <title>Canvas 2</title>
+        <title>Canvas 1</title>
         <g>
             <title>Layer 1</title>
-            <rect x="0" y="-21316282e-21" width="100" height="100.000064" fill="#616161" fill-opacity="0" />
-            <rect x="6" y="28.000018" width="42" height="46.00003" fill="#616161" fill-opacity=".81" />
-            <rect x="52" y="28.000018" width="42" height="46.00003" fill="#616161" fill-opacity=".81" />
-            <text transform="translate(11 16.886125)" fill="white">
+            <rect x="352.945" y="126.14173" width="100" height="100.000064" fill="#616161" fill-opacity=".81" />
+            <rect x="358.945" y="154.14175" width="42" height="46.00003" fill="#616161" fill-opacity=".81" />
+            <rect x="404.945" y="154.14175" width="42" height="46.00003" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(363.945 143.02785)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="5.012" y="8" textLength="21.976">Month</tspan>
             </text>
-            <text transform="translate(57 16.886125)" fill="white">
+            <text transform="translate(409.945 143.02785)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="9.332" y="8" textLength="13.336">Day</tspan>
             </text>
-            <text transform="translate(5 3.9138935)" fill="white">
+            <text transform="translate(357.945 130.05562)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="10" font-weight="600" fill="white" x="33.88" y="10" textLength="22.24">2013</tspan>
             </text>
-            <rect x="28" y="80.00005" width="42" height="12.000008" fill="#616161" fill-opacity=".81" />
-            <text id="cal_select" transform="translate(33 81.000055)" fill="white">
+            <rect x="380.945" y="206.14178" width="42" height="12.000008" fill="#616161" fill-opacity=".81" />
+            <text id="cal_select" transform="translate(385.945 207.14178)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="5.328" y="8" textLength="21.344">Select</tspan>
             </text>
-            <text id="cal_7" transform="translate(17 32.000024)" fill="white">
+            <text id="cal_7" transform="translate(369.945 158.14175)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="4.448">7</tspan>
             </text>
-            <text id="cal_8" transform="translate(35 32.000024)" fill="white">
+            <text id="cal_8" transform="translate(387.945 158.14175)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="4.448">8</tspan>
             </text>
-            <text id="cal_10" transform="translate(30.5 46.000033)" fill="white">
+            <text id="cal_9" transform="translate(383.445 172.14176)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="1.052" y="8" textLength="8.896">10</tspan>
             </text>
-            <text id="cal_9" transform="translate(17 46.000033)" fill="white">
+            <text id="cal_10" transform="translate(369.945 172.14176)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="4.448">9</tspan>
             </text>
-            <text id="cal_11" transform="translate(12.5 60.886153)" fill="white">
+            <text id="cal_11" transform="translate(365.445 187.02788)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="1.052" y="8" textLength="8.896">11</tspan>
             </text>
-            <text id="cal_12" transform="translate(31.25 60.886153)" fill="white">
+            <text id="cal_12" transform="translate(384.195 187.02788)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x=".302" y="8" textLength="8.896">12</tspan>
             </text>
-            <text id="cal_plus" transform="translate(57 30.113912)" fill="white">
+            <text id="cal_plus" transform="translate(409.945 156.25564)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="10" font-weight="600" fill="white" x="13" y="10" textLength="6">+</tspan>
             </text>
-            <text id="cal_minus" transform="translate(57 59.886153)" fill="white">
+            <text id="cal_minus" transform="translate(409.945 186.02788)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="10" font-weight="600" fill="white" x="14.055" y="10" textLength="3.89">-</tspan>
             </text>
-            <text transform="translate(57 43.1167)" fill="white">
+            <text transform="translate(409.945 169.25843)" fill="white">
                 <tspan id="cal_day" font-family="Helvetica Neue" font-size="15" font-weight="300" fill="white" x="7.66" y="15" textLength="17">01</tspan>
             </text>
         </g>
