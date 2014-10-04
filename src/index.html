@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/style/leaflet.css" />
     <link rel="stylesheet" href="/style/app.css" />
     <link rel="stylesheet" href="/style/chart.css" />
+    <script src="/library/jquery-1.11.1.min.js"></script>
     <script src="/library/leaflet.js"></script>
     <script src="/library/d3.v3.min.js"></script>
     <script src="/library/geojson-utils.js"></script>
@@ -32,6 +33,12 @@
         }
         .blur {
             -webkit-filter: blur(10px);
+        }
+        .pointer {
+            cursor: pointer
+        }
+        .default {
+            cursor: default
         }
     </style>
 </head>
@@ -93,6 +100,14 @@
         var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);
         var barChart1 = new BarChart(bar1,"daysOfWeek");
         gm.dayWeekBarGraph = barChart1;
+
+        var line1 = gm.addSvg(0.6 , 0.25, 0.30, 0.20);
+        var lineChart1 = new LineChart(line1,"hourOfDay");
+        gm.bikesHourDay = lineChart1;
+
+        var line2 = gm.addSvg(0.6 , 0.50, 0.30, 0.20);
+        var lineChart2 = new LineChart(line2,"hourOfDay");
+        gm.bikesHourDayComparison = lineChart2;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();

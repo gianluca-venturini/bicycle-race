@@ -14,6 +14,9 @@ function DataManager(tripUrl, stationUrl) {
 	this.bikeWeeks = null;
 	this.bikeHours = null;
 	this.bike = null;
+
+	// Mode
+	this.selectionMode = null; 	// MULTIPLE | DOUBLE
 }
 
 /*
@@ -95,17 +98,19 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 				url+=","+station;
 		}
 
+	/*
 	if(this.bikeHours != null)
 		callback(this.trips);
 	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.tripUrl);
+		*/
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
 
-			this.bikeHours = json;
+		this.bikeHours = json;
 
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 // Get bikes out for the selected stations
