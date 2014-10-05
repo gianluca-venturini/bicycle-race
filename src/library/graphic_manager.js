@@ -31,6 +31,7 @@ function GraphicManager(htmlId) {
 
     this.lastSelected = null;
     this.showStation = false;
+    this.stationControl = null;
 }
 
 /*
@@ -181,7 +182,9 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                 self.svgs.push(svg);
 
+                self.stationControl = stationControl;
                 stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
+
                 stationControl.draw();
 
                 ////////////////////////////////////
@@ -343,6 +346,9 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                 // Redraw current station's info
                 self.selectedStation(e.target, stations);
 
+                // Pass info to the controller of the button
+                self.stationControl.selectedStation = e.target.id;
+
             }.bind(this));
         }
         break;
@@ -376,7 +382,6 @@ GraphicManager.prototype.selectedStation = function (marker, stations) {
 };
 
 GraphicManager.prototype.selectCompareAll = function (stationId) {
-    console.log(stationId);
 
     var selectedStations = this.dm.selectedStations;
     if (selectedStations.indexOf(stationId) == -1) {
@@ -478,33 +483,33 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
     });
 };
 
-GraphicManager.prototype.selectAllStationsInArea = function(area) {
+GraphicManager.prototype.selectAllStationsInArea = function (area) {
     this.selectedArea = area;
     this.dm.getStations(this.selectStationsInAreaCallback.bind(this));
 }
 
 
-GraphicManager.prototype.selectStationsInAreaCallback = function(stations) {
+GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
     this.stations = stations;
     d3.json(this.communityAreaMapURL, function (error, geojsonFeature) {
         var multipoligon = null;
         var features = geojsonFeature.features;
-        for(var i in features) {
+        for (var i in features) {
             var feature = features[i];
-            if(feature.id == this.selectedArea) {
+            if (feature.id == this.selectedArea) {
                 multipoligon = feature.geometry.coordinates;
                 break;
             }
         }
-        if(multipoligon == null)
+        if (multipoligon == null)
             return;
 
         console.log(this.stations);
-        for(var i in this.stations) {
+        for (var i in this.stations) {
             var station = this.stations[i];
             var coord = [station.latitude, station.longitude];
 
-            if(this.pointInArea(coord, multipoligon)) {
+            if (this.pointInArea(coord, multipoligon)) {
                 this.dm.selectedStations.push(station);
             }
         }
@@ -596,17 +601,18 @@ GraphicManager.prototype.removeBikes = function () {
 /*
     This function will update all graphs
 */
-GraphicManager.prototype.updateGraphs = function() {
-    if( this.dayWeekBarGraph != null)
-        this.dm.getBikesWeek( function(data) {
+GraphicManager.prototype.updateGraphs = function () {
+    if (this.dayWeekBarGraph != null)
+        this.dm.getBikesWeek(function (data) {
             // Right order of the days
-            var days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-            function compare(a,b) {
-              if (days.indexOf(a.day) < days.indexOf(b.day))
-                 return -1;
-              if (days.indexOf(a.day) > days.indexOf(b.day))
-                return 1;
-              return 0;
+            var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+            function compare(a, b) {
+                if (days.indexOf(a.day) < days.indexOf(b.day))
+                    return -1;
+                if (days.indexOf(a.day) > days.indexOf(b.day))
+                    return 1;
+                return 0;
             }
             data.sort(compare);
 
@@ -618,31 +624,31 @@ GraphicManager.prototype.updateGraphs = function() {
             $(window).trigger('resize');
         }.bind(this));
 
-    if( this.bikesHourDay != null)
-        this.dm.getBikesHourDay( function(data) {
+    if (this.bikesHourDay != null)
+        this.dm.getBikesHourDay(function (data) {
             // Single line chart
-            this.bikesHourDay.setData(data.sort(function(a,b){
+            this.bikesHourDay.setData(data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }));
-            this.bikesHourDay.setAxes("hour","Hour", "count", "Rides");
+            this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.draw();
 
             // Multiple line chart
-            var d = (data.sort(function(a,b){
+            var d = (data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }));
             console.log(d);
-            lineChart2.setData(d.sort(function(a,b){
+            lineChart2.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }), "fromStation", "Station" );
-            this.bikesHourDayComparison.setAxes("hour","Hour", "count", "Rides");
+            }), "fromStation", "Station");
+            this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
             $(window).trigger('resize');
         }.bind(this));
 
-    
+
     gm.bikesHourDayComparison = lineChart2;
 
     /*
@@ -652,4 +658,3 @@ GraphicManager.prototype.updateGraphs = function() {
     */
 
 }
-

@@ -253,20 +253,21 @@ DayControl.prototype.setCallback = function (element, callback) {
 ///////////////////////
 
 function StationControl() {
-    var callbackCompareAll = null;
+    this.callbackCompareAll = null;
+    this.selectedStation = null;
 }
 
 StationControl.prototype.draw = function () {
 
-    d3.select('#stationControl').style('opacity', 0);   //TODO change to remove
+    d3.select('#stationControl').style('opacity', 0); //TODO change to remove
 
     var self = this;
     d3.select('#station_compareAll').on("mousedown", function () {
-        self.callbackCompareAll();
+        self.callbackCompareAll(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
-
+    
 };
 
 StationControl.prototype.setCallbackCompareAll = function (callback) {
