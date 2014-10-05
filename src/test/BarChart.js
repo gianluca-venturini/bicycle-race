@@ -3,21 +3,34 @@
 	X Axis : Ordinal scale on the values present in the json property(of the data), specified against x axis
 	Y Axis : Linear scale on the values present in the json property(of the data), specified against y axis
 */
-function BarChart (svg, name){
+function BarChart (svg){
 	this.svg = svg;
-	this.chartName = name;
+	this.chartName = null;
+	this.newName = null;
+	this.title = null;
 	this.border = {
 		left: -75, 
-		right: 180, 
-		top: 5, 
+		right: 190, 
+		top: 10, 
 		bottom: 85 
 	};
 	this.svg.attr("viewBox","-100 0 300 100");
 	
 }
 
-BarChart.prototype.setData = function(json) {
+BarChart.prototype.setTitle = function(title){
+	this.title = title;
+}
+
+BarChart.prototype.setData = function(json, className) {
 	this.data = json;
+	if(this.chartName!== null) 
+		this.newName = className;
+	else{
+		this.chartName = className;
+		this.newName =className;
+	}
+
 }
 
 BarChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
@@ -44,10 +57,23 @@ BarChart.prototype.draw = function(){
 	
 	var _this = this;
 	bars = this.svg.selectAll("." + this.chartName)
-		.data(this.data)
-		.enter().append("g")
-		.attr("class",this.chartName);
-	bars.append("rect")
+		.data(this.data);
+
+	bars.attr("class",this.newName)
+		.attr("x", function(d,i){
+			return _this.xScale(d[_this.axisX]);
+		})
+		.attr("y", function(d,i){
+			return _this.yScale(d[_this.axisY]);
+		})
+		.attr("width", _this.xScale.rangeBand())
+		.attr("height", function(d){
+			return _this.border.bottom - _this.yScale(d[_this.axisY]);
+		});
+
+
+	bars.enter().append("rect")
+		.attr("class",this.newName)
 		.attr("x", function(d,i){
 			return _this.xScale(d[_this.axisX]);
 		})
@@ -58,18 +84,22 @@ BarChart.prototype.draw = function(){
 		.attr("height", function(d){
 			return _this.border.bottom - _this.yScale(d[_this.axisY]);
 		})
+	bars.exit().remove();
+	
+	this.svg.selectAll(".axis").remove();
+
 	// create X axis
 	this.svg.append("g")
-	    .attr("class", "x axis")
+	    .attr("class", "axis")
 	    .attr("transform", "translate(" + 0 +","+ (this.border.bottom) + ")")
 	    .call(this.xAxis)
 	    .append("text")
 	    	.attr("x", this.border.right-5 )
-	    	.attr("y", -this.border.top)
+	    	.attr("y", -this.border.top/2.0)
 	    	.style("text-anchor", "middle")
 	    	.text(this.labelX);
 	this.svg.append("g")
-	    .attr("class", "y axis")
+	    .attr("class", "axis")
 	    .attr("transform", "translate(" + (this.border.left) +","+ 0+ ")")
 	    .call(this.yAxis)
 	    .append("text")
@@ -78,5 +108,18 @@ BarChart.prototype.draw = function(){
 	    	.attr("transform", "rotate(-90)")
 	    	.style("text-anchor", "end")
 	    	.text(this.labelY);
-		
+	/*Set title for graph */
+	if(this.title!== null){
+		this.svg.selectAll(".title").remove();
+		this.svg.append("text")
+			.attr("class", "title")
+			.attr("transform", "translate(" + ((_this.border.right + _this.border.left)*0.5) + "," + (_this.border.top) + ")")
+		    .style("text-anchor","middle")
+		    .text(_this.title);
+	}
+
+	if (this.newName!==null){
+		this.chartName = this.newName; 
+
+	}
 }
