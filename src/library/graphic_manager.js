@@ -295,15 +295,16 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
     switch (this.type) {
     case "popularity":
         for (var s in stations) {
-            var level = Math.floor(stations[s].popularity * 5);
-            if (level === 5) level = 4; // to restrict the most popular to the last level
-            stations[s].popularityLevel = level + 1; // store value
+            var level = Math.floor(stations[s].popularity * 6);
+            console.log(stations[s].popularity + "->" + level);
+            if (level === 6) level = 5; // to restrict the most popular to the last level
+            stations[s].popularityLevel = level; // store value
             var marker = L.marker([stations[s].latitude, stations[s].longitude], {
                 icon: new Icon({
                     //iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.svg',
                     //iconSize: [this.mapHeight / 15, this.mapHeight / 15],
                     //iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
-                    iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.png',
+                    iconUrl: '/icon/stations_popularity/station_' + (level) + '.png',
                     iconSize: [this.iconWidth, this.iconHeight],
                     iconAnchor: [this.iconWidth / 2, this.iconHeight], // to point exactly at lat/lon
                 }),
@@ -313,8 +314,8 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
             //Set the station id
             marker.id = stations[s].id;
-            marker.deselectedUrl = '/icon/stations_popularity/station_' + (level + 1) + '.png';
-            marker.selectedUrl = '/icon/stations_popularity/station_' + (level + 1) + '_selected.png';
+            marker.deselectedUrl = '/icon/stations_popularity/station_' + (level) + '.png';
+            marker.selectedUrl = '/icon/stations_popularity/station_' + (level) + '_selected.png';
             marker.selected = false;
 
             //Add callback
@@ -388,8 +389,14 @@ GraphicManager.prototype.selectCompareAll = function (stationId) {
         // Add the stations to selected
         selectedStations.push(stationId);
     } else {
-        selectedStations.slice(selectedStations.indexOf(stationId), 1);
+        selectedStations.splice(selectedStations.indexOf(stationId), 1);
     }
+
+    // Debug
+    var ss = [];
+    for (var i = 0; i < selectedStations.length; i++)
+        ss.push(selectedStations[i]);
+    console.log("Selected stations: " + ss);
 
     this.updateGraphs();
 };
@@ -404,6 +411,7 @@ GraphicManager.prototype.updateStationControl = function (stationId, stations) {
     }
     d3.select('#station_name').text(station.name);
     d3.select('#station_id').text(station.id);
+    d3.select('#station_pop').text(d3.format('%')(station.popularity));
 
 };
 
@@ -486,7 +494,7 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
 GraphicManager.prototype.selectAllStationsInArea = function (area) {
     this.selectedArea = area;
     this.dm.getStations(this.selectStationsInAreaCallback.bind(this));
-}
+};
 
 
 GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {

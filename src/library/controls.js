@@ -255,6 +255,7 @@ DayControl.prototype.setCallback = function (element, callback) {
 function StationControl() {
     this.callbackCompareAll = null;
     this.selectedStation = null;
+    this.callbackCompareAll = null;
 }
 
 StationControl.prototype.draw = function () {
@@ -267,7 +268,7 @@ StationControl.prototype.draw = function () {
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
-    
+
 };
 
 StationControl.prototype.setCallbackCompareAll = function (callback) {

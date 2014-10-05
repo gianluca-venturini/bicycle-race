@@ -19,19 +19,19 @@
             <title>box</title>
             <rect x="0" y="0" width="100.000064" height="200.00013" fill="#616161" fill-opacity="0" />
             <text transform="translate(5 7.5)" fill="white">
-                <tspan id="station_name" font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="-5" y="15" textLength="105"></tspan>
+                <tspan id="station_name" font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="0" y="15" textLength="90"></tspan>
             </text>
             <text transform="translate(5 34.763779)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="29.892975" y="8" textLength="8.296">id:</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="29.892975" y="8" textLength="10">id:</tspan>
             </text>
             <text transform="translate(46.952755 34.763779)" fill="white">
-                <tspan id="station_id" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="6.696"></tspan>
+                <tspan id="station_id" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8"></tspan>
             </text>
             <text transform="translate(5 46.952755)" fill="white">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="2.332975" y="8" textLength="35.856">popularity:</tspan>
             </text>
             <text transform="translate(46.952755 46.952755)" fill="white">
-                <tspan id="station_pop" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8" textLength="15.384"></tspan>
+                <tspan id="station_pop" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8"></tspan>
             </text>
             <rect x="14.000033" y="70.692913" width="72" height="45.35433" fill="#616161" fill-opacity=".81" />
             <text id="station_inflow" transform="translate(19.000033 88.37008)" fill="white">
@@ -44,7 +44,7 @@
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="18.479999" y="8" textLength="25">outflow</tspan>
             </text>
             <rect id="station_compareAll" x="14.000033" y="121.27559" width="72" height="29" fill="#616161" fill-opacity=".81" />
-            <text transform="translate(19.000033 130.77559)" fill="white">
+            <text transform="translate(19.000033 130.77559)" fill="white" style="pointer-events: none;">
                 <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="7.551999" y="8" textLength="45">+ compare all</tspan>
             </text>
             <rect id="station_compare2" x="14.000033" y="155.50393" width="72" height="29" fill="#616161" fill-opacity=".81" />
