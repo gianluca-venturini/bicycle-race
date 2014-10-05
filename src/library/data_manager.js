@@ -14,6 +14,9 @@ function DataManager(tripUrl, stationUrl) {
 	this.bikeWeeks = null;
 	this.bikeHours = null;
 	this.bike = null;
+
+	// Mode
+	this.selectionMode = null; 	// MULTIPLE | DOUBLE
 }
 
 /*
@@ -66,17 +69,18 @@ DataManager.prototype.getBikesWeek = function(callback) {
 				url+=","+station;
 		}
 
+	/* NO CACHE FOR NOW
 	if(this.bikeWeeks != null)
-		callback(this.trips);
-	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.tripUrl);
+		callback(this.bikeWeeks);
+	else */
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
 
-			this.bikeWeeks = json;
+		this.bikeWeeks = json;
 
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 // Get bikes out per hour of the day for the selected stations
@@ -94,17 +98,19 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 				url+=","+station;
 		}
 
+	/*
 	if(this.bikeHours != null)
 		callback(this.trips);
 	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.tripUrl);
+		*/
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
 
-			this.bikeHours = json;
+		this.bikeHours = json;
 
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 // Get bikes out for the selected stations

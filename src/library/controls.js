@@ -161,18 +161,6 @@ function EnableCalendarControl(svg) {
 
 EnableCalendarControl.prototype.draw = function () {
 
-    /*
-    this.rect1 = this.svg.append("rect")
-        .style('margin-left', this.marginLeft)
-        .style('margin-top', this.marginTop)
-        .style("opacity", 0.5)
-        .style("fill", "#595959")
-        .attr("width", 100 - this.marginLeft)
-        .attr("height", 25 - this.marginTop)
-        .attr('x', this.marginLeft)
-        .attr('y', this.marginTop);
-    */
-
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
         .attr('x', 50)
@@ -243,18 +231,6 @@ function DayControl(svg) {
 
 DayControl.prototype.draw = function () {
 
-    /*
-    this.rect1 = this.svg.append("rect")
-        .style('margin-left', this.marginLeft)
-        .style('margin-top', this.marginTop)
-        .style("opacity", 0.5)
-        .style("fill", "#595959")
-        .attr("width", 100 - this.marginLeft)
-        .attr("height", 100 - this.marginTop)
-        .attr('x', this.marginLeft)
-        .attr('y', this.marginTop);
-    */
-
     this.text1 = this.svg.append("text")
         .attr("text-anchor", "middle")
         .attr('x', 50)
@@ -276,37 +252,53 @@ DayControl.prototype.setCallback = function (element, callback) {
 
 ///////////////////////
 
-function ZoomControl(svg) {
-    this.svg = svg;
+function StationControl() {
+    this.callbackCompareAll = null;
+    this.selectedStation = null;
+}
+
+StationControl.prototype.draw = function () {
+
+    d3.select('#stationControl').style('opacity', 0); //TODO change to remove
+
+    var self = this;
+    d3.select('#station_compareAll').on("mousedown", function () {
+        self.callbackCompareAll(this.selectedStation);
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+    
+};
+
+StationControl.prototype.setCallbackCompareAll = function (callback) {
+    this.callbackCompareAll = callback;
+};
+
+///////////////////////
+
+
+function ZoomControl() {
+
     this.callbackZoonIn = null;
     this.callbackZoonOut = null;
-    svg.attr("viewBox", "0 0 50 100");
 }
 
 ZoomControl.prototype.draw = function () {
-    var zin = this.svg.append("rect")
-        .attr("x", "10")
-        .attr("y", "10")
-        .attr("width", "30")
-        .attr("height", "30")
-        .attr("fill", "blue");
+    var self = this;
 
-    zin.on("mousedown", function () {
-        this.callbackZoonIn();
+    d3.select('#zoom_plus').on("mousedown", function () {
+        self.callbackZoonIn();
         d3.event.stopPropagation();
-    }.bind(this));
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
 
-    var zout = this.svg.append("rect")
-        .attr("x", "10")
-        .attr("y", "60")
-        .attr("width", "30")
-        .attr("height", "30")
-        .attr("fill", "red");
 
-    zout.on("mousedown", function () {
-        this.callbackZoonOut();
+    d3.select('#zoom_minus').on("mousedown", function () {
+        self.callbackZoonOut();
         d3.event.stopPropagation();
-    }.bind(this));
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+
 };
 
 ZoomControl.prototype.setCallbackZoomIn = function (callback) {

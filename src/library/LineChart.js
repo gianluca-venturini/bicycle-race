@@ -17,6 +17,7 @@ function LineChart (svg){
 	this.svg.attr("viewBox","-100 0 300 100");
 }
 
+
 LineChart.prototype.setTitle = function(title){
 	this.title = title;
 }

@@ -5,6 +5,8 @@
     <title>Project2</title>
     <link rel="stylesheet" href="/style/leaflet.css" />
     <link rel="stylesheet" href="/style/app.css" />
+    <link rel="stylesheet" href="/style/chart.css" />
+    <script src="/library/jquery-1.11.1.min.js"></script>
     <script src="/library/leaflet.js"></script>
     <script src="/library/d3.v3.min.js"></script>
     <script src="/library/geojson-utils.js"></script>
@@ -12,6 +14,8 @@
     <script src="/library/data_manager.js"></script>
     <script src="/library/controls.js"></script>
     <script src="/library/marker.js"></script>
+    <script src="/library/BarChart.js"></script>
+    <script src="/library/LineChart.js"></script>
     <style>
         #map {
             height: 100%;
@@ -19,11 +23,30 @@
         .submap {
             border: solid 1px black;
         }
+        .daysOfWeek{
+            fill:rgba(160,210,180,0.8);
+        }
+        .hourOfDay{
+            fill:none;
+            stroke:rgba(200,100,90,0.9);
+            stroke-width:1px;
+        }
+        .blur {
+            -webkit-filter: blur(10px);
+        }
+        .pointer {
+            cursor: pointer
+        }
+        .default {
+            cursor: default
+        }
     </style>
 </head>
 
 <body>
-    <div id="map"></div>
+    <div id="lol">
+        <div id="map"></div>
+    </div>
 
     <script>
         var gm = new GraphicManager("map");
@@ -36,10 +59,8 @@
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
 
         var svgDayControl = gm.addSvg(0.072, 0, 0.07, 0.24 + 0.005);
-        var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
+         //var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
 
-        gm.addExternalSVGs(gm.updateWindow.bind(gm));
-        
         gm.updateWindow();
 
          // Allocate javascript objects that will manage this SVGS
@@ -47,7 +68,8 @@
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
         var dayControl = new DayControl(svgDayControl);
-        var zoomControl = new ZoomControl(svgZoomControl);
+        var zoomControl = new ZoomControl();
+        var stationControl = new StationControl();
 
         selectionControl.setCallbackShowCA(gm.addCommunityMap.bind(gm));
         selectionControl.setCallbackHideCA(gm.removeCommunityMap.bind(gm));
@@ -60,7 +82,6 @@
         selectionControl.draw();
         enableCalendarControl.draw();
         dayControl.draw();
-        zoomControl.draw();
 
          // Set interactions
          //c1.setPressCallback(c2.changeColor.bind(c2));
@@ -68,9 +89,25 @@
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
         layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
 
+        gm.addExternalSVGs(gm.updateWindow.bind(gm));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
-         //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
+         //gm.addSubMap(0, 0, 0.07, 0.12, "map3", "lol");
+
+        /*
+            Graph integration
+        */
+        var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);
+        var barChart1 = new BarChart(bar1,"daysOfWeek");
+        gm.dayWeekBarGraph = barChart1;
+
+        var line1 = gm.addSvg(0.6 , 0.25, 0.30, 0.20);
+        var lineChart1 = new LineChart(line1,"hourOfDay");
+        gm.bikesHourDay = lineChart1;
+
+        var line2 = gm.addSvg(0.6 , 0.50, 0.30, 0.20);
+        var lineChart2 = new LineChart(line2,"hourOfDay");
+        gm.bikesHourDayComparison = lineChart2;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
