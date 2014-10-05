@@ -15,7 +15,7 @@ function LineChart (svg, name){
 	this.svg.attr("viewBox","-100 0 300 100");
 }
 
-LineChart.prototype.setData = function(json,groupOnProperty, legendLabel) { 
+LineChart.prototype.setData = function(json, groupOnProperty, legendLabel) { 
 	/* If multiple line-graphs are to be plotted, specify the property on which the data should be grouped, specify a label for 
 	the legend to show different groups*/
 	var _this = this;

@@ -12,6 +12,7 @@ function GraphicManager(htmlId) {
     // Graphs
     this.dayWeekBarGraph = null;
     this.bikesHourDay = null;
+    this.bikesHourDayComparison = null;
     this.bikesDayYear = null;
 
     this.svgs = [];
@@ -114,7 +115,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
 
     var svg = d3.select("#" + this.mapId).append("svg");
 
-    svg
+    svg.attr("class", "default")
         .attr("_height", height)
         .attr("_width", width)
         .attr("_x", x)
@@ -405,7 +406,9 @@ GraphicManager.prototype.updateStationControl = function (stationId, stations) {
     Add the community area layer and set the callback.
     When an area will be selected the callback will be called.
 */
-GraphicManager.prototype.addCommunityMap = function (callback) {
+GraphicManager.prototype.addCommunityMap = function () {
+
+    var callback = this.selectAllStationsInArea.bind(this);
 
     if (this.communityAreaLayer !== null) {
         this.map.addLayer(this.communityAreaLayer);
@@ -475,9 +478,39 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
     });
 };
 
-GraphicManager.prototype.selectAllStationsInArea = function (areaId) {
-    // TODO for cycle on all the stations and add to the selected if pointInArea TRUE
-};
+GraphicManager.prototype.selectAllStationsInArea = function(area) {
+    this.selectedArea = area;
+    this.dm.getStations(this.selectStationsInAreaCallback.bind(this));
+}
+
+
+GraphicManager.prototype.selectStationsInAreaCallback = function(stations) {
+    this.stations = stations;
+    d3.json(this.communityAreaMapURL, function (error, geojsonFeature) {
+        var multipoligon = null;
+        var features = geojsonFeature.features;
+        for(var i in features) {
+            var feature = features[i];
+            if(feature.id == this.selectedArea) {
+                multipoligon = feature.geometry.coordinates;
+                break;
+            }
+        }
+        if(multipoligon == null)
+            return;
+
+        console.log(this.stations);
+        for(var i in this.stations) {
+            var station = this.stations[i];
+            var coord = [station.latitude, station.longitude];
+
+            if(this.pointInArea(coord, multipoligon)) {
+                this.dm.selectedStations.push(station);
+            }
+        }
+        this.updateGraphs();
+    }.bind(this));
+}
 
 GraphicManager.prototype.drawLinesBetweenStations = function (data) {
 
@@ -563,18 +596,60 @@ GraphicManager.prototype.removeBikes = function () {
 /*
     This function will update all graphs
 */
-GraphicManager.prototype.updateGraphs = function () {
-    if (this.dayWeekBarGraph != null)
-        this.dm.getBikesWeek(function (data) {
+GraphicManager.prototype.updateGraphs = function() {
+    if( this.dayWeekBarGraph != null)
+        this.dm.getBikesWeek( function(data) {
+            // Right order of the days
+            var days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+            function compare(a,b) {
+              if (days.indexOf(a.day) < days.indexOf(b.day))
+                 return -1;
+              if (days.indexOf(a.day) > days.indexOf(b.day))
+                return 1;
+              return 0;
+            }
+            data.sort(compare);
+
             this.dayWeekBarGraph.setData(data);
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
 
-            document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
+            //document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
+            $(window).trigger('resize');
         }.bind(this));
+
+    if( this.bikesHourDay != null)
+        this.dm.getBikesHourDay( function(data) {
+            // Single line chart
+            this.bikesHourDay.setData(data.sort(function(a,b){
+                return (+a.hour) - (+b.hour);
+            }));
+            this.bikesHourDay.setAxes("hour","Hour", "count", "Rides");
+            this.bikesHourDay.draw();
+
+            // Multiple line chart
+            var d = (data.sort(function(a,b){
+                return (+a.hour) - (+b.hour);
+            }));
+            console.log(d);
+            lineChart2.setData(d.sort(function(a,b){
+                return (+a.hour) - (+b.hour);
+            }), "fromStation", "Station" );
+            this.bikesHourDayComparison.setAxes("hour","Hour", "count", "Rides");
+            this.bikesHourDayComparison.draw();
+
+            document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
+            $(window).trigger('resize');
+        }.bind(this));
+
+    
+    gm.bikesHourDayComparison = lineChart2;
+
     /*
     this.dayWeekBarGraph = null;
     this.bikesHourDay = null;
     this.bikesDayYear = null;
     */
+
 }
+
