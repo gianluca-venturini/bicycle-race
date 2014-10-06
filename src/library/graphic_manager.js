@@ -25,6 +25,7 @@ function GraphicManager(htmlId) {
     this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
     this.communityAreaLayer = null;
+    this.lineBetweenStations = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php");
@@ -296,7 +297,6 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
     case "popularity":
         for (var s in stations) {
             var level = Math.floor(stations[s].popularity * 6);
-            console.log(stations[s].popularity + "->" + level);
             if (level === 6) level = 5; // to restrict the most popular to the last level
             stations[s].popularityLevel = level; // store value
             var marker = L.marker([stations[s].latitude, stations[s].longitude], {
@@ -398,6 +398,10 @@ GraphicManager.prototype.selectCompareAll = function (stationId) {
         ss.push(selectedStations[i]);
     console.log("Selected stations: " + ss);
 
+    // TEST
+    this.hideLineBetweenStations();
+    this.showLineBetweenStations();
+    
     this.updateGraphs();
 };
 
@@ -665,4 +669,36 @@ GraphicManager.prototype.updateGraphs = function () {
     this.bikesDayYear = null;
     */
 
+}
+
+GraphicManager.prototype.showLineBetweenStations = function() {
+    if(this.lineBetweenStations == null && this.dm.selectedStations.length == 2) {
+        this.dm.getStations(this.showLineBetweenStationsCallback.bind(this));
+        
+    } 
+}
+GraphicManager.prototype.showLineBetweenStationsCallback = function(stations) {
+    if(this.lineBetweenStations != null) {
+        this.hideLineBetweenStations();
+    }
+    var origin = null;
+    var destination = null;
+    for(var i in stations) {
+        var station = stations[i];
+        if(this.dm.selectedStations[0] == station.id) {
+            origin = L.latLng(station.latitude, station.longitude)
+        }
+        if(this.dm.selectedStations[1] == station.id) {
+            destination = L.latLng(station.latitude, station.longitude)
+        }
+    }
+    if( origin != null && destination != null)
+        this.lineBetweenStations = L.polyline([origin, destination], {color: 'red'}).addTo(this.map);
+}
+
+GraphicManager.prototype.hideLineBetweenStations = function() {
+    if(this.lineBetweenStations != null) {
+        this.map.removeLayer(this.lineBetweenStations);
+        this.lineBetweenStations = null;
+    } 
 }
