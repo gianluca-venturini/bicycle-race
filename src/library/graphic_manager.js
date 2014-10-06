@@ -319,7 +319,7 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
             marker.selected = false;
 
             //Add callback
-            marker.on("mousedown", function (e) {
+            marker.on("click", function (e) {
 
                 try {
                     if (self.lastSelected.id !== e.target.id) {
