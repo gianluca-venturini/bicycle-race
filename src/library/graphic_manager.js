@@ -401,7 +401,7 @@ GraphicManager.prototype.selectCompareAll = function (stationId) {
     // TEST
     this.hideLineBetweenStations();
     this.showLineBetweenStations();
-    
+
     this.updateGraphs();
 };
 
@@ -628,7 +628,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
             data.sort(compare);
 
-            this.dayWeekBarGraph.setData(data);
+            this.dayWeekBarGraph.setData(data, "daysOfWeek");
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
 
@@ -639,9 +639,10 @@ GraphicManager.prototype.updateGraphs = function () {
     if (this.bikesHourDay != null)
         this.dm.getBikesHourDay(function (data) {
             // Single line chart
+            // TODO: sum up the data
             this.bikesHourDay.setData(data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }));
+            }), "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.draw();
 
@@ -652,7 +653,7 @@ GraphicManager.prototype.updateGraphs = function () {
             console.log(d);
             lineChart2.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }), "fromStation", "Station");
+            }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDayComparison.draw();
 

@@ -6,7 +6,7 @@ function DataManager(tripUrl, stationUrl) {
 
 	// Filters
 	this.date = null;
-	this.hour = null;
+	this.hour = null;	// format: "hh:mm"
 
 	// Data cache
 	this.stations = null;
