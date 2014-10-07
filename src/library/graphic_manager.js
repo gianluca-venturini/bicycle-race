@@ -26,6 +26,7 @@ function GraphicManager(htmlId) {
     this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
     this.communityAreaLayer = null;
+    this.lineBetweenStations = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php");
@@ -418,6 +419,10 @@ GraphicManager.prototype.selectCompareAll = function (station) {
         station.marker.setIcon(station.marker.options.icon);
     }
 
+    // TEST
+    this.hideLineBetweenStations();
+    this.showLineBetweenStations();
+
     this.updateGraphs();
 };
 
@@ -681,7 +686,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
             data.sort(compare);
 
-            this.dayWeekBarGraph.setData(data);
+            this.dayWeekBarGraph.setData(data, "daysOfWeek");
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
 
@@ -692,9 +697,10 @@ GraphicManager.prototype.updateGraphs = function () {
     if (this.bikesHourDay !== null)
         this.dm.getBikesHourDay(function (data) {
             // Single line chart
+            // TODO: sum up the data
             this.bikesHourDay.setData(data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }));
+            }), "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.draw();
 
@@ -705,7 +711,7 @@ GraphicManager.prototype.updateGraphs = function () {
             console.log(d);
             lineChart2.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }), "fromStation", "Station");
+            }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDayComparison.draw();
 
@@ -722,4 +728,36 @@ GraphicManager.prototype.updateGraphs = function () {
     this.bikesDayYear = null;
     */
 
-};
+}
+
+GraphicManager.prototype.showLineBetweenStations = function() {
+    if(this.lineBetweenStations == null && this.dm.selectedStations.length == 2) {
+        this.dm.getStations(this.showLineBetweenStationsCallback.bind(this));
+        
+    } 
+}
+GraphicManager.prototype.showLineBetweenStationsCallback = function(stations) {
+    if(this.lineBetweenStations != null) {
+        this.hideLineBetweenStations();
+    }
+    var origin = null;
+    var destination = null;
+    for(var i in stations) {
+        var station = stations[i];
+        if(this.dm.selectedStations[0] == station.id) {
+            origin = L.latLng(station.latitude, station.longitude)
+        }
+        if(this.dm.selectedStations[1] == station.id) {
+            destination = L.latLng(station.latitude, station.longitude)
+        }
+    }
+    if( origin != null && destination != null)
+        this.lineBetweenStations = L.polyline([origin, destination], {color: 'red'}).addTo(this.map);
+}
+
+GraphicManager.prototype.hideLineBetweenStations = function() {
+    if(this.lineBetweenStations != null) {
+        this.map.removeLayer(this.lineBetweenStations);
+        this.lineBetweenStations = null;
+    } 
+}

@@ -2,7 +2,7 @@
 
 /*
 
-station?station=1,2,3,4
+station?stations=1,2,3,4
 
 */
 
@@ -35,6 +35,7 @@ $database->query("	SELECT S.id, age_in_2014 as age, COUNT(*) as count
 					FROM TRIP T, STATION S
 					WHERE S.id = T.from_station_id
 						AND age_in_2014 <> '0'
+						AND (id IN ($ids) OR '$idDisabled'='1')
 					GROUP BY age_in_2014, S.id
 					ORDER BY S.id
 				");

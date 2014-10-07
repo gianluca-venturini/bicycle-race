@@ -23,17 +23,31 @@
         .submap {
             border: solid 1px black;
         }
+        /* Chart style */ 
         .daysOfWeek{
             fill:rgba(160,210,180,0.8);
+        }
+        .hourOfDayMany{
+            fill:none;
+            stroke-width:1px;
         }
         .hourOfDay{
             fill:none;
             stroke:rgba(200,100,90,0.9);
             stroke-width:1px;
         }
+        .hourOfDayArea{
+            fill:rgba(200,100,90,0.9);
+            stroke:rgba(200,100,90,0.9);
+            stroke-width:1px;
+        }
+
+        /* Other style */
         .blur {
             -webkit-filter: blur(10px);
         }
+
+        /* Cursor style */
         .pointer {
             cursor: pointer
         }
@@ -98,15 +112,15 @@
             Graph integration
         */
         var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);
-        var barChart1 = new BarChart(bar1,"daysOfWeek");
+        var barChart1 = new BarChart(bar1);
         gm.dayWeekBarGraph = barChart1;
 
         var line1 = gm.addSvg(0.6 , 0.25, 0.30, 0.20);
-        var lineChart1 = new LineChart(line1,"hourOfDay");
+        var lineChart1 = new LineChart(line1);
         gm.bikesHourDay = lineChart1;
 
         var line2 = gm.addSvg(0.6 , 0.50, 0.30, 0.20);
-        var lineChart2 = new LineChart(line2,"hourOfDay");
+        var lineChart2 = new LineChart(line2);
         gm.bikesHourDayComparison = lineChart2;
 
         gm.drawMarkers("popularity");
