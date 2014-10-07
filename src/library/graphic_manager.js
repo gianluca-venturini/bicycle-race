@@ -524,8 +524,13 @@ GraphicManager.prototype.removeCommunityMap = function () {
 };
 
 GraphicManager.prototype.pointInArea = function (point, coordinates) {
-    var res = gju.pointInPolygon({"type":"Point","coordinates":point},
-                 {"type":"Polygon", "coordinates":coordinates[0]});
+    var res = gju.pointInPolygon({
+        "type": "Point",
+        "coordinates": point
+    }, {
+        "type": "Polygon",
+        "coordinates": coordinates[0]
+    });
     console.log(res);
     return res;
 };
@@ -560,7 +565,10 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
                 this.dm.selectedStations.push(station);
             }
         }
+        
         this.updateGraphs();
+        this.drawSelectedMarkers();
+        
     }.bind(this));
 };
 
