@@ -15,6 +15,8 @@
     <script src="/library/data_manager.js"></script>
     <script src="/library/BarChart.js"></script>
     <script src="/library/LineChart.js"></script>
+    <script src="/library/PieChart.js"></script>
+
    
     <style>
 
@@ -29,7 +31,7 @@
         }
         .hourOfDayMany{
             fill:none;
-            stroke-width:1px;
+            stroke-width:2px;
         }
         .hourOfDay{
             fill:none;
@@ -41,6 +43,16 @@
             stroke:rgba(200,100,90,0.9);
             stroke-width:1px;
         }
+        .demographic path{
+            stroke:rgba(230,230,230,1.0);
+        }
+
+        .demographic text{
+            font-family: sans-serif;
+            font-size: 0.4rem;
+        }
+        
+        
         
     </style>
 </head>
@@ -64,6 +76,7 @@
         var bar1 = gm.addSvg(0,0,0.40,0.40); // Maintain 1:1 ratio between width and height
         var line1 = gm.addSvg(0,0.5,0.20,0.20);
         var line2 = gm.addSvg(0.5,0.5,0.20,0.20);
+        var pie1 = gm.addSvg(0.5, 0.0, 0.08, 0.20); 
         gm.updateWindow();
 
         
@@ -92,8 +105,10 @@
             var lineChart2 = new LineChart(line2);
             
             var barChart1 = new BarChart(bar1); 
-            
-
+            var pieChart1 = new PieChart(pie1);
+            pieChart1.setData([280,200,300,400],["a","b","c","d"],"demographic","Gender");
+            pieChart1.setTitle("Demographic");
+            pieChart1.draw();
             var flag = 1;
             var switchgraphs = function(){
                 if (flag == 1){
@@ -120,6 +135,7 @@
                     barChart1.setData(jsonLine,"hourOfDay");//(data,classname)
                     barChart1.setAxes("hour","Hour", "count", "Rides"); 
                     barChart1.draw();
+
                     flag = 1;
                 }
             }
