@@ -545,13 +545,10 @@ GraphicManager.prototype.removeCommunityMap = function () {
 };
 
 GraphicManager.prototype.pointInArea = function (point, coordinates) {
-    return gju.pointInMultiPolygon({
-        "type": "Point",
-        "coordinates": point
-    }, {
-        "type": "MultiPolygon",
-        "coordinates": coordinates
-    });
+    var res = gju.pointInPolygon({"type":"Point","coordinates":point},
+                 {"type":"Polygon", "coordinates":coordinates[0]});
+    console.log(res);
+    return res;
 };
 
 GraphicManager.prototype.selectAllStationsInArea = function (area) {
@@ -578,7 +575,7 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
         console.log(this.stations);
         for (var i in this.stations) {
             var station = this.stations[i];
-            var coord = [station.latitude, station.longitude];
+            var coord = [station.longitude, station.latitude];
 
             if (this.pointInArea(coord, multipoligon)) {
                 this.dm.selectedStations.push(station);
