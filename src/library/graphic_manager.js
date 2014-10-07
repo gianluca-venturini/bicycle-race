@@ -329,14 +329,11 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
             //Add callback
             marker.on("click", function (e) {
 
-                /*
                 try {
-                    if (self.lastSelected.id !== e.target.id) {
+                    if (this.lastSelected.id !== e.target.id) {
                         // Invert previous marker's icon and selection
-                        if (self.lastSelected.selected) {
-                            self.lastSelected.options.icon.options.iconUrl = self.lastSelected.deselectedUrl;
-                            self.lastSelected.setIcon(self.lastSelected.options.icon);
-                            self.lastSelected.selected = !self.lastSelected.selected;
+                        if (this.lastSelected.selected) {
+                            this.lastSelected.selected = !this.lastSelected.selected;
                         }
                     }
                 } catch (err) {
@@ -347,19 +344,44 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                 e.target.selected = !e.target.selected;
 
                 // Update last selected marker
-                self.lastSelected = e.target;
-
-                // Redraw current station's info
-                self.selectedStation(e.target.station);
+                this.lastSelected = e.target;
 
                 // Pass info to the controller of the button
-                self.stationControl.selectedStation = e.target.station;
-*/
-                this.drawSelectedMarkers(e);
+                this.stationControl.selectedStation = e.target.station;
+
+                this.drawSelectedMarkers();
+
+                // Redraw current station's info
+                this.selectedStation(e.target.station);
 
             }.bind(this));
         }
         break;
+    }
+
+};
+
+/**
+ *   Redraws all of the stations' markers acccording to which have been selected
+ */
+GraphicManager.prototype.drawSelectedMarkers = function () {
+
+    var selectedStations = this.dm.selectedStations;
+    var stations = this.stations;
+
+    var ids = [];
+    for (var id = 0; id < selectedStations.length; id++) {
+        ids.push(selectedStations[id].id);
+    }
+
+    for (var s in stations) {
+        if (ids.indexOf(stations[s].id) !== -1) {
+            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
+            stations[s].marker.setIcon(stations[s].marker.options.icon);
+        } else {
+            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '.png';
+            stations[s].marker.setIcon(stations[s].marker.options.icon);
+        }
     }
 
 };
@@ -373,11 +395,10 @@ GraphicManager.prototype.selectedStation = function (station) {
         marker.setIcon(marker.options.icon);
     } else {
         d3.select('#stationControl').style('opacity', '0');
-        marker.options.icon.options.iconUrl = marker.deselectedUrl;
-        marker.setIcon(marker.options.icon);
+        this.drawSelectedMarkers();
     }
 
-    //Show station info
+    // Show station info
     this.updateStationControl(station);
 
 };
@@ -432,48 +453,6 @@ GraphicManager.prototype.updateStationControl = function (station) {
     d3.select('#station_id').text(station.id);
     d3.select('#station_pop').text(d3.format('%')(station.popularity));
 
-};
-
-GraphicManager.prototype.drawSelectedMarkers = function (e) {
-    var selectedStations = this.dm.selectedStations;
-    var stations = this.stations;
-
-    try {
-        if (this.lastSelected.id !== e.target.id) {
-            // Invert previous marker's icon and selection
-            if (this.lastSelected.selected) {
-                this.lastSelected.selected = !this.lastSelected.selected;
-            }
-        }
-    } catch (err) {
-        // do nothing
-    }
-
-    // Change status of the current marker
-    e.target.selected = !e.target.selected;
-
-    // Update last selected marker
-    this.lastSelected = e.target;
-
-    // Pass info to the controller of the button
-    this.stationControl.selectedStation = e.target.station;
-
-    var ids = [];
-    for (var id = 0; id < selectedStations.length; id++) {
-        ids.push(selectedStations[id].id);
-    }
-
-    for (var s in stations) {
-        if (ids.indexOf(stations[s].id) !== -1) {
-            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
-            stations[s].marker.setIcon(stations[s].marker.options.icon);
-        } else {
-            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '.png';
-            stations[s].marker.setIcon(stations[s].marker.options.icon);
-        }
-    }
-    // Redraw current station's info
-    this.selectedStation(e.target.station);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -734,12 +713,12 @@ GraphicManager.prototype.updateGraphs = function () {
             // Sum up all the day of the week
             var d = [];
             var k = 0;
-            for(var i in days) {
+            for (var i in days) {
                 var day = days[i];
                 var line = {};
                 line.day = day;
                 line.count = 0;
-                while(k<data.length && data[k].day == day) {
+                while (k < data.length && data[k].day == day) {
                     line.count += data[k].count;
                     k += 1;
                 }
@@ -764,11 +743,11 @@ GraphicManager.prototype.updateGraphs = function () {
             var d = [];
             var hour = 0;
             var k = 0;
-            while(hour < 24) {
+            while (hour < 24) {
                 var line = {};
-                line.hour = ""+hour;
+                line.hour = "" + hour;
                 line.count = 0;
-                while(k<dd.length && dd[k].hour == ""+hour) {
+                while (k < dd.length && dd[k].hour == "" + hour) {
                     line.count += dd[k].count;
                     k += 1;
                 }
@@ -819,36 +798,39 @@ GraphicManager.prototype.updateGraphs = function () {
     this.bikesDayYear = null;
     */
 
-}
+};
 
-GraphicManager.prototype.showLineBetweenStations = function() {
-    if(this.lineBetweenStations == null && this.dm.selectedStations.length == 2) {
+GraphicManager.prototype.showLineBetweenStations = function () {
+    if (this.lineBetweenStations == null && this.dm.selectedStations.length == 2) {
         this.dm.getStations(this.showLineBetweenStationsCallback.bind(this));
-        
-    } 
-}
-GraphicManager.prototype.showLineBetweenStationsCallback = function(stations) {
-    if(this.lineBetweenStations != null) {
+
+    }
+};
+
+GraphicManager.prototype.showLineBetweenStationsCallback = function (stations) {
+    if (this.lineBetweenStations != null) {
         this.hideLineBetweenStations();
     }
     var origin = null;
     var destination = null;
-    for(var i in stations) {
+    for (var i in stations) {
         var station = stations[i];
-        if(this.dm.selectedStations[0] == station.id) {
-            origin = L.latLng(station.latitude, station.longitude)
+        if (this.dm.selectedStations[0] == station.id) {
+            origin = L.latLng(station.latitude, station.longitude);
         }
-        if(this.dm.selectedStations[1] == station.id) {
-            destination = L.latLng(station.latitude, station.longitude)
+        if (this.dm.selectedStations[1] == station.id) {
+            destination = L.latLng(station.latitude, station.longitude);
         }
     }
-    if( origin != null && destination != null)
-        this.lineBetweenStations = L.polyline([origin, destination], {color: 'red'}).addTo(this.map);
-}
+    if (origin != null && destination != null)
+        this.lineBetweenStations = L.polyline([origin, destination], {
+            color: 'red'
+        }).addTo(this.map);
+};
 
-GraphicManager.prototype.hideLineBetweenStations = function() {
-    if(this.lineBetweenStations != null) {
+GraphicManager.prototype.hideLineBetweenStations = function () {
+    if (this.lineBetweenStations != null) {
         this.map.removeLayer(this.lineBetweenStations);
         this.lineBetweenStations = null;
-    } 
-}
+    }
+};
