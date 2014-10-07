@@ -63,6 +63,8 @@ function SelectionControl(svg) {
     this.text1 = null;
     this.text2 = null;
     this.text3 = null;
+    this.callbackSelectAll = null;
+    this.callbackDeselectAll = null;
     this.callbackShowCA = null;
     this.callbackHideCA = null;
     this.activeCa = false;
@@ -70,19 +72,6 @@ function SelectionControl(svg) {
 }
 
 SelectionControl.prototype.draw = function () {
-    /*
-    if(this.rect2 != null)
-        this.rect2.remove();
-    this.rect2 = this.svg.append("rect")
-        .style('margin-left', this.marginLeft)
-        .style('margin-top', this.marginTop)
-        .style("opacity", 0.5)
-        .style("fill", "#595959")
-        .attr("width", 100 - this.marginLeft)
-        .attr("height", 50 - this.marginTop)
-        .attr('x', this.marginLeft)
-        .attr('y', this.marginTop);
-    */
 
     if (this.text1 !== null)
         this.text1.remove();
@@ -95,6 +84,14 @@ SelectionControl.prototype.draw = function () {
         .style('font-size', '0.8em')
         .text("Select all stations");
 
+    // Set the callback
+    this.text1.on("click", function () {
+        if (this.callbackSelectAll !== null)
+            this.callbackSelectAll();
+        d3.event.stopPropagation();
+        //this.draw();
+    }.bind(this));
+
     if (this.text2 !== null)
         this.text2.remove();
     this.text2 = this.svg.append("text")
@@ -105,6 +102,14 @@ SelectionControl.prototype.draw = function () {
         .attr("id", "deselect_all_stations")
         .style('font-size', '0.8em')
         .text("Deselect all stations");
+
+    // Set the callback
+    this.text2.on("click", function () {
+        if (this.callbackDeselectAll !== null)
+            this.callbackDeselectAll();
+        d3.event.stopPropagation();
+        //this.draw();
+    }.bind(this));
 
     if (this.text3 !== null)
         this.text3.remove();
@@ -120,7 +125,7 @@ SelectionControl.prototype.draw = function () {
         this.activeCa = false;
 
         // Set the callback
-        this.text3.on("mousedown", function () {
+        this.text3.on("click", function () {
             if (this.callbackHideCA !== null)
                 this.callbackHideCA();
             d3.event.stopPropagation();
@@ -132,7 +137,7 @@ SelectionControl.prototype.draw = function () {
         this.activeCa = true;
 
         // Set the callback
-        this.text3.on("mousedown", function () {
+        this.text3.on("click", function () {
             if (this.callbackShowCA !== null)
                 this.callbackShowCA();
             d3.event.stopPropagation();
@@ -148,6 +153,14 @@ SelectionControl.prototype.setCallbackShowCA = function (callback) {
 
 SelectionControl.prototype.setCallbackHideCA = function (callback) {
     this.callbackHideCA = callback;
+};
+
+SelectionControl.prototype.setCallbackSelectAll = function (callback) {
+    this.callbackSelectAll = callback;
+};
+
+SelectionControl.prototype.setCallbackDeselectAll = function (callback) {
+    this.callbackDeselectAll = callback;
 };
 
 ///////////////////////

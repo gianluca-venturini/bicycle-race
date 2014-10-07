@@ -457,6 +457,21 @@ GraphicManager.prototype.updateStationControl = function (station) {
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
+GraphicManager.prototype.selectAll = function () {
+    this.dm.selectedStations = this.stations;
+    this.drawSelectedMarkers();
+    this.updateGraphs();
+};
+
+GraphicManager.prototype.deselectAll = function () {
+    this.dm.selectedStations = [];
+    this.drawSelectedMarkers();
+    this.updateGraphs();
+};
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
 /*
     Add the community area layer and set the callback.
     When an area will be selected the callback will be called.
@@ -565,10 +580,10 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
                 this.dm.selectedStations.push(station);
             }
         }
-        
+
         this.updateGraphs();
         this.drawSelectedMarkers();
-        
+
     }.bind(this));
 };
 
