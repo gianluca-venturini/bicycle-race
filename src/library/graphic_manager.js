@@ -13,7 +13,7 @@ function GraphicManager(htmlId) {
     this.dayWeekBarGraph = null;
     this.bikesHourDay = null;
     this.bikesHourDayComparison = null;
-    this.bikesDayYear = null;
+    this.bikesDayYearComparison = null;
 
     this.svgs = [];
     this.divs = [];
@@ -21,6 +21,7 @@ function GraphicManager(htmlId) {
     this.markers = [];
     this.bikesCoordinate = [];
     this.bikes = [];
+    this.linesBetweenStations = [];
 
     this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
@@ -550,12 +551,56 @@ GraphicManager.prototype.drawBikes = function () {
     for (var b in this.bikes) {
         this.map.removeLayer(this.bikes[b]);
     }
+    this.bikes = [];
 
+    // Remove all lines
+    for (var l in this.linesBetweenStations) {
+        this.map.removeLayer(this.linesBetweenStations[l]);
+    }
+    this.linesBetweenStations = [];
+
+    // Draw new lines (station to station)
+    for (var b in this.bikesCoordinate) {
+        var coordinate = this.bikesCoordinate[b];
+
+        var from = L.latLng(coordinate[2], coordinate[3]);
+        var to = L.latLng(coordinate[4], coordinate[5]);
+
+        // Draw line
+        var line = L.polyline([from, to], {
+            color: 'black',
+            fillColor: 'black',
+            fillOpacity: 0.5,
+            weight: 1
+        }).addTo(this.map);
+
+        this.linesBetweenStations.push(line);
+    }
+
+    // Draw new lines (station to bike)
+    for (var b in this.bikesCoordinate) {
+        var coordinate = this.bikesCoordinate[b];
+
+        var from = L.latLng(coordinate[2], coordinate[3]);
+        var to = L.latLng(coordinate[0], coordinate[1]);
+
+        // Draw line
+        var line = L.polyline([from, to], {
+            color: 'red',
+            fillColor: 'red',
+            fillOpacity: 0.5,
+            weight: 3
+        }).addTo(this.map);
+
+        this.linesBetweenStations.push(line);
+    }
 
     // Draw new bikes
     for (var b in this.bikesCoordinate) {
         var coordinate = this.bikesCoordinate[b];
-        var circle = L.circle(coordinate, 20, {
+
+        // Draw circle
+        var circle = L.circle([coordinate[0], coordinate[1]], 20, {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5
@@ -596,7 +641,7 @@ GraphicManager.prototype.bikesCallback = function (data) {
             lonStop * (min - minStart) / (minStop - minStart);
 
         // Add to bikes coordinates
-        this.bikesCoordinate.push([curLat, curLon]);
+        this.bikesCoordinate.push([curLat, curLon, latStart, lonStart, latStop, lonStop]);
     }
 
     console.log(this.bikesCoordinate);
@@ -628,7 +673,22 @@ GraphicManager.prototype.updateGraphs = function () {
             }
             data.sort(compare);
 
-            this.dayWeekBarGraph.setData(data, "daysOfWeek");
+            // Sum up all the day of the week
+            var d = [];
+            var k = 0;
+            for(var i in days) {
+                var day = days[i];
+                var line = {};
+                line.day = day;
+                line.count = 0;
+                while(k<data.length && data[k].day == day) {
+                    line.count += data[k].count;
+                    k += 1;
+                }
+                d.push(line);
+            }
+
+            this.dayWeekBarGraph.setData(d, "daysOfWeek");
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
 
@@ -639,10 +699,26 @@ GraphicManager.prototype.updateGraphs = function () {
     if (this.bikesHourDay != null)
         this.dm.getBikesHourDay(function (data) {
             // Single line chart
-            // TODO: sum up the data
-            this.bikesHourDay.setData(data.sort(function (a, b) {
+            // Sum up the data of the hours
+            var dd = data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }), "hourOfDay");
+            });
+            var d = [];
+            var hour = 0;
+            var k = 0;
+            while(hour < 24) {
+                var line = {};
+                line.hour = ""+hour;
+                line.count = 0;
+                while(k<dd.length && dd[k].hour == ""+hour) {
+                    line.count += dd[k].count;
+                    k += 1;
+                }
+                d.push(line);
+                hour += 1;
+            }
+
+            this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.draw();
 
@@ -650,8 +726,7 @@ GraphicManager.prototype.updateGraphs = function () {
             var d = (data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }));
-            console.log(d);
-            lineChart2.setData(d.sort(function (a, b) {
+            this.bikesHourDayComparison.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
@@ -660,6 +735,20 @@ GraphicManager.prototype.updateGraphs = function () {
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
             $(window).trigger('resize');
         }.bind(this));
+
+    if (this.bikesDayYearComparison != null)
+        this.dm.getBikesDayYear(function (data) {
+            // Multiple line chart
+            var dd = data.sort(function (a, b) {
+                return (+a.hour) - (+b.hour);
+            });
+            this.bikesDayYearComparison.setData(dd.sort(function (a, b) {
+                return (+a.hour) - (+b.hour);
+            }), "dayOfYearMany", "fromStation", "Station");
+            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYearComparison.draw();
+        }.bind(this));
+
 
 
     gm.bikesHourDayComparison = lineChart2;

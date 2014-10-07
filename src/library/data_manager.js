@@ -113,6 +113,36 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 	}.bind(this));
 }
 
+// Get bikes out per day of the year for the selected stations
+DataManager.prototype.getBikesDayYear = function(callback) {
+
+	var url = this.tripUrl+"?aggregate=DAY_YEAR";
+
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s];
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	/*
+	if(this.bikeHours != null)
+		callback(this.trips);
+	else
+		*/
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
+
+		this.bikeHours = json;
+
+		callback(json);
+	}.bind(this));
+}
+
 // Get bikes out for the selected stations
 DataManager.prototype.getBikes = function(callback) {
 

@@ -111,17 +111,21 @@
         /*
             Graph integration
         */
-        var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);
+        var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);  // Day of the week
         var barChart1 = new BarChart(bar1);
         gm.dayWeekBarGraph = barChart1;
 
-        var line1 = gm.addSvg(0.6 , 0.25, 0.30, 0.20);
+        var line1 = gm.addSvg(0.6 , 0.25, 0.30, 0.20);  // Hour of the day sum
         var lineChart1 = new LineChart(line1);
         gm.bikesHourDay = lineChart1;
 
-        var line2 = gm.addSvg(0.6 , 0.50, 0.30, 0.20);
+        var line2 = gm.addSvg(0.6 , 0.50, 0.30, 0.20);  // Hour of the day multiple stations
         var lineChart2 = new LineChart(line2);
         gm.bikesHourDayComparison = lineChart2;
+
+        var line3 = gm.addSvg(0.6 , 0.75, 0.30, 0.20);  // Day of the year, multiple stations
+        var lineChart3 = new LineChart(line3);
+        gm.bikesDayYearComparison = lineChart3;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
