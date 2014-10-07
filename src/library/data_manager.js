@@ -147,7 +147,6 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 DataManager.prototype.getBikes = function(callback) {
 
 	var url = this.getTripUrl(true);
-	console.log(url);
 
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
@@ -170,6 +169,33 @@ DataManager.prototype.getBikes = function(callback) {
 
 			callback(json);
 		}.bind(this));
+}
+
+/*
+	Get the demographic data for the selected stations
+*/
+DataManager.prototype.getStationsDemographic = function(callback) {
+
+	var url = this.stationUrl;
+	url += "?demographic=OUT";
+
+	// Only selected stations
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s].id;
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.stationUrl);
+
+		callback(json);
+	}.bind(this));
 }
 
 DataManager.prototype.getTripUrl = function(coordinates) {

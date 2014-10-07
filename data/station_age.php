@@ -37,7 +37,7 @@ $database->query("	SELECT S.id, age_in_2014 as age, COUNT(*) as count
 						AND age_in_2014 <> '0'
 						AND (id IN ($ids) OR '$idDisabled'='1')
 					GROUP BY age_in_2014, S.id
-					ORDER BY S.id
+					ORDER BY S.id, age
 				");
 
 
@@ -51,12 +51,13 @@ while($row) {
 	if($t->id != $row['id']) {
 		if($t->id != NULL)
 			array_push($reply, $t);
-		$t->id = $row['id'];
-		$a = new Age();
-		$a->age = $row['age'];
-		$a->count = $row['count'];
-		array_push($t->ages, $a);
 	}
+
+	$t->id = $row['id'];
+	$a = new Age();
+	$a->age = $row['age'];
+	$a->count = $row['count'];
+	array_push($t->ages, $a);
   
 	$row = $database->fetch_next_row();
 }

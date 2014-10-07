@@ -14,6 +14,9 @@ function GraphicManager(htmlId) {
     this.bikesHourDay = null;
     this.bikesHourDayComparison = null;
     this.bikesDayYearComparison = null;
+    this.tripsGender = null;
+    this.tripsAge = null;
+    this.tripsCustomerType = null;
 
     this.svgs = [];
     this.divs = [];
@@ -791,6 +794,45 @@ GraphicManager.prototype.updateGraphs = function () {
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
             $(window).trigger('resize');
+        }.bind(this));
+
+    // Gender data
+    if(this.tripsGender != null ||
+       this.tripsAge != null ||
+       this.tripsCustomerType != null)
+        this.dm.getStationsDemographic(function(data) {
+            console.log(data);
+            var d = {};
+            d.male = 0;
+            d.female = 0;
+            d.unknown = 0;
+            d.customer = 0;
+            d.subscriber = 0;
+            for(var i in data) {
+                d.male += +data[i].male;
+                d.female += +data[i].female;
+                d.unknown += +data[i].unknown;
+                d.customer += +data[i].customer;
+                d.subscriber += +data[i].subscriber;
+            }
+
+            if(this.tripsGender != null) {
+                this.tripsGender.setData([+d.male, +d.female, +d.female],
+                                         ["Male","Female","Unknown"],
+                                         "demographic",
+                                         "Gender");
+                this.tripsGender.setTitle("Demographic");
+                this.tripsGender.draw();
+            }
+
+            if(this.tripsCustomerType != null) {
+                this.tripsCustomerType.setData([+d.male, +d.female],
+                                         ["Customer","Subscriber"],
+                                         "customer_type",
+                                         "Customer");
+                this.tripsCustomerType.setTitle("Customer type");
+                this.tripsCustomerType.draw();
+            }
         }.bind(this));
 
     /*
