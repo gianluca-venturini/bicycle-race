@@ -6,7 +6,7 @@ function DataManager(tripUrl, stationUrl) {
 
 	// Filters
 	this.date = null;
-	this.hour = null;
+	this.hour = null;	// format: "hh:mm"
 
 	// Data cache
 	this.stations = null;
@@ -62,7 +62,7 @@ DataManager.prototype.getBikesWeek = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else
@@ -91,7 +91,37 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	/*
+	if(this.bikeHours != null)
+		callback(this.trips);
+	else
+		*/
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
+
+		this.bikeHours = json;
+
+		callback(json);
+	}.bind(this));
+}
+
+// Get bikes out per day of the year for the selected stations
+DataManager.prototype.getBikesDayYear = function(callback) {
+
+	var url = this.tripUrl+"?aggregate=DAY_YEAR";
+
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else
@@ -122,7 +152,7 @@ DataManager.prototype.getBikes = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else

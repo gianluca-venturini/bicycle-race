@@ -16,20 +16,20 @@
 <metadata>
 	<sfw  xmlns="&ns_sfw;">
 		<slices></slices>
-		<sliceSourceBounds  width="66.83" height="94.518" bottomLeftOrigin="true" x="16.62" y="3.242"></sliceSourceBounds>
+		<sliceSourceBounds  y="1.243" x="14.62" bottomLeftOrigin="true" width="70.83" height="98.517"></sliceSourceBounds>
 	</sfw>
 </metadata>
 <g id="XMLID_2_">
 	<g>
-		<path fill="#EFF3FF" d="M63.779,76.5C57.889,85.71,52.75,92.76,52.24,93.439L51.1,94.98c-0.129,0.188-0.34,0.277-0.56,0.277
-			c-0.23,0-0.44-0.09-0.56-0.277l-1.15-1.541C48.33,92.75,43.18,85.71,37.3,76.5H63.779z"/>
+		<path fill="#EFF3FF" d="M63.779,76.5C57.889,85.71,52.75,92.76,52.24,93.439L51.1,94.98c-0.129,0.188-0.34,0.276-0.56,0.276
+			c-0.23,0-0.44-0.09-0.56-0.276l-1.15-1.541C48.33,92.75,43.18,85.71,37.3,76.5H63.779z"/>
 	</g>
 	<g>
-		<path fill="#FFFFFF" fill-opacity="0.7" stroke="#FFE141" stroke-width="4" stroke-miterlimit="10" d="M81.95,36.15
+		<path fill="#FFFFFF" fill-opacity="0.7" stroke="#FFE141" stroke-width="8" stroke-miterlimit="10" d="M81.95,36.15
 			c0,9.79-9.82,27.25-18.171,40.35H37.3c-8.36-13.1-18.18-30.56-18.18-40.35c0-17.32,14.09-31.41,31.42-31.41
 			C67.85,4.74,81.95,18.83,81.95,36.15z"/>
-		<path fill="none" stroke="#FFE141" stroke-width="4" stroke-miterlimit="10" d="M63.779,76.5
-			C57.889,85.71,52.75,92.76,52.24,93.439L51.1,94.98c-0.129,0.188-0.34,0.277-0.56,0.277c-0.23,0-0.44-0.09-0.56-0.277l-1.15-1.541
+		<path fill="none" stroke="#FFE141" stroke-width="8" stroke-miterlimit="10" d="M63.779,76.5
+			C57.889,85.71,52.75,92.76,52.24,93.439L51.1,94.98c-0.129,0.188-0.34,0.276-0.56,0.276c-0.23,0-0.44-0.09-0.56-0.276l-1.15-1.541
 			C48.33,92.75,43.18,85.71,37.3,76.5H63.779z"/>
 	</g>
 </g>

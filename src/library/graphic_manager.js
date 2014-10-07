@@ -13,18 +13,21 @@ function GraphicManager(htmlId) {
     this.dayWeekBarGraph = null;
     this.bikesHourDay = null;
     this.bikesHourDayComparison = null;
-    this.bikesDayYear = null;
+    this.bikesDayYearComparison = null;
 
     this.svgs = [];
     this.divs = [];
     this.graphicManagers = [];
+    this.stations = null;
     this.markers = [];
     this.bikesCoordinate = [];
     this.bikes = [];
+    this.linesBetweenStations = [];
 
     this.communityAreaMapURL = "/data/chicago_community_district_map.json";
 
     this.communityAreaLayer = null;
+    this.lineBetweenStations = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php");
@@ -280,6 +283,8 @@ GraphicManager.prototype.updateWindow = function () {
     }
 };
 
+////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  *
  */
@@ -290,13 +295,13 @@ GraphicManager.prototype.drawMarkers = function (type) {
 
 GraphicManager.prototype.drawMarkersCallback = function (stations) {
     var self = this;
+    this.stations = stations;
     this.iconWidth = this.mapHeight / 18;
     this.iconHeight = this.mapHeight / 18 / (268 / 383);
     switch (this.type) {
     case "popularity":
         for (var s in stations) {
             var level = Math.floor(stations[s].popularity * 6);
-            console.log(stations[s].popularity + "->" + level);
             if (level === 6) level = 5; // to restrict the most popular to the last level
             stations[s].popularityLevel = level; // store value
             var marker = L.marker([stations[s].latitude, stations[s].longitude], {
@@ -309,6 +314,9 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                     iconAnchor: [this.iconWidth / 2, this.iconHeight], // to point exactly at lat/lon
                 }),
             }).addTo(this.map);
+            // Store station into marker
+            marker.station = stations[s];
+            // Store marker into station
             stations[s].marker = marker;
             this.markers.push(marker);
 
@@ -319,36 +327,35 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
             marker.selected = false;
 
             //Add callback
-            marker.on("mousedown", function (e) {
+            marker.on("click", function (e) {
 
+                /*
                 try {
                     if (self.lastSelected.id !== e.target.id) {
                         // Invert previous marker's icon and selection
-                        if (!self.lastSelected.selected) {
-                            //self.lastSelected.options.icon.options.iconUrl = self.lastSelected.selectedUrl;
-                            //self.lastSelected.setIcon(self.lastSelected.options.icon);
-                        } else {
+                        if (self.lastSelected.selected) {
                             self.lastSelected.options.icon.options.iconUrl = self.lastSelected.deselectedUrl;
                             self.lastSelected.setIcon(self.lastSelected.options.icon);
                             self.lastSelected.selected = !self.lastSelected.selected;
                         }
-                        //console.log("invert old  to " + self.lastSelected.selected);
                     }
                 } catch (err) {
                     // do nothing
                 }
 
-                // Change status of the current station
+                // Change status of the current marker
                 e.target.selected = !e.target.selected;
-                // Update last selected
+
+                // Update last selected marker
                 self.lastSelected = e.target;
-                //console.log("invert this  to " + e.target.selected + "  -------");
 
                 // Redraw current station's info
-                self.selectedStation(e.target, stations);
+                self.selectedStation(e.target.station);
 
                 // Pass info to the controller of the button
-                self.stationControl.selectedStation = e.target.id;
+                self.stationControl.selectedStation = e.target.station;
+*/
+                this.drawSelectedMarkers(e);
 
             }.bind(this));
         }
@@ -357,16 +364,9 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
 };
 
-GraphicManager.prototype.selectedStation = function (marker, stations) {
+GraphicManager.prototype.selectedStation = function (station) {
 
-    var station = null;
-    for (var s in stations) {
-        if (+stations[s].id === +marker.id) {
-            station = stations[s];
-            break;
-        }
-    }
-
+    var marker = station.marker;
     if (marker.selected) {
         d3.select('#stationControl').style('opacity', '1');
         marker.options.icon.options.iconUrl = marker.selectedUrl;
@@ -378,42 +378,105 @@ GraphicManager.prototype.selectedStation = function (marker, stations) {
     }
 
     //Show station info
-    this.updateStationControl(marker.id, stations);
+    this.updateStationControl(station);
 
 };
 
-GraphicManager.prototype.selectCompareAll = function (stationId) {
+GraphicManager.prototype.selectCompareAll = function (station) {
 
     var selectedStations = this.dm.selectedStations;
-    if (selectedStations.indexOf(stationId) == -1) {
+
+    // Retrieve IDs of the selected
+    var ids = [];
+    for (var id = 0; id < selectedStations.length; id++) {
+        ids.push(selectedStations[id].id);
+    }
+
+    // Update selected stations
+    if (ids.indexOf(station.id) == -1) {
         // Add the stations to selected
-        selectedStations.push(stationId);
+        selectedStations.push(station);
     } else {
-        selectedStations.splice(selectedStations.indexOf(stationId), 1);
+        selectedStations.splice(ids.indexOf(station.id), 1);
+    }
+
+    // Retrieve IDs of the selected
+    var ids = [];
+    for (var id = 0; id < selectedStations.length; id++) {
+        ids.push(selectedStations[id].id);
     }
 
     // Debug
     var ss = [];
     for (var i = 0; i < selectedStations.length; i++)
-        ss.push(selectedStations[i]);
+        ss.push(selectedStations[i].id);
     console.log("Selected stations: " + ss);
+
+    if (ids.indexOf(station.id) !== -1) {
+        station.marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + station.popularityLevel + '_compareAll.png';
+        station.marker.setIcon(station.marker.options.icon);
+    } else {
+        station.marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + station.popularityLevel + '.png';
+        station.marker.setIcon(station.marker.options.icon);
+    }
+
+    // TEST
+    this.hideLineBetweenStations();
+    this.showLineBetweenStations();
 
     this.updateGraphs();
 };
 
-GraphicManager.prototype.updateStationControl = function (stationId, stations) {
-    var station = null;
-    for (var s in stations) {
-        if (+stations[s].id === +stationId) {
-            station = stations[s];
-            break;
-        }
-    }
+GraphicManager.prototype.updateStationControl = function (station) {
     d3.select('#station_name').text(station.name);
     d3.select('#station_id').text(station.id);
     d3.select('#station_pop').text(d3.format('%')(station.popularity));
 
 };
+
+GraphicManager.prototype.drawSelectedMarkers = function (e) {
+    var selectedStations = this.dm.selectedStations;
+    var stations = this.stations;
+
+    try {
+        if (this.lastSelected.id !== e.target.id) {
+            // Invert previous marker's icon and selection
+            if (this.lastSelected.selected) {
+                this.lastSelected.selected = !this.lastSelected.selected;
+            }
+        }
+    } catch (err) {
+        // do nothing
+    }
+
+    // Change status of the current marker
+    e.target.selected = !e.target.selected;
+
+    // Update last selected marker
+    this.lastSelected = e.target;
+
+    // Pass info to the controller of the button
+    this.stationControl.selectedStation = e.target.station;
+
+    var ids = [];
+    for (var id = 0; id < selectedStations.length; id++) {
+        ids.push(selectedStations[id].id);
+    }
+
+    for (var s in stations) {
+        if (ids.indexOf(stations[s].id) !== -1) {
+            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
+            stations[s].marker.setIcon(stations[s].marker.options.icon);
+        } else {
+            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '.png';
+            stations[s].marker.setIcon(stations[s].marker.options.icon);
+        }
+    }
+    // Redraw current station's info
+    this.selectedStation(e.target.station);
+};
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 /*
     Add the community area layer and set the callback.
@@ -482,13 +545,10 @@ GraphicManager.prototype.removeCommunityMap = function () {
 };
 
 GraphicManager.prototype.pointInArea = function (point, coordinates) {
-    return gju.pointInMultiPolygon({
-        "type": "Point",
-        "coordinates": point
-    }, {
-        "type": "MultiPolygon",
-        "coordinates": coordinates
-    });
+    var res = gju.pointInPolygon({"type":"Point","coordinates":point},
+                 {"type":"Polygon", "coordinates":coordinates[0]});
+    console.log(res);
+    return res;
 };
 
 GraphicManager.prototype.selectAllStationsInArea = function (area) {
@@ -509,13 +569,13 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
                 break;
             }
         }
-        if (multipoligon == null)
+        if (multipoligon === null)
             return;
 
         console.log(this.stations);
         for (var i in this.stations) {
             var station = this.stations[i];
-            var coord = [station.latitude, station.longitude];
+            var coord = [station.longitude, station.latitude];
 
             if (this.pointInArea(coord, multipoligon)) {
                 this.dm.selectedStations.push(station);
@@ -523,7 +583,7 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
         }
         this.updateGraphs();
     }.bind(this));
-}
+};
 
 GraphicManager.prototype.drawLinesBetweenStations = function (data) {
 
@@ -546,12 +606,56 @@ GraphicManager.prototype.drawBikes = function () {
     for (var b in this.bikes) {
         this.map.removeLayer(this.bikes[b]);
     }
+    this.bikes = [];
 
+    // Remove all lines
+    for (var l in this.linesBetweenStations) {
+        this.map.removeLayer(this.linesBetweenStations[l]);
+    }
+    this.linesBetweenStations = [];
+
+    // Draw new lines (station to station)
+    for (var b in this.bikesCoordinate) {
+        var coordinate = this.bikesCoordinate[b];
+
+        var from = L.latLng(coordinate[2], coordinate[3]);
+        var to = L.latLng(coordinate[4], coordinate[5]);
+
+        // Draw line
+        var line = L.polyline([from, to], {
+            color: 'black',
+            fillColor: 'black',
+            fillOpacity: 0.5,
+            weight: 1
+        }).addTo(this.map);
+
+        this.linesBetweenStations.push(line);
+    }
+
+    // Draw new lines (station to bike)
+    for (var b in this.bikesCoordinate) {
+        var coordinate = this.bikesCoordinate[b];
+
+        var from = L.latLng(coordinate[2], coordinate[3]);
+        var to = L.latLng(coordinate[0], coordinate[1]);
+
+        // Draw line
+        var line = L.polyline([from, to], {
+            color: 'red',
+            fillColor: 'red',
+            fillOpacity: 0.5,
+            weight: 3
+        }).addTo(this.map);
+
+        this.linesBetweenStations.push(line);
+    }
 
     // Draw new bikes
     for (var b in this.bikesCoordinate) {
         var coordinate = this.bikesCoordinate[b];
-        var circle = L.circle(coordinate, 20, {
+
+        // Draw circle
+        var circle = L.circle([coordinate[0], coordinate[1]], 20, {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5
@@ -592,19 +696,19 @@ GraphicManager.prototype.bikesCallback = function (data) {
             lonStop * (min - minStart) / (minStop - minStart);
 
         // Add to bikes coordinates
-        this.bikesCoordinate.push([curLat, curLon]);
+        this.bikesCoordinate.push([curLat, curLon, latStart, lonStart, latStop, lonStop]);
     }
 
     console.log(this.bikesCoordinate);
 
     this.drawBikes();
-}
+};
 
 GraphicManager.prototype.removeBikes = function () {
     // Empty bikes coordinates
     this.bikesCoordinate = [];
     this.drawBikes();
-}
+};
 
 /*
     This function will update all graphs
@@ -624,7 +728,22 @@ GraphicManager.prototype.updateGraphs = function () {
             }
             data.sort(compare);
 
-            this.dayWeekBarGraph.setData(data);
+            // Sum up all the day of the week
+            var d = [];
+            var k = 0;
+            for(var i in days) {
+                var day = days[i];
+                var line = {};
+                line.day = day;
+                line.count = 0;
+                while(k<data.length && data[k].day == day) {
+                    line.count += data[k].count;
+                    k += 1;
+                }
+                d.push(line);
+            }
+
+            this.dayWeekBarGraph.setData(d, "daysOfWeek");
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
 
@@ -635,9 +754,26 @@ GraphicManager.prototype.updateGraphs = function () {
     if (this.bikesHourDay != null)
         this.dm.getBikesHourDay(function (data) {
             // Single line chart
-            this.bikesHourDay.setData(data.sort(function (a, b) {
+            // Sum up the data of the hours
+            var dd = data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }));
+            });
+            var d = [];
+            var hour = 0;
+            var k = 0;
+            while(hour < 24) {
+                var line = {};
+                line.hour = ""+hour;
+                line.count = 0;
+                while(k<dd.length && dd[k].hour == ""+hour) {
+                    line.count += dd[k].count;
+                    k += 1;
+                }
+                d.push(line);
+                hour += 1;
+            }
+
+            this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.draw();
 
@@ -645,16 +781,31 @@ GraphicManager.prototype.updateGraphs = function () {
             var d = (data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }));
-            console.log(d);
-            lineChart2.setData(d.sort(function (a, b) {
+            this.bikesHourDayComparison.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
-            }), "fromStation", "Station");
+            }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
             $(window).trigger('resize');
         }.bind(this));
+
+    /*
+    if (this.bikesDayYearComparison != null)
+        this.dm.getBikesDayYear(function (data) {
+            // Multiple line chart
+            var dd = data.sort(function (a, b) {
+                return (+a.hour) - (+b.hour);
+            });
+            this.bikesDayYearComparison.setData(dd.sort(function (a, b) {
+                return (+a.hour) - (+b.hour);
+            }), "dayOfYearMany", "fromStation", "Station");
+            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYearComparison.draw();
+        }.bind(this));
+    */
+
 
 
     gm.bikesHourDayComparison = lineChart2;
@@ -665,4 +816,36 @@ GraphicManager.prototype.updateGraphs = function () {
     this.bikesDayYear = null;
     */
 
+}
+
+GraphicManager.prototype.showLineBetweenStations = function() {
+    if(this.lineBetweenStations == null && this.dm.selectedStations.length == 2) {
+        this.dm.getStations(this.showLineBetweenStationsCallback.bind(this));
+        
+    } 
+}
+GraphicManager.prototype.showLineBetweenStationsCallback = function(stations) {
+    if(this.lineBetweenStations != null) {
+        this.hideLineBetweenStations();
+    }
+    var origin = null;
+    var destination = null;
+    for(var i in stations) {
+        var station = stations[i];
+        if(this.dm.selectedStations[0] == station.id) {
+            origin = L.latLng(station.latitude, station.longitude)
+        }
+        if(this.dm.selectedStations[1] == station.id) {
+            destination = L.latLng(station.latitude, station.longitude)
+        }
+    }
+    if( origin != null && destination != null)
+        this.lineBetweenStations = L.polyline([origin, destination], {color: 'red'}).addTo(this.map);
+}
+
+GraphicManager.prototype.hideLineBetweenStations = function() {
+    if(this.lineBetweenStations != null) {
+        this.map.removeLayer(this.lineBetweenStations);
+        this.lineBetweenStations = null;
+    } 
 }
