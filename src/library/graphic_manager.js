@@ -835,21 +835,14 @@ GraphicManager.prototype.updateGraphs = function () {
             }
         }.bind(this));
 
-    /*
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
-            var dd = data.sort(function (a, b) {
-                return (+a.hour) - (+b.hour);
-            });
-            this.bikesDayYearComparison.setData(dd.sort(function (a, b) {
-                return (+a.hour) - (+b.hour);
-            }), "dayOfYearMany", "fromStation", "Station");
+            var dd = data;
+            this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.draw();
         }.bind(this));
-    */
-
 
 
     gm.bikesHourDayComparison = lineChart2;
