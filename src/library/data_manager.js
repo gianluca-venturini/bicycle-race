@@ -62,7 +62,7 @@ DataManager.prototype.getBikesWeek = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else
@@ -91,7 +91,7 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else
@@ -121,7 +121,7 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else
@@ -152,7 +152,7 @@ DataManager.prototype.getBikes = function(callback) {
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
-			var station = this.selectedStations[s];
+			var station = this.selectedStations[s].id;
 			if(s == 0)
 				url+=station;
 			else

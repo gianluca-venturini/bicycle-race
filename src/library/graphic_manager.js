@@ -717,7 +717,7 @@ GraphicManager.prototype.removeBikes = function () {
     This function will update all graphs
 */
 GraphicManager.prototype.updateGraphs = function () {
-    if (this.dayWeekBarGraph !== null)
+    if (this.dayWeekBarGraph != null)
         this.dm.getBikesWeek(function (data) {
             // Right order of the days
             var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -754,7 +754,7 @@ GraphicManager.prototype.updateGraphs = function () {
             $(window).trigger('resize');
         }.bind(this));
 
-    if (this.bikesHourDay !== null)
+    if (this.bikesHourDay != null)
         this.dm.getBikesHourDay(function (data) {
             // Single line chart
             // Sum up the data of the hours
@@ -794,6 +794,7 @@ GraphicManager.prototype.updateGraphs = function () {
             $(window).trigger('resize');
         }.bind(this));
 
+    /*
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
@@ -806,6 +807,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.draw();
         }.bind(this));
+    */
 
 
 
