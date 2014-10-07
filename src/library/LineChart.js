@@ -43,6 +43,12 @@ LineChart.prototype.setData = function(json,className,groupOnProperty, legendLab
 	
 }
 
+LineChart.prototype.setColor = function(colorLst){
+	this.color = d3.scale.ordinal()
+		.domain(this.group)
+		.range(colorLst);
+}
+
 LineChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
 	this.axisX = propertyX;
 	this.axisY = propertyY;
