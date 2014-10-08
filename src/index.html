@@ -17,6 +17,7 @@
     <script src="/library/BarChart.js"></script>
     <script src="/library/LineChart.js"></script>
     <script src="/library/PieChart.js"></script>
+    <script src="/library/slider.js"></script>
     <style>
         #map {
             height: 100%;
@@ -42,15 +43,13 @@
             stroke: rgba(200, 100, 90, 0.9);
             stroke-width: 1px;
         }
-        .demographic path{
-            stroke:rgba(230,230,230,1.0);
+        .demographic path {
+            stroke: rgba(230, 230, 230, 1.0);
         }
-
-        .demographic text{
+        .demographic text {
             font-family: sans-serif;
             font-size: 0.4rem;
         }
-
         /* Blur effect */
         .blur {
             -webkit-filter: blur(10px);
@@ -80,6 +79,7 @@
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
 
         var svgDayControl = gm.addSvg(0.072, 0, 0.07, 0.24 + 0.005);
+        var svgSlider = gm.addSvg(0.072, 0.3, 0.09, 0.06);
 
         gm.updateWindow();
 
@@ -104,6 +104,9 @@
         selectionControl.draw();
         enableCalendarControl.draw();
         dayControl.draw();
+
+        var slider = new Slider(svgSlider);
+        slider.draw();
 
          // Set interactions
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
@@ -134,14 +137,14 @@
         gm.bikesDayYearComparison = lineChart3;
 
         var pie1 = gm.addSvg(0.6, 0.80, 0.10, 0.15);
-        var pie2 = gm.addSvg(0.7, 0.80, 0.10, 0.15); 
-        var pie3 = gm.addSvg(0.8, 0.80, 0.10, 0.15);  
+        var pie2 = gm.addSvg(0.7, 0.80, 0.10, 0.15);
+        var pie3 = gm.addSvg(0.8, 0.80, 0.10, 0.15);
 
         var pieChart1 = new PieChart(pie1);
         var pieChart2 = new PieChart(pie2);
         var pieChart3 = new PieChart(pie3);
         gm.tripsGender = pieChart1;
-        //gm.tripsGender = pieChart2;
+         //gm.tripsGender = pieChart2;
         gm.tripsCustomerType = pieChart3;
 
         gm.drawMarkers("popularity");
