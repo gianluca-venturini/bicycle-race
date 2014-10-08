@@ -86,6 +86,13 @@ DataManager.prototype.getBikesWeek = function(callback) {
 
 	var url = this.tripUrl+"?aggregate=DAY_WEEK";
 
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
 		for(var s in this.selectedStations) {
@@ -114,6 +121,13 @@ DataManager.prototype.getBikesWeek = function(callback) {
 DataManager.prototype.getBikesHourDay = function(callback) {
 
 	var url = this.tripUrl+"?aggregate=HOUR_DAY";
+
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
 
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
@@ -185,6 +199,13 @@ DataManager.prototype.getBikes = function(callback) {
 				url+=","+station;
 		}
 
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
 	if(this.bike != null)
 		callback(this.bike);
 	else
@@ -205,6 +226,13 @@ DataManager.prototype.getStationsDemographic = function(callback) {
 
 	var url = this.stationUrl;
 	url += "?demographic=OUT";
+
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
 
 	// Only selected stations
 	if(this.selectedStations.length > 0)
