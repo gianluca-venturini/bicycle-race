@@ -33,7 +33,8 @@ function GraphicManager(htmlId) {
     this.lineBetweenStations = null;
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-        "http://data.divvybikeschicago.com/station.php");
+        "http://data.divvybikeschicago.com/station.php",
+        "http://data.divvybikeschicago.com/weather.php");
 
     this.lastSelected = null;
     this.showStation = false;

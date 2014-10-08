@@ -12,7 +12,8 @@
 
 	<script>
 		var dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-								 "http://data.divvybikeschicago.com/station.php");
+								 "http://data.divvybikeschicago.com/station.php",
+								 "http://data.divvybikeschicago.com/weather.php");
 
 		function lol(data) {
 			console.log(data);
@@ -20,6 +21,9 @@
 
 		//dm.selectedStations.push("13");
 		dm.getBikesWeek(function(d) {
+			console.log(d);
+		});
+		dm.getWeather(function(d) {
 			console.log(d);
 		});
 		//dm.getBikesHourDay(lol);
