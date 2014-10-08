@@ -481,6 +481,7 @@ GraphicManager.prototype.callbackSetDate = function () {
     var cal = this.calendarControl;
     var date = "2013-" + cal.month + "-" + cal.dayCounter;
     this.dm.date = date;
+    this.updateGraphs();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
