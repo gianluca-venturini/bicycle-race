@@ -39,6 +39,7 @@ function GraphicManager(htmlId) {
     this.lastSelected = null;
     this.showStation = false;
     this.stationControl = null;
+    this.calendarControl = null;
 }
 
 /*
@@ -131,7 +132,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
-        .style("background-color", "rgba(89, 89, 89, 0.6)");
+        .style("background-color", "rgba(64, 64, 64, 0.7)");
 
     this.svgs.push(svg);
 
@@ -152,11 +153,15 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     .attr("_x", 0)
                     .attr("_y", 0.31 + 0.005)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(89, 89, 89, 0.6)");
+                    .style("background-color", "rgba(64, 64, 64, 0.7)");
 
                 self.svgs.push(svg);
 
                 var calendarControl = new CalendarControl();
+
+                self.calendarControl = calendarControl;
+                calendarControl.setCallbackSetDate(self.callbackSetDate.bind(self));
+
                 calendarControl.draw();
 
                 ////////////////////////////////////
@@ -169,7 +174,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     .attr("_x", 0)
                     .attr("_y", 1 - 0.24)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(89, 89, 89, 0.6)");
+                    .style("background-color", "rgba(64, 64, 64, 0.7)");
 
                 self.svgs.push(svg);
 
@@ -185,7 +190,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     .attr("_x", 0.072)
                     .attr("_y", 0.250)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(89, 89, 89, 0.6)");
+                    .style("background-color", "rgba(64, 64, 64, 0.7)");
 
                 self.svgs.push(svg);
 
@@ -459,7 +464,7 @@ GraphicManager.prototype.updateStationControl = function (station) {
 
 };
 
-////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// CONTROLS CALLBACKS ///////////////////////////////////////////
 
 GraphicManager.prototype.selectAll = function () {
     this.dm.selectedStations = this.stations;
@@ -471,6 +476,12 @@ GraphicManager.prototype.deselectAll = function () {
     this.dm.selectedStations = [];
     this.drawSelectedMarkers();
     this.updateGraphs();
+};
+
+GraphicManager.prototype.callbackSetDate = function () {
+    var cal = this.calendarControl;
+    var date = "2013-" + cal.month + "-" + cal.dayCounter;
+    this.dm.date = date;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -798,10 +809,10 @@ GraphicManager.prototype.updateGraphs = function () {
         }.bind(this));
 
     // Gender data
-    if(this.tripsGender != null ||
-       this.tripsAge != null ||
-       this.tripsCustomerType != null)
-        this.dm.getStationsDemographic(function(data) {
+    if (this.tripsGender != null ||
+        this.tripsAge != null ||
+        this.tripsCustomerType != null)
+        this.dm.getStationsDemographic(function (data) {
             console.log(data);
             var d = {};
             d.male = 0;
@@ -809,7 +820,7 @@ GraphicManager.prototype.updateGraphs = function () {
             d.unknown = 0;
             d.customer = 0;
             d.subscriber = 0;
-            for(var i in data) {
+            for (var i in data) {
                 d.male += +data[i].male;
                 d.female += +data[i].female;
                 d.unknown += +data[i].unknown;
@@ -817,20 +828,18 @@ GraphicManager.prototype.updateGraphs = function () {
                 d.subscriber += +data[i].subscriber;
             }
 
-            if(this.tripsGender != null) {
-                this.tripsGender.setData([+d.male, +d.female, +d.female],
-                                         ["Male","Female","Unknown"],
-                                         "demographic",
-                                         "Gender");
+            if (this.tripsGender != null) {
+                this.tripsGender.setData([+d.male, +d.female, +d.female], ["Male", "Female", "Unknown"],
+                    "demographic",
+                    "Gender");
                 this.tripsGender.setTitle("Demographic");
                 this.tripsGender.draw();
             }
 
-            if(this.tripsCustomerType != null) {
-                this.tripsCustomerType.setData([+d.male, +d.female],
-                                         ["Customer","Subscriber"],
-                                         "customer_type",
-                                         "Customer");
+            if (this.tripsCustomerType != null) {
+                this.tripsCustomerType.setData([+d.male, +d.female], ["Customer", "Subscriber"],
+                    "customer_type",
+                    "Customer");
                 this.tripsCustomerType.setTitle("Customer type");
                 this.tripsCustomerType.draw();
             }

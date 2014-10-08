@@ -1,8 +1,18 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:700|Exo+2:300,600);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
  .control_rect {
     margin-left: 1em;
     margin-top: 1em;
 }
 body {
-    font-family: 'Roboto Slab', "Helvetica Neue", Helvetica, sans-serif;
+    font-family: 'Roboto', "Helvetica Neue", Helvetica, sans-serif;
+}
+.month_selected {
+    fill: black;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+.text_control {
+    font-family: 'Roboto';
+    font-weight: 100;
+    fill: white;
 }
