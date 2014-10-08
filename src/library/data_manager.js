@@ -1,6 +1,7 @@
-function DataManager(tripUrl, stationUrl) {
+function DataManager(tripUrl, stationUrl, weatherUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
+	this.weatherUrl = weatherUrl;
 
 	this.selectedStations = [];
 
@@ -37,6 +38,32 @@ DataManager.prototype.getStations = function(callback) {
 			//callback("lol");
 			callback(this.stations);
 		}.bind(this));
+}
+
+/*
+	Get the weather of the specified day
+*/
+DataManager.prototype.getWeather = function(callback) {
+
+	var url = this.weatherUrl;
+
+	if(this.date != null) {
+		url += "?";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.stationUrl);
+
+		
+
+		this.stations = json;
+
+		callback(this.stations);
+	});
 }
 
 DataManager.prototype.getTrips = function(callback) {
