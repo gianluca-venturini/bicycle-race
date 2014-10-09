@@ -78,18 +78,15 @@
         var svgSelectionControl = gm.addSvg(0, 0.125, 0.07, 0.12); // y taken from previous svg's height
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
 
-        var svgDayControl = gm.addSvg(0.072, 0, 0.07, 0.24 + 0.005);
-        var svgSlider = gm.addSvg(0.072, 0.3, 0.09, 0.06);
-
         gm.updateWindow();
 
          // Allocate javascript objects that will manage this SVGS
         var layerControl = new LayerControl(svgLayerControl);
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
-        var dayControl = new DayControl(svgDayControl);
         var zoomControl = new ZoomControl();
         var stationControl = new StationControl();
+        var dayControl = new DayControl();
 
         selectionControl.setCallbackSelectAll(gm.selectAll.bind(gm));
         selectionControl.setCallbackDeselectAll(gm.deselectAll.bind(gm));
@@ -103,10 +100,6 @@
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
-        dayControl.draw();
-
-        var slider = new Slider(svgSlider);
-        slider.draw();
 
          // Set interactions
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));

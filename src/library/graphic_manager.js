@@ -144,64 +144,93 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
     d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
         d3.xml("/icon/zoom.svg", "image/svg+xml", function (xmlZoom) {
             d3.xml("/icon/stationControl.svg", "image/svg+xml", function (xmlStation) {
+                d3.xml("/icon/day.svg", "image/svg+xml", function (xmlDay) {
 
-                document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
-                var svg = d3.select("#calendar");
+                    document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
+                    var svg = d3.select("#calendar");
 
-                svg.attr("_height", 0.24)
-                    .attr("_width", 0.07)
-                    .attr("_x", 0)
-                    .attr("_y", 0.31 + 0.005)
-                    .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    svg.attr("_height", 0.24)
+                        .attr("_width", 0.07)
+                        .attr("_x", 0)
+                        .attr("_y", 0.31 + 0.005)
+                        .style("position", "absolute")
+                        .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                self.svgs.push(svg);
+                    self.svgs.push(svg);
 
-                var calendarControl = new CalendarControl();
+                    var calendarControl = new CalendarControl();
 
-                self.calendarControl = calendarControl;
-                calendarControl.setCallbackSetDate(self.callbackSetDate.bind(self));
+                    self.calendarControl = calendarControl;
+                    calendarControl.setCallbackSetDate(self.callbackSetDate.bind(self));
 
-                calendarControl.draw();
+                    calendarControl.draw();
 
-                ////////////////////////////////////
+                    ////////////////////////////////////
 
-                document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
-                svg = d3.select("#zoom");
+                    document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
+                    svg = d3.select("#zoom");
 
-                svg.attr("_height", 0.24)
-                    .attr("_width", 0.035)
-                    .attr("_x", 0)
-                    .attr("_y", 1 - 0.24)
-                    .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    svg.attr("_height", 0.24)
+                        .attr("_width", 0.035)
+                        .attr("_x", 0)
+                        .attr("_y", 1 - 0.24)
+                        .style("position", "absolute")
+                        .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                self.svgs.push(svg);
+                    self.svgs.push(svg);
 
-                zoomControl.draw();
+                    zoomControl.draw();
 
-                ////////////////////////////////////
+                    ////////////////////////////////////
 
-                document.getElementById(self.mapId).appendChild(xmlStation.documentElement);
-                svg = d3.select("#stationControl");
+                    document.getElementById(self.mapId).appendChild(xmlStation.documentElement);
+                    svg = d3.select("#stationControl");
 
-                svg.attr("_height", 0.45)
-                    .attr("_width", 0.07)
-                    .attr("_x", 0.072)
-                    .attr("_y", 0.250)
-                    .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    svg.attr("_height", 0.45)
+                        .attr("_width", 0.07)
+                        .attr("_x", 0.072)
+                        .attr("_y", 0.250)
+                        .style("position", "absolute")
+                        .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                self.svgs.push(svg);
+                    self.svgs.push(svg);
 
-                self.stationControl = stationControl;
-                stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
+                    self.stationControl = stationControl;
+                    stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
 
-                stationControl.draw();
+                    stationControl.draw();
 
-                ////////////////////////////////////
+                    ////////////////////////////////////
 
-                callback();
+                    document.getElementById(self.mapId).appendChild(xmlDay.documentElement);
+                    svg = d3.select("#dayControl");
+
+                    svg.attr("_height", 0.24 + 0.005)
+                        .attr("_width", 0.1)
+                        .attr("_x", 0.072)
+                        .attr("_y", 0)
+                        .style("position", "absolute")
+                        .style("background-color", "rgba(64, 64, 64, 0.7)");
+
+                    self.svgs.push(svg);
+
+                    self.dayControl = dayControl;
+                    dayControl.setCallbackDayClose(self.callbackDayClose.bind(self));
+
+                    dayControl.draw();
+                    self.dayControl.enabled = false;
+                    //TODO hide
+
+                    var svgSlider = self.addSvg.call(self, 0.072, 0.24 + 0.005 - 0.06, 0.1, 0.06);
+                    callback();
+                    self.slider = new Slider(svgSlider);
+                    self.slider.draw();
+                    self.slider.setCallbackSetHour(self.callbackSetHour.bind(self));
+
+                    ////////////////////////////////////
+
+                    callback();
+                });
             });
         });
     });
@@ -479,10 +508,49 @@ GraphicManager.prototype.deselectAll = function () {
 };
 
 GraphicManager.prototype.callbackSetDate = function () {
+
+    // Set the date
     var cal = this.calendarControl;
     var date = "2013-" + cal.month + "-" + cal.dayCounter;
     this.dm.date = date;
+
+    // Make control visible and active
+    if (!this.dayControl.enabled) {
+        d3.selectAll(".day_box")
+            .style("opacity", "1")
+            .style("pointer-events", "all");
+        this.dayControl.enabled = true;
+    }
+
+    // Show date
+    var month = cal.month < 10 ? "0" + cal.month : cal.month;
+    var day = cal.dayCounter < 10 ? "0" + cal.dayCounter : cal.dayCounter;
+    var textDate = month + "/" + day + "/2013";
+    d3.select('#day_name').text(textDate);
+
     this.updateGraphs();
+};
+
+GraphicManager.prototype.callbackDayClose = function () {
+
+    d3.selectAll(".day_box")
+        .style("opacity", "0")
+        .style("pointer-events", "none");
+
+    this.dayControl.enabled = false;
+    this.slider.reset();
+    this.dm.date = null;
+    this.dm.hour = null;
+
+    this.updateGraphs();
+};
+
+GraphicManager.prototype.callbackSetHour = function () {
+
+    // Set hour
+    this.dm.hour = this.slider.hour;
+    this.updateGraphs();
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////

@@ -294,30 +294,28 @@ CalendarControl.prototype.setCallbackSetDate = function (callback) {
 
 function DayControl(svg) {
     this.svg = svg;
-    this.width = +svg.attr("width").replace("px", "");
-    this.height = +svg.attr("height").replace("px", "");
-    svg.attr("viewBox", "0 0 100 100");
+    this.hour = null;
+    this.enabled = false;
+
+    this.callbackDayClose = null;
+    //this.width = +svg.attr("width").replace("px", "");
+    //this.height = +svg.attr("height").replace("px", "");
+    //svg.attr("viewBox", "0 0 100 100");
 }
 
 DayControl.prototype.draw = function () {
-
-    this.text1 = this.svg.append("text")
-        .attr("text-anchor", "middle")
-        .attr('x', 50)
-        .attr('y', 10)
-        .attr("dominant-baseline", "central")
-        .text("Day 1");
+    var self = this;
+    
+    // Set the callbacks
+    d3.select("#day_close").on("click", function () {
+        self.callbackDayClose();
+        d3.event.stopPropagation();
+    })
 
 };
 
-DayControl.prototype.setCallback = function (element, callback) {
-    this.callback = callback;
-
-    // Set the callback
-    d3.select('#' + element).on("mousedown", function () {
-        callback();
-        d3.event.stopPropagation();
-    });
+DayControl.prototype.setCallbackDayClose = function (callback) {
+    this.callbackDayClose = callback;
 };
 
 ///////////////////////

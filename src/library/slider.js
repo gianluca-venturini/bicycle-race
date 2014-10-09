@@ -1,48 +1,49 @@
 function Slider(svg) {
 
-    this.svg = svg;
-    this.width = +svg.attr("width").replace("px", "");
-    this.height = +svg.attr("height").replace("px", "");
-    svg.attr("viewBox", "0 0 100 50");
-
     this.margin = {
-        top: 50,
-        right: 10,
-        bottom: 50,
-        left: 10
+        top: 5,
+        right: 0,
+        bottom: 0,
+        left: 5
     };
 
-    // this.width = 960 - this.margin.left - this.margin.right;
-    // this.height = 500 - this.margin.bottom - this.margin.top;
+    this.rootSvg = svg.attr("class", "day_box");
+    this.svg = svg.append("g")
+        .attr("transform", "translate(" + this.margin.left + ",0)")
+        .attr('id', 'gslider');
+
+    this.width = +svg.attr("width").replace("px", "") - this.margin.left - this.margin.right;
+    this.height = +svg.attr("height").replace("px", "") - this.margin.bottom - this.margin.top;
+    //this.width_ = +svg.attr("width").replace("px", "");
+    //this.height_ = +svg.attr("height").replace("px", "");
+    //this.width_ = 100;
+    //this.height_ = 100;
 
     this.x = d3.scale.linear()
-        .domain([0, 23])
+        .domain([0, 23.59])
         .range([0, this.width])
         .clamp(true);
 
     this.brush = d3.svg.brush()
         .x(this.x)
-        .extent([0, 0])
-        .on("brush", this.brushed.bind(this));
+        .extent([0, 0]);
 
+    this.callbackSetHour = null;
+    this.hour = null;
 }
 
 Slider.prototype.draw = function () {
 
+    var self = this;
+
     var width = this.width;
     var height = this.height;
     var brush = this.brush;
-
-    /*var svg = d3.select("#map").append("svg")
-        .attr("width", width + this.margin.left + this.margin.right)
-        .attr("height", height + this.margin.top + this.margin.bottom)
-        */
+    var x = this.x;
     var svg = this.svg;
-    /*svg.append("g")
-        .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
-*/
+
     svg.append("g")
-        .attr("class", "x axis")
+        .attr("class", "x slider_axis")
         .attr("transform", "translate(0," + height / 2 + ")")
         .call(d3.svg.axis()
             .scale(this.x)
@@ -50,8 +51,10 @@ Slider.prototype.draw = function () {
             .tickFormat(function (d) {
                 return d;
             })
-            .tickSize(0)
-            .tickPadding(10))
+            .innerTickSize(0)
+            .outerTickSize(0)
+            .ticks(12)
+            .tickPadding(13))
         .select(".domain")
         .select(function () {
             return this.parentNode.appendChild(this.cloneNode(true));
@@ -65,32 +68,70 @@ Slider.prototype.draw = function () {
     slider.selectAll(".extent,.resize")
         .remove();
 
-    /*slider.select(".background")
-        .attr("height", height);*/
+    slider.select(".background")
+        .attr("class", "day_box")
+        .attr("height", this.height)
+        .attr("width", this.width)
+        .style('cursor', 'pointer');
 
-    this.handle = slider.append("circle")
+    var handle = slider.append("circle")
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
-        .attr("r", 9);
+        .attr("r", 7);
+    this.handle = handle;
 
-   /* slider
+    var node = document.getElementById("gslider");
+    var bb = node.getBBox();
+    this.rootSvg.attr("viewBox", "0 0 " + bb.width + " " + bb.height)
+        .style("background-color", "");
+
+    /*slider
         .call(brush.event)
         .transition()
         .duration(750)
-        .call(brush.extent([70, 70]))
+        .call(brush.extent([10, 10]))
         .call(brush.event);
-*/
-};
+        */
+    this.brush.on("brush", brushed);
 
-Slider.prototype.brushed = function () {
-    
-    var value = this.brush.extent()[0];
+    function brushed() {
 
-    if (d3.event.sourceEvent) { // not a programmatic event
-        value = x.invert(d3.mouse(this)[0]);
-        brush.extent([value, value]);
+        var value = brush.extent()[0];
+
+        if (d3.event.sourceEvent) {
+            value = x.invert(d3.mouse(this)[0]);
+            brush.extent([value, value]);
+            d3.event.sourceEvent.stopPropagation();
+        }
+
+        handle.attr("cx", x(value));
+
+        // Compute hour
+        var h = Math.floor(value);
+        var m = Math.floor((value - h) * 60);
+        h = h < 10 ? "0" + h : h;
+        m = m < 10 ? "0" + m : m;
+        
+        // Set hour
+        self.hour = h + ":" + m;
+        //console.log(value, "-->", h + ":" + m);
+        
+        // Update hour label
+        d3.select("#day_hour").text(self.hour);
+
+        self.callbackSetHour();
+
     }
 
-    this.handle.attr("cx", this.x(value));
-    
+};
+
+Slider.prototype.reset = function () {
+    this.brush.extent([0, 0]);
+    this.handle.attr("cx", this.x(0));
+    this.hour = null;
+    d3.select("#day_hour").text("");
+};
+
+Slider.prototype.setCallbackSetHour = function (callback) {
+    this.callbackSetHour = callback;
 };
