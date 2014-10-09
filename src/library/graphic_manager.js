@@ -528,6 +528,8 @@ GraphicManager.prototype.callbackSetDate = function () {
     var textDate = month + "/" + day + "/2013";
     d3.select('#day_name').text(textDate);
 
+    this.removeBikes();
+    this.drawBikesInMoment();
     this.updateGraphs();
 };
 
@@ -542,6 +544,7 @@ GraphicManager.prototype.callbackDayClose = function () {
     this.dm.date = null;
     this.dm.hour = null;
 
+    this.removeBikes();
     this.updateGraphs();
 };
 
@@ -549,8 +552,7 @@ GraphicManager.prototype.callbackSetHour = function () {
 
     // Set hour
     this.dm.hour = this.slider.hour;
-    this.updateGraphs();
-
+    this.drawBikesInMoment();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
