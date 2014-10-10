@@ -8,6 +8,7 @@ function LineChart (svg){
 	this.chartName=null;
 	this.newName = null;
 	this.title = null;
+	this.colorTable = [];
 	this.border = {
 		left: -75, 
 		right: 190, 
@@ -37,7 +38,7 @@ LineChart.prototype.setData = function(json,className,groupOnProperty, legendLab
 	this.groupOnProperty = groupOnProperty;
 	if (groupOnProperty !== undefined && groupOnProperty !== null){
 		this.group = d3.set(this.data.map(function(d){ return d[_this.groupOnProperty]; })).values();
-		this.color = d3.scale.category20().domain(this.group);
+		this.color = d3.scale.category20().range();
 		this.legendLabel = legendLabel || "";	
 	}
 	
@@ -78,7 +79,7 @@ LineChart.prototype.draw = function(){
 	this.removeLegend();
 	if (this.groupOnProperty !== undefined && this.groupOnProperty !== null){
 		var lst = d3.nest().key(function(d){return d[_this.groupOnProperty];}).entries(_this.data);
-		console.log(lst);
+		
 
 		/*Join new data*/
 		var graph = this.svg.selectAll("." + this.chartName)
@@ -90,14 +91,14 @@ LineChart.prototype.draw = function(){
       		return line(d.values);
       	})
       	.attr("stroke", function(d){
-      		return _this.color(d.key);
+      		return _this.color[d.key.hashCode() % 20];
       	})
 
       	/*Add new entries*/
       	graph.enter().append("path")
       		.attr("class",this.newName)
       		.attr("stroke", function(d){
-      			return _this.color(d.key);
+      			return _this.color[d.key.hashCode() % 20];
       		})
       		.attr("d", function(d){
       			return line(d.values);
@@ -189,7 +190,7 @@ LineChart.prototype.addLegend  =  function(){
 	    .attr("y", legendSize)
 	    //.style("stroke", "black")
 	    .style("fill", function(d){
-	    	return _this.color(d);
+	    	return _this.color[d.hashCode() % 20];
 	    });
 
 	legendGrp.append("text")
@@ -213,3 +214,14 @@ LineChart.prototype.removeLegend = function(){
 	this.svg.select("#legendLabel").remove();
 	this.svg.selectAll(".legend").remove();
 }
+
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr, len;
+  if (this.length == 0) return hash;
+  for (i = 0, len = this.length; i < len; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};

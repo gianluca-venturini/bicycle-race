@@ -778,20 +778,24 @@ GraphicManager.prototype.updateGraphs = function () {
             $(window).trigger('resize');
         }.bind(this));
 
-    /*
+    
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
             var dd = data.sort(function (a, b) {
-                return (+a.hour) - (+b.hour);
+                return new Date(a.day) - new Date(b.day);
             });
-            this.bikesDayYearComparison.setData(dd.sort(function (a, b) {
-                return (+a.hour) - (+b.hour);
-            }), "dayOfYearMany", "fromStation", "Station");
-            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            var dy = 1000 * 60 * 60 * 24; // in a day
+            var days = dd.map(function(d){
+                var temp = d;
+                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-30"))/dy;
+                return temp;
+            });
+            this.bikesDayYearComparison.setData(days, "dayOfYearMany", "fromStation", "Station");
+            this.bikesDayYearComparison.setAxes("dayCount", "Day", "count", "Rides");
+            this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
         }.bind(this));
-    */
 
 
 

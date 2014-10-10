@@ -16,6 +16,7 @@
     <script src="/library/BarChart.js"></script>
     <script src="/library/LineChart.js"></script>
     <script src="/library/PieChart.js"></script>
+    <script src="/library/NormalChart.js"></script>
 
    
     <style>
@@ -52,7 +53,11 @@
             font-size: 0.4rem;
         }
         
-        
+        .distance{
+            fill:rgba(140,70,70,0.9);
+            stroke:rgba(140,70,70,0.9);
+            stroke-width:1px;
+        }
         
     </style>
 </head>
@@ -77,6 +82,7 @@
         var line1 = gm.addSvg(0,0.5,0.20,0.20);
         var line2 = gm.addSvg(0.5,0.5,0.20,0.20);
         var pie1 = gm.addSvg(0.5, 0.0, 0.08, 0.20); 
+        var line3 = gm.addSvg(0.6,0.0,0.30,0.20);
         gm.updateWindow();
 
         
@@ -88,10 +94,11 @@
         queue()
         .defer(d3.json,"data.json") //data.json at the time of this writing contains info about stations 5,25, and 50
         .defer(d3.json,"data2.json")//data2.json at the time of this writing contains info about stations 5,25,50,30,and 60
+        .defer(d3.json, "data3.json")
         .await(process);
 
 
-        function process(error,json, json2){ 
+        function process(error,json, json2, json3){ 
             var multiJson = json.array.sort(function(a,b){
                 return (+a.hour) - (+b.hour);
             });
@@ -101,14 +108,22 @@
             var multiJson2 = json2.array.sort(function(a,b){
                 return (+a.hour) - (+b.hour);
             });
+            var dist = json3.array.sort(function(a,b){
+                return (+a.totaldistance) - (+b.totaldistance);
+            });
             var lineChart1 = new LineChart(line1);
             var lineChart2 = new LineChart(line2);
+            var normal = new NormalChart(line3);
             
             var barChart1 = new BarChart(bar1); 
             var pieChart1 = new PieChart(pie1);
             pieChart1.setData([280,200,300,400],["a","b","c","d"],"demographic","Gender");
             pieChart1.setTitle("Demographic");
             pieChart1.draw();
+
+            normal.setData(dist,"distance","totaldistance");//(data,classname[,groupingProperty,legendlabel])
+            normal.setTitle("Distribution of bikes by total distance");
+            normal.draw();
             var flag = 1;
             var switchgraphs = function(){
                 if (flag == 1){
@@ -129,6 +144,7 @@
                     lineChart1.setData(jsonLine,"hourOfDay");//(data,classname[,groupingProperty,legendlabel])
                     lineChart1.setAxes("hour","Hour", "count", "Rides"); 
                     lineChart1.draw();
+
                     lineChart2.setData(multiJson2,"hourOfDayMany", "fromStation", "Station" );
                     lineChart2.setAxes("hour","Hour", "count", "Rides"); 
                     lineChart2.draw();
