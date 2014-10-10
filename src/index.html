@@ -16,6 +16,8 @@
     <script src="/library/marker.js"></script>
     <script src="/library/BarChart.js"></script>
     <script src="/library/LineChart.js"></script>
+    <script src="/library/PieChart.js"></script>
+    <script src="/library/slider.js"></script>
     <style>
         #map {
             height: 100%;
@@ -23,13 +25,13 @@
         .submap {
             border: solid 1px black;
         }
-        /* Chart style */ 
-        .daysOfWeek{
-            fill:rgba(160,210,180,0.8);
+        /* Chart style */
+        .daysOfWeek {
+            fill: rgba(160, 210, 180, 0.8);
         }
-        .hourOfDayMany{
-            fill:none;
-            stroke-width:1px;
+        .hourOfDayMany {
+            fill: none;
+            stroke-width: 1px;
         }
         .dayOfYearMany{
             fill:none;
@@ -40,17 +42,22 @@
             stroke:rgba(200,100,90,0.9);
             stroke-width:1px;
         }
-        .hourOfDayArea{
-            fill:rgba(200,100,90,0.9);
-            stroke:rgba(200,100,90,0.9);
-            stroke-width:1px;
+        .hourOfDayArea {
+            fill: rgba(200, 100, 90, 0.9);
+            stroke: rgba(200, 100, 90, 0.9);
+            stroke-width: 1px;
         }
-
-        /* Other style */
+        .demographic path {
+            stroke: rgba(230, 230, 230, 1.0);
+        }
+        .demographic text {
+            font-family: sans-serif;
+            font-size: 0.4rem;
+        }
+        /* Blur effect */
         .blur {
             -webkit-filter: blur(10px);
         }
-
         /* Cursor style */
         .pointer {
             cursor: pointer
@@ -71,13 +78,9 @@
         gm.createMap("grey");
 
          // Create two svg with graphic manager
-         //var svgControls = gm.addSvg(0, 0, 0.07, 0.5);
         var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
         var svgSelectionControl = gm.addSvg(0, 0.125, 0.07, 0.12); // y taken from previous svg's height
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
-
-        var svgDayControl = gm.addSvg(0.072, 0, 0.07, 0.24 + 0.005);
-         //var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
 
         gm.updateWindow();
 
@@ -85,10 +88,12 @@
         var layerControl = new LayerControl(svgLayerControl);
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
-        var dayControl = new DayControl(svgDayControl);
         var zoomControl = new ZoomControl();
         var stationControl = new StationControl();
+        var dayControl = new DayControl();
 
+        selectionControl.setCallbackSelectAll(gm.selectAll.bind(gm));
+        selectionControl.setCallbackDeselectAll(gm.deselectAll.bind(gm));
         selectionControl.setCallbackShowCA(gm.addCommunityMap.bind(gm));
         selectionControl.setCallbackHideCA(gm.removeCommunityMap.bind(gm));
 
@@ -99,11 +104,8 @@
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
-        dayControl.draw();
 
          // Set interactions
-         //c1.setPressCallback(c2.changeColor.bind(c2));
-         //c2.setPressCallback(c1.changeColor.bind(c1));
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
         layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
 
@@ -115,21 +117,32 @@
         /*
             Graph integration
         */
-        var bar1 = gm.addSvg(0.6 ,0, 0.30, 0.20);  // Day of the week
+        var bar1 = gm.addSvg(0.6, 0, 0.25, 0.15); // Day of the week
         var barChart1 = new BarChart(bar1);
         gm.dayWeekBarGraph = barChart1;
 
-        var line1 = gm.addSvg(0.6 , 0.25, 0.30, 0.20);  // Hour of the day sum
+        var line1 = gm.addSvg(0.6, 0.20, 0.25, 0.15); // Hour of the day sum
         var lineChart1 = new LineChart(line1);
         gm.bikesHourDay = lineChart1;
 
-        var line2 = gm.addSvg(0.6 , 0.50, 0.30, 0.20);  // Hour of the day multiple stations
+        var line2 = gm.addSvg(0.6, 0.40, 0.25, 0.15); // Hour of the day multiple stations
         var lineChart2 = new LineChart(line2);
         gm.bikesHourDayComparison = lineChart2;
 
-        var line3 = gm.addSvg(0.6 , 0.75, 0.30, 0.20);  // Day of the year, multiple stations
+        var line3 = gm.addSvg(0.6, 0.60, 0.25, 0.15); // Day of the year, multiple stations
         var lineChart3 = new LineChart(line3);
         gm.bikesDayYearComparison = lineChart3;
+
+        var pie1 = gm.addSvg(0.6, 0.80, 0.10, 0.15);
+        var pie2 = gm.addSvg(0.7, 0.80, 0.10, 0.15);
+        var pie3 = gm.addSvg(0.8, 0.80, 0.10, 0.15);
+
+        var pieChart1 = new PieChart(pie1);
+        var pieChart2 = new PieChart(pie2);
+        var pieChart3 = new PieChart(pie3);
+        gm.tripsGender = pieChart1;
+         //gm.tripsGender = pieChart2;
+        gm.tripsCustomerType = pieChart3;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();

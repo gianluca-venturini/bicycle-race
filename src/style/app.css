@@ -1,8 +1,50 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:700|Exo+2:300,600);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
  .control_rect {
     margin-left: 1em;
     margin-top: 1em;
 }
 body {
-    font-family: 'Roboto Slab', "Helvetica Neue", Helvetica, sans-serif;
+    font-family: 'Roboto', "Helvetica Neue", Helvetica, sans-serif;
 }
+.month_selected {
+    fill: black;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+.text_control {
+    font-family: 'Roboto';
+    font-weight: 100;
+    fill: white;
+}
+/*////////////////////////////*/
+
+.slider_axis {
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-size: 0.7em;
+    fill: white;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.slider_axis .domain {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .3;
+    stroke-width: 0px;
+    stroke-linecap: round;
+}
+.slider_axis .halo {
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+.slider .handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: .5;
+    stroke-width: 0px;
+    pointer-events: none;
+}
+/*////////////////////////////*/
