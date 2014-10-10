@@ -55,11 +55,17 @@ LineChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
 	this.axisY = propertyY;
 	this.labelX = labelX;
 	this.labelY = labelY;
+	
+
+}
+
+LineChart.prototype.draw = function(){
+	var _this = this;
 	this.xScale = d3.scale.linear()
-		.domain([0, d3.max(this.data, function(d){return +d[propertyX];})])
+		.domain([0, d3.max(this.data, function(d){return +d[_this.axisX];})])
 		.range([this.border.left, this.border.right]);
 	this.yScale = d3.scale.linear()
-		.domain([0, d3.max(this.data, function(d){return +d[propertyY];})])
+		.domain([0, d3.max(this.data, function(d){return +d[_this.axisY];})])
 		.range([this.border.bottom, this.border.top]);
 	this.xAxis = d3.svg.axis()
     	.scale(this.xScale)
@@ -67,12 +73,8 @@ LineChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
       	.orient("left");
-
-}
-
-LineChart.prototype.draw = function(){
 	
-	var _this = this;
+	
 	var line = d3.svg.line()
 		    .x(function(d) { return _this.xScale(+d[_this.axisX]); })
 		    .y(function(d) { return _this.yScale(+d[_this.axisY]); });
