@@ -1,7 +1,9 @@
-function DataManager(tripUrl, stationUrl, weatherUrl) {
+function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
 	this.weatherUrl = weatherUrl;
+	this.timeDistributionUrl = timeDistributionUrl;
+	this.distanceDistributionUrl = distanceDistributionUrl
 
 	this.selectedStations = [];
 
@@ -15,6 +17,8 @@ function DataManager(tripUrl, stationUrl, weatherUrl) {
 	this.bikeWeeks = null;
 	this.bikeHours = null;
 	this.bike = null;
+	this.timeDistribution = null;
+	this.distanceDistribution = null;
 
 	// Mode
 	this.selectionMode = null; 	// MULTIPLE | DOUBLE
@@ -199,24 +203,22 @@ DataManager.prototype.getBikes = function(callback) {
 				url+=","+station;
 		}
 
+	/*
 	if(this.date != null) {
 		url += "&";
 		url += "from="+this.date;
 		url += "&";
 		url += "to="+this.date;
 	}
+	*/
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.tripUrl);
 
-	if(this.bike != null)
-		callback(this.bike);
-	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.tripUrl);
+		this.bike = json;
 
-			this.bike = json;
-
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 /*
@@ -275,3 +277,39 @@ DataManager.prototype.getTripUrl = function(coordinates) {
 	}
 	return url;
 } 
+
+// Get time distribution of bike trips
+DataManager.prototype.getTimeDistribution = function(callback) {
+
+	var url = this.timeDistributionUrl;
+
+	if(this.timeDistribution != null)
+		callback(this.timeDistribution);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.timeDistributionUrl);
+
+			this.timeDistribution = json;
+
+			callback(json);
+		}.bind(this));
+}
+
+// Get time distribution of bike trips
+DataManager.prototype.getDistanceDistribution = function(callback) {
+
+	var url = this.distanceDistributionUrl;
+
+	if(this.distanceDistribution != null)
+		callback(this.distanceDistribution);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.distanceDistributionUrl);
+
+			this.distanceDistribution = json;
+
+			callback(json);
+		}.bind(this));
+}

@@ -17,6 +17,8 @@ function GraphicManager(htmlId) {
     this.tripsGender = null;
     this.tripsAge = null;
     this.tripsCustomerType = null;
+    this.timeDistribution = null;
+    this.dinstanceDistribution = null;
 
     this.svgs = [];
     this.divs = [];
@@ -34,7 +36,9 @@ function GraphicManager(htmlId) {
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php",
-        "http://data.divvybikeschicago.com/weather.php");
+        "http://data.divvybikeschicago.com/weather.php",
+        "http://data.divvybikeschicago.com/time.php",
+        "http://data.divvybikeschicago.com/distance.php");
 
     this.lastSelected = null;
     this.showStation = false;
@@ -58,6 +62,11 @@ GraphicManager.prototype.createMap = function (type) {
 
     this.mapWidth = +d3.select("#" + this.mapId).style("width").slice(0, -2);
     this.mapHeight = +d3.select("#" + this.mapId).style("height").slice(0, -2);
+
+    // Refresh markers wehn zoom end
+    this.map.on('zoomend', function(e) {
+        this.refreshMarkers();
+    }.bind(this));
 };
 
 GraphicManager.prototype.addLayer = function (type) {
@@ -289,8 +298,25 @@ GraphicManager.prototype.positionDIVs = function () {
  *  Refresh the markers, updating their size and position based on windows size
  */
 GraphicManager.prototype.refreshMarkers = function () {
-    this.iconWidth = this.mapHeight / 18;
-    this.iconHeight = this.mapHeight / 18 / (268 / 383);
+
+    var zoom = this.map.getZoom();
+    var scale;
+    if(zoom < 13) {
+        scale = 50;
+    }
+    else if(zoom >= 11 && zoom <13) {
+        scale = 34;
+    }
+    else if(zoom >= 13 && zoom <15) {
+        scale = 24;
+    }
+    else if(zoom >= 15) {
+        scale = 18;
+    }
+    console.log(zoom);
+
+    this.iconWidth = this.mapHeight / scale;
+    this.iconHeight = this.mapHeight / scale / (268 / 383);
     for (var m in this.markers) {
         var marker = this.markers[m];
         //marker.options.icon.options.iconSize = [this.mapWidth / 15, this.mapHeight / 15];
@@ -595,7 +621,7 @@ GraphicManager.prototype.addCommunityMap = function () {
                     });
                 }
 
-                layer.bindPopup(feature.id);
+                //layer.bindPopup(feature.id);
                 layer.on({
                     mouseover: highlightFeature,
                     mouseout: resetHighlight,
@@ -931,6 +957,26 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.setAxes("dayCount", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
+        }.bind(this));
+
+    if(this.timeDistribution != null)
+        this.dm.getTimeDistribution(function (data) {
+            var time = data.sort(function(a,b){
+                return (+a.totaltime) - (+b.totaltime);
+            });
+            this.timeDistribution.setData(time,"time_distribution","totaltime");
+            this.timeDistribution.setTitle("Distribution of bikes by total time");
+            this.timeDistribution.draw();
+        }.bind(this));
+
+    if(this.distanceDistribution != null)
+        this.dm.getDistanceDistribution(function (data) {
+            var dist = data.sort(function(a,b){
+                return (+a.totaldistance) - (+b.totaldistance);
+            });
+            this.distanceDistribution.setData(dist,"distance_distribution","totaldistance");
+            this.distanceDistribution.setTitle("Distribution of bikes by distance traveled");
+            this.distanceDistribution.draw();
         }.bind(this));
 
 
