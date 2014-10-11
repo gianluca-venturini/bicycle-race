@@ -170,10 +170,10 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
                     svg = d3.select("#zoom");
 
-                    svg.attr("_height", 0.24)
-                        .attr("_width", 0.035)
+                    svg.attr("_height", 0.12)
+                        .attr("_width", 0.07)
                         .attr("_x", 0)
-                        .attr("_y", 1 - 0.24)
+                        .attr("_y", 1 - 0.12)
                         .style("position", "absolute")
                         .style("background-color", "rgba(64, 64, 64, 0.7)");
 
@@ -187,7 +187,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     svg = d3.select("#stationControl");
 
                     svg.attr("_height", 0.45)
-                        .attr("_width", 0.07)
+                        .attr("_width", 0.1)
                         .attr("_x", 0.072)
                         .attr("_y", 0.250)
                         .style("position", "absolute")
@@ -923,9 +923,9 @@ GraphicManager.prototype.updateGraphs = function () {
                 return new Date(a.day) - new Date(b.day);
             });
             var dy = 1000 * 60 * 60 * 24; // in a day
-            var days = dd.map(function(d){
+            var days = dd.map(function (d) {
                 var temp = d;
-                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-30"))/dy;
+                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-30")) / dy;
                 return temp;
             });
             this.bikesDayYearComparison.setData(days, "dayOfYearMany", "fromStation", "Station");
