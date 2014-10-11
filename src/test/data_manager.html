@@ -13,7 +13,8 @@
 	<script>
 		var dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
 								 "http://data.divvybikeschicago.com/station.php",
-								 "http://data.divvybikeschicago.com/weather.php");
+								 "http://data.divvybikeschicago.com/weather.php",
+								 "http://data.divvybikeschicago.com/time.php");
 
 		function lol(data) {
 			console.log(data);
@@ -25,6 +26,9 @@
 		});
 		dm.date = "2013-08-01"
 		dm.getWeather(function(d) {
+			console.log(d);
+		});
+		dm.getTimeDistribution(function(d) {
 			console.log(d);
 		});
 		//dm.getBikesHourDay(lol);

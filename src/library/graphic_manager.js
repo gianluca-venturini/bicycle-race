@@ -17,6 +17,8 @@ function GraphicManager(htmlId) {
     this.tripsGender = null;
     this.tripsAge = null;
     this.tripsCustomerType = null;
+    this.timeDistribution = null;
+    this.dinstanceDistribution = null;
 
     this.svgs = [];
     this.divs = [];
@@ -34,7 +36,8 @@ function GraphicManager(htmlId) {
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php",
-        "http://data.divvybikeschicago.com/weather.php");
+        "http://data.divvybikeschicago.com/weather.php",
+        "http://data.divvybikeschicago.com/time.php");
 
     this.lastSelected = null;
     this.showStation = false;
@@ -932,6 +935,16 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.setAxes("dayCount", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
+        }.bind(this));
+
+    if(this.timeDistribution != null)
+        this.dm.getTimeDistribution(function (data) {
+            var dist = data.sort(function(a,b){
+                return (+a.totaldistance) - (+b.totaldistance);
+            });
+            this.timeDistribution.setData(data,"time_distribution","totaltime");
+            this.timeDistribution.setTitle("Distribution of bikes by total time");
+            this.timeDistribution.draw();
         }.bind(this));
 
 

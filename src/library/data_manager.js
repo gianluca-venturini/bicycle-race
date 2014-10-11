@@ -1,7 +1,8 @@
-function DataManager(tripUrl, stationUrl, weatherUrl) {
+function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
 	this.weatherUrl = weatherUrl;
+	this.timeDistributionUrl = timeDistributionUrl;
 
 	this.selectedStations = [];
 
@@ -15,6 +16,7 @@ function DataManager(tripUrl, stationUrl, weatherUrl) {
 	this.bikeWeeks = null;
 	this.bikeHours = null;
 	this.bike = null;
+	this.timeDistribution = null;
 
 	// Mode
 	this.selectionMode = null; 	// MULTIPLE | DOUBLE
@@ -275,3 +277,21 @@ DataManager.prototype.getTripUrl = function(coordinates) {
 	}
 	return url;
 } 
+
+// Get time distribution of bike trips
+DataManager.prototype.getTimeDistribution = function(callback) {
+
+	var url = this.timeDistributionUrl;
+
+	if(this.timeDistribution != null)
+		callback(this.timeDistribution);
+	else
+		d3.json(url, function(error, json) {
+			if(error)
+				console.log("can't download file " + this.timeDistributionUrl);
+
+			this.timeDistribution = json;
+
+			callback(json);
+		}.bind(this));
+}

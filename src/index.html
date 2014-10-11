@@ -18,6 +18,7 @@
     <script src="/library/LineChart.js"></script>
     <script src="/library/PieChart.js"></script>
     <script src="/library/slider.js"></script>
+    <script src="/library/NormalChart.js"></script>
     <style>
         #map {
             height: 100%;
@@ -53,6 +54,16 @@
         .demographic text {
             font-family: sans-serif;
             font-size: 0.4rem;
+        }
+        .distance_distribution{
+            fill:rgba(140,70,70,0.9);
+            stroke:rgba(140,70,70,0.9);
+            stroke-width:1px;
+        }
+        .time_distribution{
+            fill:rgba(140,70,70,0.9);
+            stroke:rgba(140,70,70,0.9);
+            stroke-width:1px;
         }
         /* Blur effect */
         .blur {
@@ -117,25 +128,25 @@
         /*
             Graph integration
         */
-        var bar1 = gm.addSvg(0.6, 0, 0.25, 0.15); // Day of the week
+        var bar1 = gm.addSvg(0.5, 0, 0.20, 0.15); // Day of the week
         var barChart1 = new BarChart(bar1);
         gm.dayWeekBarGraph = barChart1;
 
-        var line1 = gm.addSvg(0.6, 0.20, 0.25, 0.15); // Hour of the day sum
+        var line1 = gm.addSvg(0.5, 0.20, 0.20, 0.15); // Hour of the day sum
         var lineChart1 = new LineChart(line1);
         gm.bikesHourDay = lineChart1;
 
-        var line2 = gm.addSvg(0.6, 0.40, 0.25, 0.15); // Hour of the day multiple stations
+        var line2 = gm.addSvg(0.5, 0.40, 0.20, 0.15); // Hour of the day multiple stations
         var lineChart2 = new LineChart(line2);
         gm.bikesHourDayComparison = lineChart2;
 
-        var line3 = gm.addSvg(0.6, 0.60, 0.25, 0.15); // Day of the year, multiple stations
+        var line3 = gm.addSvg(0.5, 0.60, 0.20, 0.15); // Day of the year, multiple stations
         var lineChart3 = new LineChart(line3);
         gm.bikesDayYearComparison = lineChart3;
 
-        var pie1 = gm.addSvg(0.6, 0.80, 0.10, 0.15);
-        var pie2 = gm.addSvg(0.7, 0.80, 0.10, 0.15);
-        var pie3 = gm.addSvg(0.8, 0.80, 0.10, 0.15);
+        var pie1 = gm.addSvg(0.5, 0.80, 0.10, 0.15);
+        var pie2 = gm.addSvg(0.6, 0.80, 0.10, 0.15);
+        var pie3 = gm.addSvg(0.7, 0.80, 0.10, 0.15);
 
         var pieChart1 = new PieChart(pie1);
         var pieChart2 = new PieChart(pie2);
@@ -143,6 +154,10 @@
         gm.tripsGender = pieChart1;
          //gm.tripsGender = pieChart2;
         gm.tripsCustomerType = pieChart3;
+
+        var norm1 = gm.addSvg(0.75, 0, 0.20, 0.15);
+        var normalChart1 = new NormalChart(norm1);
+        gm.timeDistribution = normalChart1;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
