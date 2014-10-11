@@ -62,6 +62,11 @@ GraphicManager.prototype.createMap = function (type) {
 
     this.mapWidth = +d3.select("#" + this.mapId).style("width").slice(0, -2);
     this.mapHeight = +d3.select("#" + this.mapId).style("height").slice(0, -2);
+
+    // Refresh markers wehn zoom end
+    this.map.on('zoomend', function(e) {
+        this.refreshMarkers();
+    }.bind(this));
 };
 
 GraphicManager.prototype.addLayer = function (type) {
@@ -294,8 +299,25 @@ GraphicManager.prototype.positionDIVs = function () {
  *  Refresh the markers, updating their size and position based on windows size
  */
 GraphicManager.prototype.refreshMarkers = function () {
-    this.iconWidth = this.mapHeight / 18;
-    this.iconHeight = this.mapHeight / 18 / (268 / 383);
+
+    var zoom = this.map.getZoom();
+    var scale;
+    if(zoom < 13) {
+        scale = 50;
+    }
+    else if(zoom >= 11 && zoom <13) {
+        scale = 34;
+    }
+    else if(zoom >= 13 && zoom <15) {
+        scale = 24;
+    }
+    else if(zoom >= 15) {
+        scale = 18;
+    }
+    console.log(zoom);
+
+    this.iconWidth = this.mapHeight / scale;
+    this.iconHeight = this.mapHeight / scale / (268 / 383);
     for (var m in this.markers) {
         var marker = this.markers[m];
         //marker.options.icon.options.iconSize = [this.mapWidth / 15, this.mapHeight / 15];
@@ -600,7 +622,7 @@ GraphicManager.prototype.addCommunityMap = function () {
                     });
                 }
 
-                layer.bindPopup(feature.id);
+                //layer.bindPopup(feature.id);
                 layer.on({
                     mouseover: highlightFeature,
                     mouseout: resetHighlight,
