@@ -339,6 +339,11 @@ function DayControl(svg) {
 DayControl.prototype.draw = function () {
     var self = this;
 
+    // Hide day at the beginning
+    d3.selectAll(".day_box")
+        .style("opacity", "0")
+        .style("pointer-events", "none");
+
     // Set the callbacks
     d3.select("#day_close").on("click", function () {
         self.callbackDayClose();
@@ -364,7 +369,7 @@ StationControl.prototype.draw = function () {
     d3.select('#stationControl').style('opacity', 0); //TODO change to remove
 
     var self = this;
-    d3.select('#station_compareAll').on("mousedown", function () {
+    d3.selectAll('.station_compareAll').on("mousedown", function () {
         self.callbackCompareAll(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))

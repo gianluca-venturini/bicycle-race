@@ -19,17 +19,17 @@
             <rect x="6" y="28.000018" width="42" height="46.00003" fill="#616161" fill-opacity=".81" />
             <rect x="52" y="28.000018" width="42" height="46.00003" fill="#616161" fill-opacity=".81" />
             <text transform="translate(11 16.886125)" fill="white">
-                <tspan font-family="Roboto" font-size="8" font-weight="300" fill="white" x="5.012" y="8" textLength="21.976">Month</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="5.012" y="8" textLength="21.976">Month</tspan>
             </text>
             <text transform="translate(57 16.886125)" fill="white">
-                <tspan font-family="Roboto" font-size="8" font-weight="300" fill="white" x="9.332" y="8" textLength="13.336">Day</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="9.332" y="8" textLength="13.336">Day</tspan>
             </text>
             <text transform="translate(5 3.9138935)" fill="white">
-                <tspan font-family="Roboto" font-size="10" font-weight="600" fill="white" x="33.88" y="10" textLength="23">2013</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="10" font-weight="600" fill="white" x="33.88" y="10" textLength="23">2013</tspan>
             </text>
             <rect x="28" y="80.00005" width="42" height="12.000008" fill="#616161" fill-opacity=".81" />
             <text id="cal_select" class="pointer" transform="translate(33 81.000055)" fill="white">
-                <tspan font-family="Roboto" font-size="8" font-weight="300" fill="white" x="5.328" y="8" textLength="21.344">Select</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="5.328" y="8" textLength="21.344">Select</tspan>
             </text>
             <text id="cal_7" class="pointer" transform="translate(17 32.000024)" fill="white">
                 <tspan class="month" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="0" y="8">7</tspan>

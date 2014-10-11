@@ -219,7 +219,6 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                     dayControl.draw();
                     self.dayControl.enabled = false;
-                    //TODO hide
 
                     var svgSlider = self.addSvg.call(self, 0.072, 0.24 + 0.005 - 0.06, 0.1, 0.06);
                     callback();
@@ -528,8 +527,8 @@ GraphicManager.prototype.callbackSetDate = function () {
     var textDate = month + "/" + day + "/2013";
     d3.select('#day_name').text(textDate);
 
-    this.removeBikes();
-    this.drawBikesInMoment();
+    //this.removeBikes();
+    //this.drawBikesInMoment();
     this.updateGraphs();
 };
 
@@ -632,7 +631,7 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
         "type": "Polygon",
         "coordinates": coordinates[0]
     });
-    console.log(res);
+    //console.log(res);
     return res;
 };
 
@@ -657,7 +656,7 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
         if (multipoligon === null)
             return;
 
-        console.log(this.stations);
+        //console.log(this.stations);
         for (var i in this.stations) {
             var station = this.stations[i];
             var coord = [station.longitude, station.latitude];
@@ -787,7 +786,7 @@ GraphicManager.prototype.bikesCallback = function (data) {
         this.bikesCoordinate.push([curLat, curLon, latStart, lonStart, latStop, lonStop]);
     }
 
-    console.log(this.bikesCoordinate);
+    //console.log(this.bikesCoordinate);
 
     this.drawBikes();
 };
@@ -884,7 +883,7 @@ GraphicManager.prototype.updateGraphs = function () {
         this.tripsAge != null ||
         this.tripsCustomerType != null)
         this.dm.getStationsDemographic(function (data) {
-            console.log(data);
+            //console.log(data);
             var d = {};
             d.male = 0;
             d.female = 0;

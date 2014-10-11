@@ -111,17 +111,22 @@ Slider.prototype.draw = function () {
         var m = Math.floor((value - h) * 60);
         h = h < 10 ? "0" + h : h;
         m = m < 10 ? "0" + m : m;
-        
+
         // Set hour
         self.hour = h + ":" + m;
         //console.log(value, "-->", h + ":" + m);
-        
+
         // Update hour label
         d3.select("#day_hour").text(self.hour);
 
         self.callbackSetHour();
 
     }
+
+    // Hide day and slider at the beginning
+    d3.selectAll(".day_box")
+        .style("opacity", "0")
+        .style("pointer-events", "none");
 
 };
 
