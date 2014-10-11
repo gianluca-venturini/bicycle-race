@@ -159,6 +159,10 @@
         var normalChart1 = new NormalChart(norm1);
         gm.timeDistribution = normalChart1;
 
+        var norm2 = gm.addSvg(0.75, 0.20, 0.20, 0.15);
+        var normalChart2 = new NormalChart(norm2);
+        gm.distanceDistribution = normalChart2;
+
         gm.drawMarkers("popularity");
         gm.updateWindow();
 

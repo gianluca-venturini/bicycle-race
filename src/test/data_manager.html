@@ -14,13 +14,15 @@
 		var dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
 								 "http://data.divvybikeschicago.com/station.php",
 								 "http://data.divvybikeschicago.com/weather.php",
-								 "http://data.divvybikeschicago.com/time.php");
+								 "http://data.divvybikeschicago.com/time.php",
+								 "http://data.divvybikeschicago.com/distance.php");
 
 		function lol(data) {
 			console.log(data);
 		} 
 
 		//dm.selectedStations.push("13");
+		/*
 		dm.getBikesWeek(function(d) {
 			console.log(d);
 		});
@@ -29,6 +31,10 @@
 			console.log(d);
 		});
 		dm.getTimeDistribution(function(d) {
+			console.log(d);
+		});
+		*/
+		dm.getDistanceDistribution(function(d) {
 			console.log(d);
 		});
 		//dm.getBikesHourDay(lol);

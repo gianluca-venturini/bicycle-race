@@ -37,7 +37,8 @@ function GraphicManager(htmlId) {
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php",
         "http://data.divvybikeschicago.com/weather.php",
-        "http://data.divvybikeschicago.com/time.php");
+        "http://data.divvybikeschicago.com/time.php",
+        "http://data.divvybikeschicago.com/distance.php");
 
     this.lastSelected = null;
     this.showStation = false;
@@ -939,12 +940,22 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if(this.timeDistribution != null)
         this.dm.getTimeDistribution(function (data) {
+            var time = data.sort(function(a,b){
+                return (+a.totaltime) - (+b.totaltime);
+            });
+            this.timeDistribution.setData(time,"time_distribution","totaltime");
+            this.timeDistribution.setTitle("Distribution of bikes by total time");
+            this.timeDistribution.draw();
+        }.bind(this));
+
+    if(this.distanceDistribution != null)
+        this.dm.getDistanceDistribution(function (data) {
             var dist = data.sort(function(a,b){
                 return (+a.totaldistance) - (+b.totaldistance);
             });
-            this.timeDistribution.setData(data,"time_distribution","totaltime");
-            this.timeDistribution.setTitle("Distribution of bikes by total time");
-            this.timeDistribution.draw();
+            this.distanceDistribution.setData(dist,"distance_distribution","totaldistance");
+            this.distanceDistribution.setTitle("Distribution of bikes by distance traveled");
+            this.distanceDistribution.draw();
         }.bind(this));
 
 
