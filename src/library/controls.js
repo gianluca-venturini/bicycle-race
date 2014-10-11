@@ -163,9 +163,12 @@ function EnableCalendarControl(svg) {
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
     svg.attr("viewBox", "0 0 100 25");
+
+    this.calendarOn = false;
 }
 
 EnableCalendarControl.prototype.draw = function () {
+    var self = this;
 
     this.text1 = this.svg.append("text")
         .attr('class', 'text_control pointer')
@@ -173,7 +176,29 @@ EnableCalendarControl.prototype.draw = function () {
         .attr('x', 50)
         .attr('y', 12.5)
         .attr("dominant-baseline", "central")
-        .text("Calendar +");
+        .text("Show Calendar");
+
+    this.text1.on('click', function () {
+
+        // Make control visible and active
+        if (!self.calendarOn) {
+            d3.select("#calendar")
+                .transition()
+                .style("opacity", "1")
+                .style("pointer-events", "all");
+            self.calendarOn = true;
+            self.text1.text("Hide Calendar");
+        } else {
+            d3.select("#calendar")
+                .transition()
+                .style("opacity", "0")
+                .style("pointer-events", "none");
+            self.calendarOn = false;
+            self.text1.text("Show Calendar");
+        }
+
+    })
+
 
 };
 
@@ -197,6 +222,11 @@ function CalendarControl() {
 
 CalendarControl.prototype.draw = function () {
     var self = this;
+
+    // Hide calendar at the beginning
+    d3.select("#calendar")
+        .style("opacity", "0")
+        .style("pointer-events", "none");
 
     // Set the callbacks
     d3.select('#cal_plus').on("click", function () {
@@ -270,19 +300,22 @@ CalendarControl.prototype.draw = function () {
 };
 
 CalendarControl.prototype.addDay = function () {
-    this.dayCounter++;
-    var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
-    d3.select('#cal_day').text(text);
     if (this.dayCounter === 31)
         this.dayCounter = 0;
+    this.dayCounter++;
+    var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
+    this.day = this.dayCounter;
+    d3.select('#cal_day').text(text);
+
 };
 
 CalendarControl.prototype.subDay = function () {
+    if (this.dayCounter === 1)
+        this.dayCounter = 32;
     this.dayCounter--;
     var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
     d3.select('#cal_day').text(text);
-    if (this.dayCounter === 1)
-        this.dayCounter = 32;
+
 };
 
 CalendarControl.prototype.setCallbackSetDate = function (callback) {
@@ -305,12 +338,12 @@ function DayControl(svg) {
 
 DayControl.prototype.draw = function () {
     var self = this;
-    
+
     // Set the callbacks
     d3.select("#day_close").on("click", function () {
         self.callbackDayClose();
         d3.event.stopPropagation();
-    })
+    });
 
 };
 

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg id="zoom" class="default" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 51 101" width="51pt" height="101pt" xmlns:dc="http://purl.org/dc/elements/1.1/" preserveAspectRatio="xMidYMid meet">
+<svg id="zoom" class="default" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 101 51" width="101pt" height="51pt" xmlns:dc="http://purl.org/dc/elements/1.1/" preserveAspectRatio="xMidYMid meet">
 
+    <defs/>
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <g>
-        </g>
-        <g>
-            <circle id="zoom_plus" class="pointer" cx="25.000016" cy="25.85041" r="17.91343" fill="white" fill-opacity="0" />
-            <circle cx="25.000016" cy="25.85041" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" />
-            <circle id="zoom_minus" class="pointer" cx="25.000016" cy="74.039384" r="17.91343" fill="white" fill-opacity="0" />
-            <circle cx="25.000016" cy="74.039384" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" />
-            <line x1="18.323973" y1="75.11811" x2="31.676059" y2="75.11811" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" style="pointer-events:none;" />
-            <line x1="18.323973" y1="26.645669" x2="31.676059" y2="26.645669" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" style="pointer-events:none;" />
-            <line x1="25.228346" y1="19.842519" x2="25.228346" y2="33.194605" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" style="pointer-events:none;" />
+            <rect x="0" y="-35527137e-22" width="100.000064" height="50.000032" fill="#616161" fill-opacity="0" />
+            <circle id="zoom_minus" class="pointer" cx="26.984268" cy="25.000016" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" fill="white" fill-opacity="0"/>
+            <circle id="zoom_plus" class="pointer" cx="72.055133" cy="25.000016" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" fill="white" fill-opacity="0"/>
+            <line x1="40.172636" y1="25.228346" x2="13.795899" y2="25.228346" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" pointer-events="none"/>
+            <line x1="71.555133" y1="11.811647" x2="71.555133" y2="38.188385" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" pointer-events="none"/>
+            <line x1="85.2435" y1="25.228346" x2="58.866764" y2="25.228346" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" pointer-events="none"/>
         </g>
     </g>
 </svg>
