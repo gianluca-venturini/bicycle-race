@@ -1,6 +1,9 @@
 function GraphicManager(htmlId) {
-    this.lat = 41.8749077;
-    this.lon = -87.6368363;
+    /*this.lat = 41.8749077;
+    this.lon = -87.6368363;*/
+    this.lat = 41.8741372;
+    this.lon = -87.5845267;
+
     this.scale = 10;
 
     this.mapId = htmlId;
@@ -75,7 +78,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
         break;
 
@@ -83,7 +87,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
         break;
 
@@ -91,7 +96,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
         break;
 
@@ -99,7 +105,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
     }
     var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
@@ -114,6 +121,8 @@ GraphicManager.prototype.addLayer = function (type) {
     topPane.appendChild(topLayer.getContainer());
     topLayer.setZIndex(4);
     */
+
+    this.map.setZoom(11);
 };
 
 GraphicManager.prototype.removeLayer = function () {
@@ -313,7 +322,6 @@ GraphicManager.prototype.refreshMarkers = function () {
     else if(zoom >= 15) {
         scale = 18;
     }
-    console.log(zoom);
 
     this.iconWidth = this.mapHeight / scale;
     this.iconHeight = this.mapHeight / scale / (268 / 383);
@@ -359,8 +367,24 @@ GraphicManager.prototype.drawMarkers = function (type) {
 GraphicManager.prototype.drawMarkersCallback = function (stations) {
     var self = this;
     this.stations = stations;
-    this.iconWidth = this.mapHeight / 18;
-    this.iconHeight = this.mapHeight / 18 / (268 / 383);
+
+    var zoom = this.map.getZoom();
+    var scale;
+    if(zoom < 13) {
+        scale = 50;
+    }
+    else if(zoom >= 11 && zoom <13) {
+        scale = 34;
+    }
+    else if(zoom >= 13 && zoom <15) {
+        scale = 24;
+    }
+    else if(zoom >= 15) {
+        scale = 18;
+    }
+
+    this.iconWidth = this.mapHeight / scale;
+    this.iconHeight = this.mapHeight / scale / (268 / 383);
     switch (this.type) {
     case "popularity":
         for (var s in stations) {
