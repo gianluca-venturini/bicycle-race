@@ -1,10 +1,11 @@
-function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl, stationAgeUrl) {
+function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl, stationAgeUrl, stationFlowUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
 	this.weatherUrl = weatherUrl;
 	this.timeDistributionUrl = timeDistributionUrl;
 	this.distanceDistributionUrl = distanceDistributionUrl;
 	this.stationAgeUrl = stationAgeUrl;
+	this.stationFlowUrl = stationFlowUrl;
 
 	this.selectedStations = [];
 
@@ -378,4 +379,25 @@ DataManager.prototype.getDistanceDistribution = function(callback) {
 
 			callback(json);
 		}.bind(this));
+}
+
+/*
+	Get the flow for the station
+	flow: IN | OUT
+*/
+DataManager.prototype.getFlow = function(callback, stationId, flow) {
+
+	var url = this.stationFlowUrl;
+
+	url += "?";
+	url += "station="+stationId;
+	url += "&";
+	url += "flow="+flow;
+
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.stationFlowUrl);
+
+		callback(json);
+	}.bind(this));
 }
