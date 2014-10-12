@@ -33,13 +33,14 @@ NormalChart.prototype.setData = function(json,className, propertyX) {
 		this.newName =className;
 	}
 	this.axisX = propertyX;
-	this.labelX = "Deviation"
+	
 	this.labelY = "Frequency";
 	
 	var array = json.map(function(d){ return +d[propertyX];});
 	var msv = meanSdVar(array);
+	this.msv = msv;
 	this.quartiles = getQuartiles(array);
-
+	this.labelX = "SD (=" +d3.format(",")(parseInt(_this.msv.sd)) + ")"
 	var normals = array.map(function(d){ return (d - msv.mean)/msv.sd;});
 
 	this.xScale = d3.scale.linear()
@@ -88,6 +89,7 @@ NormalChart.prototype.draw = function(){
 			return _this.border.bottom - _this.yScale(d.y);
 		});
 
+
 	// create X axis
 	this.svg.append("g")
 	    .attr("class", "axis")
@@ -118,6 +120,28 @@ NormalChart.prototype.draw = function(){
 		    .text(_this.title);
 	}
 
+	var legendSize = (this.border.bottom - this.border.top)/15.0;
+	var format = d3.format(",");
+	legend = this.svg.selectAll(".legend").remove();
+
+	legend = this.svg.append("g")
+		.attr("class", "legend");
+		//.attr("transform", "translate(" + (_this.border.right)+ "," + (_this.border.top) + ")");
+
+	legend.append("text")
+		.attr("x", _this.xScale(0)-2)
+		.attr("y",_this.border.top + 10)
+	    .style("text-anchor","end")
+	    .text("Mean : " + format(parseInt(_this.msv.mean)));
+	
+
+	this.svg.append("line")
+		.attr("class", _this.newName)
+		.style("stroke", "rgba(190,190,230,1.0)")
+		.attr("x1", _this.xScale(0))
+		.attr("x2", _this.xScale(0))
+		.attr("y1", _this.border.bottom)
+		.attr("y2", _this.border.top);
 
 	this.drawBox();
 

@@ -1155,8 +1155,8 @@ GraphicManager.prototype.updateGraphs = function () {
             var dist = data.sort(function (a, b) {
                 return (+a.totaldistance) - (+b.totaldistance);
             });
-            this.distanceDistribution.setData(dist, "distance_distribution", "totaldistance");
-            this.distanceDistribution.setTitle("Distribution of bikes by distance traveled");
+            this.distanceDistribution.setData(dist,"distance_distribution","totaldistance");
+            this.distanceDistribution.setTitle("Distribution of bikes by distance traveled(in meters)");
             this.distanceDistribution.draw();
         }.bind(this));
 
