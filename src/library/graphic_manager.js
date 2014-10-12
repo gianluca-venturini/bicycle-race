@@ -1,6 +1,9 @@
 function GraphicManager(htmlId) {
-    this.lat = 41.8749077;
-    this.lon = -87.6368363;
+    /*this.lat = 41.8749077;
+    this.lon = -87.6368363;*/
+    this.lat = 41.8741372;
+    this.lon = -87.5845267;
+
     this.scale = 10;
 
     this.mapId = htmlId;
@@ -17,6 +20,8 @@ function GraphicManager(htmlId) {
     this.tripsGender = null;
     this.tripsAge = null;
     this.tripsCustomerType = null;
+    this.timeDistribution = null;
+    this.dinstanceDistribution = null;
 
     this.svgs = [];
     this.divs = [];
@@ -34,7 +39,9 @@ function GraphicManager(htmlId) {
 
     this.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
         "http://data.divvybikeschicago.com/station.php",
-        "http://data.divvybikeschicago.com/weather.php");
+        "http://data.divvybikeschicago.com/weather.php",
+        "http://data.divvybikeschicago.com/time.php",
+        "http://data.divvybikeschicago.com/distance.php");
 
     this.lastSelected = null;
     this.showStation = false;
@@ -58,6 +65,11 @@ GraphicManager.prototype.createMap = function (type) {
 
     this.mapWidth = +d3.select("#" + this.mapId).style("width").slice(0, -2);
     this.mapHeight = +d3.select("#" + this.mapId).style("height").slice(0, -2);
+
+    // Refresh markers wehn zoom end
+    this.map.on('zoomend', function(e) {
+        this.refreshMarkers();
+    }.bind(this));
 };
 
 GraphicManager.prototype.addLayer = function (type) {
@@ -66,7 +78,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
         break;
 
@@ -74,7 +87,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
         break;
 
@@ -82,7 +96,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
         break;
 
@@ -90,7 +105,8 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16
+            maxZoom: 16,
+            zoom: 15
         }).addTo(this.map);
     }
     var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
@@ -105,6 +121,8 @@ GraphicManager.prototype.addLayer = function (type) {
     topPane.appendChild(topLayer.getContainer());
     topLayer.setZIndex(4);
     */
+
+    this.map.setZoom(11);
 };
 
 GraphicManager.prototype.removeLayer = function () {
@@ -133,6 +151,24 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
         .style("background-color", "rgba(64, 64, 64, 0.7)");
+
+    this.svgs.push(svg);
+
+    return svg;
+};
+
+GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
+
+    var svg = d3.select("#" + this.mapId).append("svg");
+
+    svg.attr("class", "default")
+        .attr("_height", height)
+        .attr("_width", width)
+        .attr("_x", x)
+        .attr("_y", y)
+        .style("position", "absolute")
+        .attr("viewBox", "0 0 100 100")
+        .attr('preserveAspectRatio', 'xMidYMid meet');
 
     this.svgs.push(svg);
 
@@ -170,10 +206,10 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
                     svg = d3.select("#zoom");
 
-                    svg.attr("_height", 0.24)
-                        .attr("_width", 0.035)
+                    svg.attr("_height", 0.12)
+                        .attr("_width", 0.07)
                         .attr("_x", 0)
-                        .attr("_y", 1 - 0.24)
+                        .attr("_y", 1 - 0.12)
                         .style("position", "absolute")
                         .style("background-color", "rgba(64, 64, 64, 0.7)");
 
@@ -187,7 +223,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                     svg = d3.select("#stationControl");
 
                     svg.attr("_height", 0.45)
-                        .attr("_width", 0.07)
+                        .attr("_width", 0.1)
                         .attr("_x", 0.072)
                         .attr("_y", 0.250)
                         .style("position", "absolute")
@@ -219,7 +255,6 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                     dayControl.draw();
                     self.dayControl.enabled = false;
-                    //TODO hide
 
                     var svgSlider = self.addSvg.call(self, 0.072, 0.24 + 0.005 - 0.06, 0.1, 0.06);
                     callback();
@@ -290,8 +325,24 @@ GraphicManager.prototype.positionDIVs = function () {
  *  Refresh the markers, updating their size and position based on windows size
  */
 GraphicManager.prototype.refreshMarkers = function () {
-    this.iconWidth = this.mapHeight / 18;
-    this.iconHeight = this.mapHeight / 18 / (268 / 383);
+
+    var zoom = this.map.getZoom();
+    var scale;
+    if(zoom < 13) {
+        scale = 50;
+    }
+    else if(zoom >= 11 && zoom <13) {
+        scale = 34;
+    }
+    else if(zoom >= 13 && zoom <15) {
+        scale = 24;
+    }
+    else if(zoom >= 15) {
+        scale = 18;
+    }
+
+    this.iconWidth = this.mapHeight / scale;
+    this.iconHeight = this.mapHeight / scale / (268 / 383);
     for (var m in this.markers) {
         var marker = this.markers[m];
         //marker.options.icon.options.iconSize = [this.mapWidth / 15, this.mapHeight / 15];
@@ -334,8 +385,24 @@ GraphicManager.prototype.drawMarkers = function (type) {
 GraphicManager.prototype.drawMarkersCallback = function (stations) {
     var self = this;
     this.stations = stations;
-    this.iconWidth = this.mapHeight / 18;
-    this.iconHeight = this.mapHeight / 18 / (268 / 383);
+
+    var zoom = this.map.getZoom();
+    var scale;
+    if(zoom < 13) {
+        scale = 50;
+    }
+    else if(zoom >= 11 && zoom <13) {
+        scale = 34;
+    }
+    else if(zoom >= 13 && zoom <15) {
+        scale = 24;
+    }
+    else if(zoom >= 15) {
+        scale = 18;
+    }
+
+    this.iconWidth = this.mapHeight / scale;
+    this.iconHeight = this.mapHeight / scale / (268 / 383);
     switch (this.type) {
     case "popularity":
         for (var s in stations) {
@@ -528,8 +595,8 @@ GraphicManager.prototype.callbackSetDate = function () {
     var textDate = month + "/" + day + "/2013";
     d3.select('#day_name').text(textDate);
 
-    this.removeBikes();
-    this.drawBikesInMoment();
+    //this.removeBikes();
+    //this.drawBikesInMoment();
     this.updateGraphs();
 };
 
@@ -596,7 +663,7 @@ GraphicManager.prototype.addCommunityMap = function () {
                     });
                 }
 
-                layer.bindPopup(feature.id);
+                //layer.bindPopup(feature.id);
                 layer.on({
                     mouseover: highlightFeature,
                     mouseout: resetHighlight,
@@ -632,7 +699,7 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
         "type": "Polygon",
         "coordinates": coordinates[0]
     });
-    console.log(res);
+    //console.log(res);
     return res;
 };
 
@@ -657,7 +724,7 @@ GraphicManager.prototype.selectStationsInAreaCallback = function (stations) {
         if (multipoligon === null)
             return;
 
-        console.log(this.stations);
+        //console.log(this.stations);
         for (var i in this.stations) {
             var station = this.stations[i];
             var coord = [station.longitude, station.latitude];
@@ -787,7 +854,7 @@ GraphicManager.prototype.bikesCallback = function (data) {
         this.bikesCoordinate.push([curLat, curLon, latStart, lonStart, latStop, lonStop]);
     }
 
-    console.log(this.bikesCoordinate);
+    //console.log(this.bikesCoordinate);
 
     this.drawBikes();
 };
@@ -884,7 +951,7 @@ GraphicManager.prototype.updateGraphs = function () {
         this.tripsAge != null ||
         this.tripsCustomerType != null)
         this.dm.getStationsDemographic(function (data) {
-            console.log(data);
+            //console.log(data);
             var d = {};
             d.male = 0;
             d.female = 0;
@@ -923,15 +990,35 @@ GraphicManager.prototype.updateGraphs = function () {
                 return new Date(a.day) - new Date(b.day);
             });
             var dy = 1000 * 60 * 60 * 24; // in a day
-            var days = dd.map(function(d){
+            var days = dd.map(function (d) {
                 var temp = d;
-                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-30"))/dy;
+                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-30")) / dy;
                 return temp;
             });
             this.bikesDayYearComparison.setData(days, "dayOfYearMany", "fromStation", "Station");
             this.bikesDayYearComparison.setAxes("dayCount", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
+        }.bind(this));
+
+    if(this.timeDistribution != null)
+        this.dm.getTimeDistribution(function (data) {
+            var time = data.sort(function(a,b){
+                return (+a.totaltime) - (+b.totaltime);
+            });
+            this.timeDistribution.setData(time,"time_distribution","totaltime");
+            this.timeDistribution.setTitle("Distribution of bikes by total time");
+            this.timeDistribution.draw();
+        }.bind(this));
+
+    if(this.distanceDistribution != null)
+        this.dm.getDistanceDistribution(function (data) {
+            var dist = data.sort(function(a,b){
+                return (+a.totaldistance) - (+b.totaldistance);
+            });
+            this.distanceDistribution.setData(dist,"distance_distribution","totaldistance");
+            this.distanceDistribution.setTitle("Distribution of bikes by distance traveled");
+            this.distanceDistribution.draw();
         }.bind(this));
 
 

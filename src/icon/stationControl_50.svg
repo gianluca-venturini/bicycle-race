@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 150 201" width="150pt" height="201pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <metadata>Produced by OmniGraffle 6.0.5
+        <dc:date>2014-10-11 21:08Z</dc:date>
+    </metadata>
+    <defs>
+        <font-face font-family="Helvetica Neue" font-size="15" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
+        </font-face>
+        <font-face font-family="Helvetica Neue" font-size="6" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
+        </font-face>
+        <font-face font-family="Helvetica Neue" font-size="6" panose-1="2 11 4 3 2 2 2 2 2 4" units-per-em="1000" underline-position="-75" underline-thickness="50" slope="0" x-height="514" cap-height="714" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Thin" /></font-face-src>
+        </font-face>
+        <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
+        </font-face>
+        <font-face font-family="Helvetica Neue" font-size="5" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+            <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
+        </font-face>
+    </defs>
+    <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+        <title>Canvas 2</title>
+        <g>
+            <title>box3</title>
+            <rect x="14210855e-21" y="0" width="150" height="200.00013" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(5 7.5)" fill="white">
+                <tspan id="station_name" font-family="Helvetica Neue" font-size="15" font-weight="300" fill="white" x="49.39" y="15" textLength="41.22"></tspan>
+            </text>
+            <text transform="translate(26.249935 33.429133)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="43.12627" y="6" textLength="7.11">ID:</tspan>
+            </text>
+            <text transform="translate(77.475396 33.429133)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="0" y="6" textLength="5.022">ID</tspan>
+            </text>
+            <text transform="translate(15.62993 45.61811)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="22.066275" y="6" textLength="38.79">POPULARITY :</tspan>
+            </text>
+            <text transform="translate(77.475396 45.61811)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="0" y="6" textLength="11.538">POP</tspan>
+            </text>
+            <rect x="10.62993" y="126.094484" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(15.62993 135.594484)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="37.564093" y="8" textLength="26.528">compar</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="63.948093" y="8" textLength="13.488">e all</tspan>
+            </text>
+            <rect x="10.62993" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(15.62993 83.728345)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="9.355121" y="8" textLength="14.664">outfl</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="24.019121" y="8" textLength="10.376">ow</tspan>
+            </text>
+            <rect x="81.879873" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(86.879873 83.728345)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="12.023121" y="8" textLength="9.328">infl</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="21.351121" y="8" textLength="10.376">ow</tspan>
+            </text>
+            <rect x="10.62993" y="160.32283" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(15.62993 169.82283)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="38.896093" y="8" textLength="26.528">compar</tspan>
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="65.280093" y="8" textLength="10.824">e 2</tspan>
+            </text>
+            <text transform="translate(32.775655 64.728345)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="24.518736" y="5" textLength="24.455">SINGLE ST</tspan>
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="48.633736" y="5" textLength="3.15">A</tspan>
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="51.443736" y="5" textLength="29.265">TION FLOWS</tspan>
+            </text>
+            <text transform="translate(26.249935 116.10039)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="24.584456" y="5" textLength="45.05">SELECT FOR COMP</tspan>
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="69.264456" y="5" textLength="17.97">ARISON</tspan>
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="87.234456" y="5" textLength="1.39"></tspan>
+            </text>
+        </g>
+    </g>
+</svg>

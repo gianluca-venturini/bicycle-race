@@ -17,11 +17,11 @@
         <g>
             <rect x="0" y="0" width="119.9999" height="100" fill="#616161" fill-opacity="0" />
             <text transform="translate(5 5.5)" fill="white">
-                <tspan id="day_name" font-family="Roboto" font-size="12" font-weight="300" x="26" y="11"></tspan>
+                <tspan class="text_control" id="day_name" font-family="Roboto" font-size="12" font-weight="300" x="26" y="11"></tspan>
             </text>
             <rect x="105.82667" y="0" width="14.173228" height="14.173228" fill="#616161" fill-opacity=".81" />
             <text id="day_close" class="pointer" transform="translate(105.82667 .08661413)" fill="white">
-                <tspan font-family="Helvetica" font-size="12" font-weight="500" fill="white" x="3.084661" y="11" textLength="8.0039062">X</tspan>
+                <tspan class="text_control" font-size="12" font-weight="500" fill="white" x="3.084661" y="11" textLength="8.0039062">X</tspan>
             </text>
             <rect x="6.845524" y="23.527558" width="45.381818" height="39" id="path" />
             <clipPath id="clip_path">
@@ -31,28 +31,28 @@
                 <!--image id="day_image" xl:href="image2.png" width="32.914286" height="28.285714" transform="translate(6.845524 23.527558) scale(1.3787879)" /-->
             </g>
             <text transform="translate(65.188876 28.673227)" fill="white">
-                <tspan font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="19.255">weather:</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="19.255">weather:</tspan>
             </text>
             <text transform="translate(90.13376 28.673227)" fill="white">
-                <tspan id="day_weather" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="10.925">WEA</tspan>
+                <tspan class="text_control" id="day_weather" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="10.925">WEA</tspan>
             </text>
             <text transform="translate(65.188876 41.673227)" fill="white">
-                <tspan font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="17.41">sunrise:</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="17.41">sunrise:</tspan>
             </text>
             <text transform="translate(90.13376 41.673227)" fill="white">
-                <tspan id="day_sunrise" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="13.885">SUNR</tspan>
+                <tspan class="text_control" id="day_sunrise" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="13.885">SUNR</tspan>
             </text>
             <text transform="translate(65.188876 54.673227)" fill="white">
-                <tspan font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="16.21">sunset:</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="16.21">sunset:</tspan>
             </text>
             <text transform="translate(90.13376 54.673227)" fill="white">
-                <tspan id="day_sunset" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="13.7">SUNS</tspan>
+                <tspan class="text_control" id="day_sunset" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="13.7">SUNS</tspan>
             </text>
             <text transform="translate(45.015698 69.14567)" fill="white">
-                <tspan font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="11.485">hour:</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="11.485">hour:</tspan>
             </text>
             <text transform="translate(61.314763 69.14567)" fill="white">
-                <tspan id="day_hour" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
+                <tspan class="text_control" id="day_hour" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
             </text>
         </g>
     </g>

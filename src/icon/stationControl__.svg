@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-1 0 121 201" width="121pt" height="201pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
+   
+    <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+        <title>Canvas 2</title>
+        <g>
+            <title>box3</title>
+            <rect x="0" y="0" width="119.9999" height="200.00013" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(5 7.5)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="15" font-weight="300" fill="white" x="34.38995" y="15" textLength="41.22">NAME</tspan>
+            </text>
+            <text transform="translate(21.999934 33.429133)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="31.078975" y="6" textLength="7.11">ID:</tspan>
+            </text>
+            <text transform="translate(62.980267 33.429133)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="0" y="6" textLength="5.022">ID</tspan>
+            </text>
+            <text transform="translate(13.503937 45.61811)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="7.894972" y="6" textLength="38.79">POPULARITY :</tspan>
+            </text>
+            <text transform="translate(62.980267 45.61811)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="6" font-weight="300" fill="white" x="0" y="6" textLength="11.538">POP</tspan>
+            </text>
+            <rect x="8.503937" y="126.094484" width="100.000064" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(13.503937 135.594484)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="25.064032" y="8" textLength="26.528">compar</tspan>
+            </text>
+            <rect x="8.503937" y="74.228345" width="43.000158" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(13.503937 83.728345)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="3.9800788" y="8" textLength="14.664">outfl</tspan>
+            </text>
+            <rect x="65.503843" y="74.228345" width="43.000158" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(70.503843 83.728345)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="6.6480788" y="8" textLength="9.328">infl</tspan>
+            </text>
+            <rect x="8.503937" y="160.32283" width="100.000064" height="29" fill="#616161" fill-opacity=".81" />
+            <text transform="translate(13.503937 169.82283)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="26.396032" y="8" textLength="26.528">compar</tspan>
+            </text>
+            <text transform="translate(27.220505 64.728345)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="6.376927" y="5">SINGLE STATION FLOWS</tspan>
+            </text>
+            <text transform="translate(21.999934 116.10039)" fill="white">
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="5.1374986" y="5" textLength="45.05">SELECT FOR COMP</tspan>
+                <tspan font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="49.8175" y="5" textLength="19.36">ARISON</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg id="stationControl" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-1 0 102 201" width="102pt" height="201pt" xmlns:dc="http://purl.org/dc/elements/1.1/" preserveAspectRatio="xMidYMid meet">
+<svg id="stationControl" class="default" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 150 201" width="150pt" height="201pt" xmlns:dc="http://purl.org/dc/elements/1.1/" preserveAspectRatio="xMidYMid meet">
 
-    <defs>
-        <font-face font-family="Helvetica Neue" font-size="15" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+    <!--defs>
+        <font-face font-family="Roboto" font-size="15" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
             <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
         </font-face>
-        <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
+        <font-face font-family="Roboto" font-size="8" panose-1="2 0 4 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="530" cap-height="728" ascent="966.99524" descent="-212.99744" font-weight="300">
             <font-face-src><font-face-name name="HelveticaNeue-Light" /></font-face-src>
         </font-face>
-        <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 11 4 3 2 2 2 2 2 4" units-per-em="1000" underline-position="-75" underline-thickness="50" slope="0" x-height="514" cap-height="714" ascent="966.99524" descent="-212.99744" font-weight="300">
+        <font-face font-family="Roboto" font-size="8" panose-1="2 11 4 3 2 2 2 2 2 4" units-per-em="1000" underline-position="-75" underline-thickness="50" slope="0" x-height="514" cap-height="714" ascent="966.99524" descent="-212.99744" font-weight="300">
             <font-face-src><font-face-name name="HelveticaNeue-Thin" /></font-face-src>
         </font-face>
-    </defs>
+    </defs-->
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <g>
-            <rect x="0" y="0" width="100.000064" height="200.00013" fill="#616161" fill-opacity="0" />
+            <rect x="14210855e-21" y="0" width="150" height="200.00013" fill="#616161" fill-opacity="0" />
             <text transform="translate(5 7.5)" fill="white">
-                <tspan id="station_name" font-family="Helvetica Neue" font-size="5" font-weight="300" fill="white" x="0" y="15" textLength="90"></tspan>
+                <tspan id="station_name" class="text_control" font-family="Roboto" font-size="11" font-weight="300" fill="white" x="0" y="15" textLength="143"></tspan>
             </text>
-            <text transform="translate(5 34.763779)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="29.892975" y="8" textLength="10">id:</tspan>
+            <text transform="translate(26.249935 33.429133)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="43.12627" y="6">ID:</tspan>
             </text>
-            <text transform="translate(46.952755 34.763779)" fill="white">
-                <tspan id="station_id" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8"></tspan>
+            <text transform="translate(77.475396 33.429133)" fill="white">
+                <tspan id="station_id" class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="3" y="6"></tspan>
             </text>
-            <text transform="translate(5 46.952755)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="2.332975" y="8" textLength="35.856">popularity:</tspan>
+            <text transform="translate(15.62993 45.61811)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="22.066275" y="6" textLength="38.79">POPULARITY :</tspan>
             </text>
-            <text transform="translate(46.952755 46.952755)" fill="white">
-                <tspan id="station_pop" font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="0" y="8"></tspan>
+            <text transform="translate(77.475396 45.61811)" fill="white">
+                <tspan id="station_pop" class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="3" y="6"></tspan>
             </text>
-            <rect x="14.000033" y="70.692913" width="72" height="45.35433" fill="#616161" fill-opacity=".81" />
-            <text id="station_inflow" transform="translate(19.000033 88.37008)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="21.147999" y="8" textLength="22">inflow</tspan>
+            <rect class="pointer station_compareAll" x="12.62993" y="126.094484" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
+            <text class="pointer station_compareAll" transform="translate(15.62993 135.594484)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="39.564093" y="8">compare all</tspan>
             </text>
-            <text id="station_demographics" transform="translate(19.000033 100.37008)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="6.327999" y="8" textLength="49.344">demographics</tspan>
+            <rect class="pointer station_outflow" x="12.62993" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
+            <text class="pointer station_outflow" id="station_outflow" transform="translate(15.62993 83.728345)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="11.355121" y="8">outflow</tspan>
             </text>
-            <text id="station_outflow" transform="translate(19.000033 76.387794)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="18.479999" y="8" textLength="25">outflow</tspan>
+            <rect class="pointer station_inflow" x="83.879873" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
+            <text class="pointer station_inflow" id="station_inflow" transform="translate(86.879873 83.728345)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="14.023121" y="8">inflow</tspan>
             </text>
-            <rect id="station_compareAll" x="14.000033" y="121.27559" width="72" height="29" fill="#616161" fill-opacity=".81" />
-            <text transform="translate(19.000033 130.77559)" fill="white" style="pointer-events: none;">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="7.551999" y="8" textLength="45">+ compare all</tspan>
+            <rect class="pointer station_compare2" id="station_compare2" x="12.62993" y="160.32283" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
+            <text class="pointer station_compare2" transform="translate(15.62993 169.82283)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="40.896093" y="8">compare 2</tspan>
             </text>
-            <rect id="station_compare2" x="14.000033" y="155.50393" width="72" height="29" fill="#616161" fill-opacity=".81" />
-            <text transform="translate(19.000033 165.00393)" fill="white">
-                <tspan font-family="Helvetica Neue" font-size="8" font-weight="300" fill="white" x="8.883999" y="8" textLength="45">+ compare 2</tspan>
+            <text transform="translate(32.775655 64.728345)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="300" fill="white" x="16" y="5">SINGLE STATION FLOWS</tspan>
+            </text>
+            <text transform="translate(26.249935 116.10039)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="300" fill="white" x="20" y="5">SELECT FOR COMPARISON</tspan>
             </text>
         </g>
     </g>
