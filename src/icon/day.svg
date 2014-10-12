@@ -28,25 +28,25 @@
                 <use xl:href="#path" />
             </clipPath>
             <g clip-path="url(#clip_path)">
-                <!--image id="day_image" xl:href="image2.png" width="32.914286" height="28.285714" transform="translate(6.845524 23.527558) scale(1.3787879)" /-->
+                <image id="day_image" width="32.914286" height="28.285714" transform="translate(6.845524 23.527558) scale(1.3787879)" />
             </g>
             <text transform="translate(65.188876 28.673227)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="19.255">weather:</tspan>
             </text>
             <text transform="translate(90.13376 28.673227)" fill="white">
-                <tspan class="text_control" id="day_weather" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="10.925">WEA</tspan>
+                <tspan class="text_control" id="day_weather" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
             </text>
             <text transform="translate(65.188876 41.673227)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="17.41">sunrise:</tspan>
             </text>
             <text transform="translate(90.13376 41.673227)" fill="white">
-                <tspan class="text_control" id="day_sunrise" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="13.885">SUNR</tspan>
+                <tspan class="text_control" id="day_sunrise" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
             </text>
             <text transform="translate(65.188876 54.673227)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="16.21">sunset:</tspan>
             </text>
             <text transform="translate(90.13376 54.673227)" fill="white">
-                <tspan class="text_control" id="day_sunset" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="13.7">SUNS</tspan>
+                <tspan class="text_control" id="day_sunset" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
             </text>
             <text transform="translate(45.015698 69.14567)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="11.485">hour:</tspan>

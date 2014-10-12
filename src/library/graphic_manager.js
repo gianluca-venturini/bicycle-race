@@ -47,6 +47,7 @@ function GraphicManager(htmlId) {
     this.showStation = false;
     this.stationControl = null;
     this.calendarControl = null;
+    this.weather = null;
 }
 
 /*
@@ -67,7 +68,7 @@ GraphicManager.prototype.createMap = function (type) {
     this.mapHeight = +d3.select("#" + this.mapId).style("height").slice(0, -2);
 
     // Refresh markers wehn zoom end
-    this.map.on('zoomend', function(e) {
+    this.map.on('zoomend', function (e) {
         this.refreshMarkers();
     }.bind(this));
 };
@@ -328,16 +329,13 @@ GraphicManager.prototype.refreshMarkers = function () {
 
     var zoom = this.map.getZoom();
     var scale;
-    if(zoom < 13) {
+    if (zoom < 13) {
         scale = 50;
-    }
-    else if(zoom >= 11 && zoom <13) {
+    } else if (zoom >= 11 && zoom < 13) {
         scale = 34;
-    }
-    else if(zoom >= 13 && zoom <15) {
+    } else if (zoom >= 13 && zoom < 15) {
         scale = 24;
-    }
-    else if(zoom >= 15) {
+    } else if (zoom >= 15) {
         scale = 18;
     }
 
@@ -388,16 +386,13 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
     var zoom = this.map.getZoom();
     var scale;
-    if(zoom < 13) {
+    if (zoom < 13) {
         scale = 50;
-    }
-    else if(zoom >= 11 && zoom <13) {
+    } else if (zoom >= 11 && zoom < 13) {
         scale = 34;
-    }
-    else if(zoom >= 13 && zoom <15) {
+    } else if (zoom >= 13 && zoom < 15) {
         scale = 24;
-    }
-    else if(zoom >= 15) {
+    } else if (zoom >= 15) {
         scale = 18;
     }
 
@@ -495,11 +490,13 @@ GraphicManager.prototype.selectedStation = function (station) {
 
     var marker = station.marker;
     if (marker.selected) {
-        d3.select('#stationControl').style('opacity', '1');
+        d3.select('#stationControl').style('opacity', '1')
+            .style("pointer-events", "all");
         marker.options.icon.options.iconUrl = marker.selectedUrl;
         marker.setIcon(marker.options.icon);
     } else {
-        d3.select('#stationControl').style('opacity', '0');
+        d3.select('#stationControl').style('opacity', '0')
+            .style("pointer-events", "none");
         this.drawSelectedMarkers();
     }
 
@@ -595,9 +592,147 @@ GraphicManager.prototype.callbackSetDate = function () {
     var textDate = month + "/" + day + "/2013";
     d3.select('#day_name').text(textDate);
 
+    // Show weather
+    this.dm.getWeather(this.weatherCallback.bind(this));
+
     //this.removeBikes();
     //this.drawBikesInMoment();
     this.updateGraphs();
+};
+
+GraphicManager.prototype.weatherCallback = function (weather) {
+
+    this.weather = weather;
+
+    // Find the most frequent weather condition in this day
+    var nested_data = d3.nest()
+        .key(function (d) {
+            return d.conditions;
+        })
+        .rollup(function (leaves) {
+            return leaves.length;
+        })
+        .entries(weather);
+
+    var vals = [];
+    for (var i = 0; i < nested_data.length; i++) {
+        vals.push(nested_data[i].values);
+    }
+    var max = Math.max.apply(null, vals);
+    var weather_day = nested_data[vals.indexOf(max)].key;
+
+    d3.select('#day_image').attr('xlink:href', this.getWeatherIcon(weather_day));
+    d3.select('#day_weather').text(weather_day);
+
+};
+
+GraphicManager.prototype.getWeatherIcon = function (weather) {
+    var icon = null;
+    switch (weather) {
+    case "Clear":
+        icon = "/icon/weather/clear.png";
+        break;
+    case "Drizzle":
+        icon = "/icon/weather/rain.png";
+        break;
+    case "Fog":
+        icon = "/icon/weather/fog.png";
+        break;
+    case "Haze":
+        icon = "/icon/weather/fog.png";
+        break;
+    case "Heavy Drizzle":
+        icon = "/icon/weather/rain.png";
+        break;
+    case "Heavy Rain":
+        icon = "/icon/weather/heavy_rain.png";
+        break;
+    case "Heavy Thunderstorms and Rain":
+        icon = "/icon/weather/heavy_thunderstorm.png";
+        break;
+    case "Light Drizzle":
+        icon = "/icon/weather/rain.png";
+        break;
+    case "Light Freezing Drizzle":
+        icon = "/icon/weather/rain.png";
+        break;
+    case "Light Rain":
+        icon = "/icon/weather/rain.png";
+        break;
+    case "Light Snow":
+        icon = "/icon/weather/light_snow.png";
+        break;
+    case "Light Thunderstorms and Rain":
+        icon = "/icon/weather/thunderstorm.png";
+        break;
+    case "Mist":
+        icon = "/icon/weather/fog.png";
+        break;
+    case "Mostly Cloudy":
+        icon = "/icon/weather/mostly_cloudy.png";
+        break;
+    case "Overcast":
+        icon = "/icon/weather/overcast.png";
+        break;
+    case "Partly Cloudy":
+        icon = "/icon/weather/partly_cloudy.png";
+        break;
+    case "Rain":
+        icon = "/icon/weather/rain.png";
+        break;
+    case "Scattered Clouds":
+        icon = "/icon/weather/partly_cloudy.png";
+        break;
+    case "Smoke":
+        icon = "/icon/weather/fog.png";
+        break;
+    case "Snow ":
+        icon = "/icon/weather/snow.png";
+        break;
+    case "Thunderstorm":
+        icon = "/icon/weather/thunderstorm.png";
+        break;
+    case "Thunderstorms and Rain":
+        icon = "/icon/weather/thunderstorm.png";
+        break;
+    default:
+        ;
+        break;
+    }
+    return icon;
+}
+
+GraphicManager.prototype.getWeatherByHour = function () {
+
+    // Data from the weather service
+    var weather = this.weather;
+    for (var i in weather) {
+        var hour = weather[i].date.split(" ")[1];
+        var h = hour.split(":")[0];
+        var m = hour.split(":")[1];
+        weather[i].hour = +(h + m);
+    }
+
+    // Data selected by the user
+    var hour_ = this.dm.hour;
+    var h_ = hour_.split(":")[0];
+    var m_ = hour_.split(":")[1];
+    var hour_user = +(h_ + m_);
+
+    var weather_user = null;
+    var temp = 0;
+    for (var i in weather) {
+        if (weather[i].hour <= hour_user && weather[i].hour > temp) {
+            temp = weather[i].hour;
+            weather_user = weather[i].conditions;
+        }
+    }
+
+    d3.select('#day_image').attr("xlink:href", this.getWeatherIcon(weather_user));
+    d3.select('#day_weather').text(weather_user);
+
+
+
 };
 
 GraphicManager.prototype.callbackDayClose = function () {
@@ -620,6 +755,10 @@ GraphicManager.prototype.callbackSetHour = function () {
     // Set hour
     this.dm.hour = this.slider.hour;
     this.drawBikesInMoment();
+
+    //this.dm.getWeather(this.weatherCallback.bind(this));
+    this.getWeatherByHour();
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1001,22 +1140,22 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.draw();
         }.bind(this));
 
-    if(this.timeDistribution != null)
+    if (this.timeDistribution != null)
         this.dm.getTimeDistribution(function (data) {
-            var time = data.sort(function(a,b){
+            var time = data.sort(function (a, b) {
                 return (+a.totaltime) - (+b.totaltime);
             });
-            this.timeDistribution.setData(time,"time_distribution","totaltime");
+            this.timeDistribution.setData(time, "time_distribution", "totaltime");
             this.timeDistribution.setTitle("Distribution of bikes by total time");
             this.timeDistribution.draw();
         }.bind(this));
 
-    if(this.distanceDistribution != null)
+    if (this.distanceDistribution != null)
         this.dm.getDistanceDistribution(function (data) {
-            var dist = data.sort(function(a,b){
+            var dist = data.sort(function (a, b) {
                 return (+a.totaldistance) - (+b.totaldistance);
             });
-            this.distanceDistribution.setData(dist,"distance_distribution","totaldistance");
+            this.distanceDistribution.setData(dist, "distance_distribution", "totaldistance");
             this.distanceDistribution.setTitle("Distribution of bikes by distance traveled");
             this.distanceDistribution.draw();
         }.bind(this));
