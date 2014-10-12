@@ -157,6 +157,24 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
     return svg;
 };
 
+GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
+
+    var svg = d3.select("#" + this.mapId).append("svg");
+
+    svg.attr("class", "default")
+        .attr("_height", height)
+        .attr("_width", width)
+        .attr("_x", x)
+        .attr("_y", y)
+        .style("position", "absolute")
+        .attr("viewBox", "0 0 100 100")
+        .attr('preserveAspectRatio', 'xMidYMid meet');
+
+    this.svgs.push(svg);
+
+    return svg;
+};
+
 GraphicManager.prototype.addExternalSVGs = function (callback) {
     var self = this;
     d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
