@@ -137,7 +137,7 @@ NormalChart.prototype.draw = function(){
 
 	this.svg.append("line")
 		.attr("class", _this.newName)
-		.style("stroke", "rgba(230,230,230,1.0)")
+		.style("stroke", "rgba(190,190,230,1.0)")
 		.attr("x1", _this.xScale(0))
 		.attr("x2", _this.xScale(0))
 		.attr("y1", _this.border.bottom)
