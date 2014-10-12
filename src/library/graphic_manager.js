@@ -1115,7 +1115,7 @@ GraphicManager.prototype.updateGraphs = function () {
 
             if (this.tripsCustomerType != null) {
                 this.tripsCustomerType.setData([+d.male, +d.female], ["Customer", "Subscriber"],
-                    "customer_type",
+                    "demographic",
                     "Customer");
                 this.tripsCustomerType.setTitle("Customer type");
                 this.tripsCustomerType.draw();
@@ -1156,7 +1156,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
             this.tripsAge.setData([a.a0_20, a.a21_30, a.a31_40, a.a41_50, a.a51_60, a.a61_70, a.a71p], 
                                   ["0-20",  "21-30",  "31-40",  "41-50",  "51-60",  "61-70",  "71+"],
-                                  "age",
+                                  "demographic",
                                   "Age");
             this.tripsAge.setTitle("Age");
             this.tripsAge.draw();

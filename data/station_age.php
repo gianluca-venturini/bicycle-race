@@ -28,6 +28,14 @@ if($ids == NULL) {
 else
 	$idDisabled = 0;
 
+$from = htmlentities($_GET['from']);
+if($from == NULL)
+	$from = "2000-1-1";
+
+$to = htmlentities($_GET['to']);
+if($to == NULL)
+	$to = "2100-12-31";
+
 $database = new DataBaseMySQL();
 
 
@@ -36,6 +44,7 @@ $database->query("	SELECT S.id, age_in_2014 as age, COUNT(*) as count
 					WHERE S.id = T.from_station_id
 						AND age_in_2014 <> '0'
 						AND (id IN ($ids) OR '$idDisabled'='1')
+						AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
 					GROUP BY age_in_2014, S.id
 					ORDER BY S.id, age
 				");
