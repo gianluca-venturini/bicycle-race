@@ -394,6 +394,13 @@ DataManager.prototype.getFlow = function(callback, stationId, flow) {
 	url += "&";
 	url += "flow="+flow;
 
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
 	d3.json(url, function(error, json) {
 		if(error)
 			console.log("can't download file " + this.stationFlowUrl);
