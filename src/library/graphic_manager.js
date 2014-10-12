@@ -1245,3 +1245,7 @@ GraphicManager.prototype.hideLineBetweenStations = function () {
         this.lineBetweenStations = null;
     }
 };
+
+GraphicManager.prototype.selectedStationFromChart = function(stationId) {
+    console.log("Selected: " + stationId);
+}

@@ -69,6 +69,11 @@
         .blur {
             -webkit-filter: blur(10px);
         }
+
+        /* Special effects */
+        .line_stroke:hover {
+            stroke-width: 5px;
+        }
         /* Cursor style */
         .pointer {
             cursor: pointer
@@ -142,10 +147,12 @@
 
         var line2 = gm.addSvgChart(0.585, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18); // Hour of the day multiple stations
         var lineChart2 = new LineChart(line2);
+        lineChart2.callback = gm.selectedStationFromChart;
         gm.bikesHourDayComparison = lineChart2;
 
         var line3 = gm.addSvgChart(0.585, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18); // Day of the year, multiple stations
         var lineChart3 = new LineChart(line3);
+        lineChart3.callback = gm.selectedStationFromChart;
         gm.bikesDayYearComparison = lineChart3;
 
         var pie1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
