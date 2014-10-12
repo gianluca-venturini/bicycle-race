@@ -41,7 +41,8 @@ function GraphicManager(htmlId) {
         "http://data.divvybikeschicago.com/station.php",
         "http://data.divvybikeschicago.com/weather.php",
         "http://data.divvybikeschicago.com/time.php",
-        "http://data.divvybikeschicago.com/distance.php");
+        "http://data.divvybikeschicago.com/distance.php",
+        "http://data.divvybikeschicago.com/station_age.php");
 
     this.lastSelected = null;
     this.showStation = false;
@@ -1087,7 +1088,6 @@ GraphicManager.prototype.updateGraphs = function () {
 
     // Gender data
     if (this.tripsGender != null ||
-        this.tripsAge != null ||
         this.tripsCustomerType != null)
         this.dm.getStationsDemographic(function (data) {
             //console.log(data);
@@ -1120,6 +1120,46 @@ GraphicManager.prototype.updateGraphs = function () {
                 this.tripsCustomerType.setTitle("Customer type");
                 this.tripsCustomerType.draw();
             }
+        }.bind(this));
+
+    if(this.tripsAge != null)
+        this.dm.getStationsAge(function(data) {
+            var a = {};
+            a.a0_20 = 0;
+            a.a21_30 = 0;
+            a.a31_40 = 0;
+            a.a41_50 = 0;
+            a.a51_60 = 0;
+            a.a61_70 = 0;
+            a.a71p = 0;
+            for(var i in data) {
+                var station = data[i];
+                for(var j in station.ages) {
+                    var ag = station.ages[j];
+                    var count = +ag.count;
+                    var age = +ag.age;
+                    if(age <= 20)
+                        a.a0_20 += count;
+                    if(age >= 21 && age <= 30)
+                        a.a21_30 += count;
+                    if(age >= 31 && age <= 40)
+                        a.a31_40 += count;
+                    if(age >= 41 && age <= 50)
+                        a.a41_50 += count;
+                    if(age >= 51 && age <= 60)
+                        a.a51_60 += count;
+                    if(age >= 61 && age <= 70)
+                        a.a61_70 += count;
+                    if(age >= 71)
+                        a.a71p += count;
+                }
+            }
+            this.tripsAge.setData([a.a0_20, a.a21_30, a.a31_40, a.a41_50, a.a51_60, a.a61_70, a.a71p], 
+                                  ["0-20",  "21-30",  "31-40",  "41-50",  "51-60",  "61-70",  "71+"],
+                                  "age",
+                                  "Age");
+            this.tripsAge.setTitle("Age");
+            this.tripsAge.draw();
         }.bind(this));
 
     if (this.bikesDayYearComparison != null)
@@ -1161,7 +1201,7 @@ GraphicManager.prototype.updateGraphs = function () {
         }.bind(this));
 
 
-    gm.bikesHourDayComparison = lineChart2;
+    //gm.bikesHourDayComparison = lineChart2;
 
     /*
     this.dayWeekBarGraph = null;

@@ -15,11 +15,14 @@
 								 "http://data.divvybikeschicago.com/station.php",
 								 "http://data.divvybikeschicago.com/weather.php",
 								 "http://data.divvybikeschicago.com/time.php",
-								 "http://data.divvybikeschicago.com/distance.php");
+								 "http://data.divvybikeschicago.com/distance.php",
+								 "http://data.divvybikeschicago.com/station_age.php");
 
 		function lol(data) {
 			console.log(data);
 		} 
+
+		dm.selectedStations = [{id: "5"}];
 
 		//dm.selectedStations.push("13");
 		/*
@@ -34,9 +37,14 @@
 			console.log(d);
 		});
 		*/
+		/*
 		dm.getDistanceDistribution(function(d) {
 			console.log(d);
 		});
+		*/
+		dm.getStationsAge(function(d) {
+           console.log(d); 
+        });
 		//dm.getBikesHourDay(lol);
 		//dm.getBikes(lol);
 		//dm.getTrips(lol);

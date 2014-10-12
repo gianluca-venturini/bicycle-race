@@ -1,9 +1,10 @@
-function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl) {
+function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl, stationAgeUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
 	this.weatherUrl = weatherUrl;
 	this.timeDistributionUrl = timeDistributionUrl;
-	this.distanceDistributionUrl = distanceDistributionUrl
+	this.distanceDistributionUrl = distanceDistributionUrl;
+	this.stationAgeUrl = stationAgeUrl;
 
 	this.selectedStations = [];
 
@@ -28,7 +29,6 @@ function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, dista
 	Every function expect a callback that will be executed at the end of the loading process
 */
 DataManager.prototype.getStations = function(callback) {
-
 
 	if(this.stations != null)
 		callback(this.stations);
@@ -72,6 +72,11 @@ DataManager.prototype.getWeather = function(callback) {
 
 DataManager.prototype.getTrips = function(callback) {
 
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
+
 	if(this.trips != null)
 		callback(this.trips);
 	else
@@ -87,6 +92,11 @@ DataManager.prototype.getTrips = function(callback) {
 
 // Get bikes out per day of the week for the selected stations
 DataManager.prototype.getBikesWeek = function(callback) {
+
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
 
 	var url = this.tripUrl+"?aggregate=DAY_WEEK";
 
@@ -123,6 +133,11 @@ DataManager.prototype.getBikesWeek = function(callback) {
 
 // Get bikes out per hour of the day for the selected stations
 DataManager.prototype.getBikesHourDay = function(callback) {
+
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
 
 	var url = this.tripUrl+"?aggregate=HOUR_DAY";
 
@@ -161,6 +176,11 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 // Get bikes out per day of the year for the selected stations
 DataManager.prototype.getBikesDayYear = function(callback) {
 
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
+
 	var url = this.tripUrl+"?aggregate=DAY_YEAR";
 
 	if(this.selectedStations.length > 0)
@@ -190,6 +210,11 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 
 // Get bikes out for the selected stations
 DataManager.prototype.getBikes = function(callback) {
+
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
 
 	var url = this.getTripUrl(true);
 
@@ -226,7 +251,48 @@ DataManager.prototype.getBikes = function(callback) {
 */
 DataManager.prototype.getStationsDemographic = function(callback) {
 
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
+
 	var url = this.stationUrl;
+	url += "?demographic=OUT";
+
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
+	// Only selected stations
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s].id;
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.stationUrl);
+
+		callback(json);
+	}.bind(this));
+}
+
+DataManager.prototype.getStationsAge = function(callback) {
+
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
+
+	var url = this.stationAgeUrl;
 	url += "?demographic=OUT";
 
 	if(this.date != null) {
@@ -259,7 +325,7 @@ DataManager.prototype.getTripUrl = function(coordinates) {
 	var url = this.tripUrl;
 
 	if(this.date != null ||
-	   this.selectedStations != null ||
+	   this.selectedStations != [] ||
 	   coordinates == true)
 		url += "?";
 
