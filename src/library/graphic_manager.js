@@ -32,7 +32,7 @@ function GraphicManager(htmlId) {
     this.bikes = [];
     this.linesBetweenStations = [];
 
-    this.communityAreaMapURL = "/data/chicago_community_district_map.json";
+    this.communityAreaMapURL = "./data/chicago_community_district_map.json";
 
     this.communityAreaLayer = null;
     this.lineBetweenStations = null;
@@ -179,10 +179,10 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
 
 GraphicManager.prototype.addExternalSVGs = function (callback) {
     var self = this;
-    d3.xml("/icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
-        d3.xml("/icon/zoom.svg", "image/svg+xml", function (xmlZoom) {
-            d3.xml("/icon/stationControl.svg", "image/svg+xml", function (xmlStation) {
-                d3.xml("/icon/day.svg", "image/svg+xml", function (xmlDay) {
+    d3.xml("./icon/calendar.svg", "image/svg+xml", function (xmlCalendar) {
+        d3.xml("./icon/zoom.svg", "image/svg+xml", function (xmlZoom) {
+            d3.xml("./icon/stationControl.svg", "image/svg+xml", function (xmlStation) {
+                d3.xml("./icon/day.svg", "image/svg+xml", function (xmlDay) {
 
                     document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
                     var svg = d3.select("#calendar");
@@ -410,7 +410,7 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
                     //iconUrl: '/icon/stations_popularity/station_' + (level + 1) + '.svg',
                     //iconSize: [this.mapHeight / 15, this.mapHeight / 15],
                     //iconAnchor: [this.mapWidth / 15 / 2, this.mapHeight / 15], // to point exactly at lat/lon
-                    iconUrl: '/icon/stations_popularity/station_' + (level) + '.png',
+                    iconUrl: './icon/stations_popularity/station_' + (level) + '.png',
                     iconSize: [this.iconWidth, this.iconHeight],
                     iconAnchor: [this.iconWidth / 2, this.iconHeight], // to point exactly at lat/lon
                 }),
@@ -423,8 +423,8 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
             //Set the station id
             marker.id = stations[s].id;
-            marker.deselectedUrl = '/icon/stations_popularity/station_' + (level) + '.png';
-            marker.selectedUrl = '/icon/stations_popularity/station_' + (level) + '_selected.png';
+            marker.deselectedUrl = './icon/stations_popularity/station_' + (level) + '.png';
+            marker.selectedUrl = './icon/stations_popularity/station_' + (level) + '_selected.png';
             marker.selected = false;
 
             //Add callback
@@ -477,10 +477,10 @@ GraphicManager.prototype.drawSelectedMarkers = function () {
 
     for (var s in stations) {
         if (ids.indexOf(stations[s].id) !== -1) {
-            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
+            stations[s].marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
             stations[s].marker.setIcon(stations[s].marker.options.icon);
         } else {
-            stations[s].marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + stations[s].popularityLevel + '.png';
+            stations[s].marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + stations[s].popularityLevel + '.png';
             stations[s].marker.setIcon(stations[s].marker.options.icon);
         }
     }
@@ -537,10 +537,10 @@ GraphicManager.prototype.selectCompareAll = function (station) {
     console.log("Selected stations: " + ss);
 
     if (ids.indexOf(station.id) !== -1) {
-        station.marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + station.popularityLevel + '_compareAll.png';
+        station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '_compareAll.png';
         station.marker.setIcon(station.marker.options.icon);
     } else {
-        station.marker.options.icon.options.iconUrl = '/icon/stations_popularity/station_' + station.popularityLevel + '.png';
+        station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '.png';
         station.marker.setIcon(station.marker.options.icon);
     }
 
@@ -631,70 +631,70 @@ GraphicManager.prototype.getWeatherIcon = function (weather) {
     var icon = null;
     switch (weather) {
     case "Clear":
-        icon = "/icon/weather/clear.png";
+        icon = "./icon/weather/clear.png";
         break;
     case "Drizzle":
-        icon = "/icon/weather/rain.png";
+        icon = "./icon/weather/rain.png";
         break;
     case "Fog":
-        icon = "/icon/weather/fog.png";
+        icon = "./icon/weather/fog.png";
         break;
     case "Haze":
-        icon = "/icon/weather/fog.png";
+        icon = "./icon/weather/fog.png";
         break;
     case "Heavy Drizzle":
-        icon = "/icon/weather/rain.png";
+        icon = "./icon/weather/rain.png";
         break;
     case "Heavy Rain":
-        icon = "/icon/weather/heavy_rain.png";
+        icon = "./icon/weather/heavy_rain.png";
         break;
     case "Heavy Thunderstorms and Rain":
-        icon = "/icon/weather/heavy_thunderstorm.png";
+        icon = "./icon/weather/heavy_thunderstorm.png";
         break;
     case "Light Drizzle":
-        icon = "/icon/weather/rain.png";
+        icon = "./icon/weather/rain.png";
         break;
     case "Light Freezing Drizzle":
-        icon = "/icon/weather/rain.png";
+        icon = "./icon/weather/rain.png";
         break;
     case "Light Rain":
-        icon = "/icon/weather/rain.png";
+        icon = "./icon/weather/rain.png";
         break;
     case "Light Snow":
-        icon = "/icon/weather/light_snow.png";
+        icon = "./icon/weather/light_snow.png";
         break;
     case "Light Thunderstorms and Rain":
-        icon = "/icon/weather/thunderstorm.png";
+        icon = "./icon/weather/thunderstorm.png";
         break;
     case "Mist":
-        icon = "/icon/weather/fog.png";
+        icon = "./icon/weather/fog.png";
         break;
     case "Mostly Cloudy":
-        icon = "/icon/weather/mostly_cloudy.png";
+        icon = "./icon/weather/mostly_cloudy.png";
         break;
     case "Overcast":
-        icon = "/icon/weather/overcast.png";
+        icon = "./icon/weather/overcast.png";
         break;
     case "Partly Cloudy":
-        icon = "/icon/weather/partly_cloudy.png";
+        icon = "./icon/weather/partly_cloudy.png";
         break;
     case "Rain":
-        icon = "/icon/weather/rain.png";
+        icon = "./icon/weather/rain.png";
         break;
     case "Scattered Clouds":
-        icon = "/icon/weather/partly_cloudy.png";
+        icon = "./icon/weather/partly_cloudy.png";
         break;
     case "Smoke":
-        icon = "/icon/weather/fog.png";
+        icon = "./icon/weather/fog.png";
         break;
     case "Snow ":
-        icon = "/icon/weather/snow.png";
+        icon = "./icon/weather/snow.png";
         break;
     case "Thunderstorm":
-        icon = "/icon/weather/thunderstorm.png";
+        icon = "./icon/weather/thunderstorm.png";
         break;
     case "Thunderstorms and Rain":
-        icon = "/icon/weather/thunderstorm.png";
+        icon = "./icon/weather/thunderstorm.png";
         break;
     default:
         ;
@@ -1038,6 +1038,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 d.push(line);
             }
 
+            this.dayWeekBarGraph.setTitle("Bikes out per day of the week");
             this.dayWeekBarGraph.setData(d, "daysOfWeek");
             this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
             this.dayWeekBarGraph.draw();
@@ -1068,6 +1069,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 hour += 1;
             }
 
+            this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.draw();
@@ -1076,6 +1078,7 @@ GraphicManager.prototype.updateGraphs = function () {
             var d = (data.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }));
+            this.bikesHourDayComparison.setTitle("Bikes out per hour of day");
             this.bikesHourDayComparison.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
