@@ -34,14 +34,14 @@
             fill: none;
             stroke-width: 1px;
         }
-        .dayOfYearMany{
-            fill:none;
-            stroke-width:1px;
+        .dayOfYearMany {
+            fill: none;
+            stroke-width: 1px;
         }
-        .hourOfDay{
-            fill:none;
-            stroke:rgba(200,100,90,0.9);
-            stroke-width:1px;
+        .hourOfDay {
+            fill: none;
+            stroke: rgba(200, 100, 90, 0.9);
+            stroke-width: 1px;
         }
         .hourOfDayArea {
             fill: rgba(200, 100, 90, 0.9);
@@ -55,19 +55,24 @@
             font-family: sans-serif;
             font-size: 0.4rem;
         }
-        .distance_distribution{
-            fill:rgba(140,70,70,0.9);
-            stroke:rgba(140,70,70,0.9);
-            stroke-width:1px;
+        .distance_distribution {
+            fill: rgba(140, 70, 70, 0.9);
+            stroke: rgba(140, 70, 70, 0.9);
+            stroke-width: 1px;
         }
-        .time_distribution{
-            fill:rgba(140,70,70,0.9);
-            stroke:rgba(140,70,70,0.9);
-            stroke-width:1px;
+        .time_distribution {
+            fill: rgba(140, 70, 70, 0.9);
+            stroke: rgba(140, 70, 70, 0.9);
+            stroke-width: 1px;
         }
         /* Blur effect */
         .blur {
             -webkit-filter: blur(10px);
+        }
+
+        /* Special effects */
+        .line_stroke:hover {
+            stroke-width: 5px;
         }
         /* Cursor style */
         .pointer {
@@ -88,8 +93,9 @@
         var gm = new GraphicManager("map");
         gm.createMap("grey");
 
-        // Background of the charts
-        gm.addSvg(0.585, 0.05, 0.4, 0.8);
+         // Background of the charts
+        var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.8);
+        chartBack.style("background-color", "rgba(64, 64, 64, 0.8)");
 
          // Create two svg with graphic manager
         var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
@@ -131,43 +137,45 @@
         /*
             Graph integration
         */
-        var bar1 = gm.addSvgChart(0.585, 0.05+0.02, 0.20-0.01, 0.18); // Day of the week
+        var bar1 = gm.addSvgChart(0.585, 0.05 + 0.02, 0.20 - 0.01, 0.18); // Day of the week
         var barChart1 = new BarChart(bar1);
         gm.dayWeekBarGraph = barChart1;
 
-        var line1 = gm.addSvgChart(0.585, 0.05+0.18+0.02*2, 0.20-0.01, 0.18); // Hour of the day sum
+        var line1 = gm.addSvgChart(0.585, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18); // Hour of the day sum
         var lineChart1 = new LineChart(line1);
         gm.bikesHourDay = lineChart1;
 
-        var line2 = gm.addSvgChart(0.585, 0.05+0.18*2+0.02*3, 0.20-0.01, 0.18); // Hour of the day multiple stations
+        var line2 = gm.addSvgChart(0.585, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18); // Hour of the day multiple stations
         var lineChart2 = new LineChart(line2);
+        lineChart2.callback = gm.selectedStationFromChart;
         gm.bikesHourDayComparison = lineChart2;
 
-        var line3 = gm.addSvgChart(0.585, 0.05+0.18*3+0.02*4, 0.20-0.01, 0.18); // Day of the year, multiple stations
+        var line3 = gm.addSvgChart(0.585, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18); // Day of the year, multiple stations
         var lineChart3 = new LineChart(line3);
+        lineChart3.callback = gm.selectedStationFromChart;
         gm.bikesDayYearComparison = lineChart3;
 
-        var pie1 = gm.addSvgChart(0.585+0.2+0.01, 0.05+0.18*3+0.02*4, (0.20-0.01)/3, 0.18);
-        var pie2 = gm.addSvgChart(0.585+(0.20-0.01)/3+0.2+0.01, 0.05+0.18*3+0.02*4, (0.20-0.01)/3, 0.18);
-        var pie3 = gm.addSvgChart(0.585+(0.20-0.01)*2/3+0.2+0.01, 0.05+0.18*3+0.02*4, (0.20-0.01)/3, 0.18);
+        var pie1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
+        var pie2 = gm.addSvgChart(0.585 + (0.20 - 0.01) / 3 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
+        var pie3 = gm.addSvgChart(0.585 + (0.20 - 0.01) * 2 / 3 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
 
         var pieChart1 = new PieChart(pie1);
         var pieChart2 = new PieChart(pie2);
         var pieChart3 = new PieChart(pie3);
         gm.tripsGender = pieChart1;
-         //gm.tripsGender = pieChart2;
+        gm.tripsAge = pieChart2;
         gm.tripsCustomerType = pieChart3;
 
-        var norm1 = gm.addSvgChart(0.585+0.2+0.01, 0.05+0.02, 0.20-0.01, 0.18);
+        var norm1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.02, 0.20 - 0.01, 0.18);
         var normalChart1 = new NormalChart(norm1);
         gm.timeDistribution = normalChart1;
 
-        var norm2 = gm.addSvgChart(0.585+0.2+0.01, 0.05+0.18+0.02*2, 0.20-0.01, 0.18);
+        var norm2 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
         var normalChart2 = new NormalChart(norm2);
         gm.distanceDistribution = normalChart2;
 
-        var norm3 = gm.addSvgChart(0.585+0.2+0.01, 0.05+0.18*2+0.02*3, 0.20-0.01, 0.18);
-        // TODO: implement third
+        var norm3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
+         // TODO: implement third
 
         gm.drawMarkers("popularity");
         gm.updateWindow();

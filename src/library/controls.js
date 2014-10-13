@@ -229,12 +229,13 @@ CalendarControl.prototype.draw = function () {
         .style("pointer-events", "none");
 
     // Set the callbacks
-    d3.select('#cal_plus').on("click", function () {
+    //TODO add timer
+    d3.select('#cal_plus').on("mousedown", function () {
         self.addDay();
         d3.event.stopPropagation();
     })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_minus').on("click", function () {
+    d3.select('#cal_minus').on("mousedown", function () {
         self.subDay();
         d3.event.stopPropagation();
     })

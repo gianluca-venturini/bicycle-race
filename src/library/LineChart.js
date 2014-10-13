@@ -16,6 +16,8 @@ function LineChart (svg){
 		bottom: 85 
 	};
 	this.svg.attr("viewBox","-100 0 300 100");
+
+	this.callback = null;
 }
 
 
@@ -88,23 +90,27 @@ LineChart.prototype.draw = function(){
 			.data(lst);
 		
 		/*Update old entries*/
-		graph.attr("class", this.newName)
+		graph.attr("class", this.newName+" pointer line_stroke")
 		.attr("d", function(d){
       		return line(d.values);
       	})
       	.attr("stroke", function(d){
       		return _this.color[d.key.hashCode() % 20];
-      	})
+      	});
 
       	/*Add new entries*/
       	graph.enter().append("path")
-      		.attr("class",this.newName)
+      		.attr("class",this.newName+" pointer line_stroke")
       		.attr("stroke", function(d){
       			return _this.color[d.key.hashCode() % 20];
       		})
       		.attr("d", function(d){
       			return line(d.values);
-      		});
+      		})
+      		.on("mouseover", function(d) {
+	      		if(this.callback != null)
+	      			this.callback(d.key);
+      		}.bind(this));
       	graph.exit().remove();
       	this.addLegend();   // Add a legend if showing more than one group of data
 
