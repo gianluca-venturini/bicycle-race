@@ -1,18 +1,14 @@
-/*
-	LineChart:-
-	X Axis : Linear scale on the values present in the json property(of the data), specified against x axis
-	Y Axis : Linear scale on the values present in the json property(of the data), specified against y axis
-*/
 function NormalChart (svg){
 	this.svg = svg;
 	this.chartName=null;
 	this.newName = null;
 	this.title = null;
+	this.hasValuesOnX = false;
 	this.border = {
 		left: -75, 
 		right: 190, 
 		top: 10, 
-		bottom: 85, 
+		bottom: 75, 
 		left2: 200,
 		right2: 290
 	};
@@ -24,7 +20,7 @@ NormalChart.prototype.setTitle = function(title){
 	this.title = title;
 }
 
-NormalChart.prototype.setData = function(json,className, propertyX) { 
+NormalChart.prototype.setData = function(json,className){
 	var _this = this;
 	if(this.chartName!== null) 
 		this.newName = className;
@@ -32,38 +28,54 @@ NormalChart.prototype.setData = function(json,className, propertyX) {
 		this.chartName = className;
 		this.newName =className;
 	}
-	this.axisX = propertyX;
+	this.data = json;
 	
-	this.labelY = "Frequency";
-	
-	var array = json.map(function(d){ return +d[propertyX];});
+}
+
+NormalChart.prototype.setAxes = function(propertyX, labelX, labelY){
+	var _this = this;
+	if (labelX === "" || labelX === undefined || labelX === null)
+		this.hasValuesOnX = false;
+	else
+		this.hasValuesOnX = true;
+	var array = this.data.map(function(d){ return +d[propertyX];});
 	var msv = meanSdVar(array);
 	this.msv = msv;
 	this.quartiles = getQuartiles(array);
-	this.labelX = "SD (=" +d3.format(",")(parseInt(_this.msv.sd)) + ")"
+	
 	var normals = array.map(function(d){ return (d - msv.mean)/msv.sd;});
-
+	var binData = normals;
+	this.axisX = propertyX;
+	
+	this.labelY = labelY || "Frequency";
+	this.labelX = "SD (=" +d3.format(",")(parseInt(_this.msv.sd)) + ")";
+	var xDomain = [-2.5,3.0];
+	if (this.hasValuesOnX === true){
+		var rFormat = d3.format(".1r");
+		xDomain = [0.0,rFormat(msv.mean +3.0*msv.sd)];
+		binData = array;
+		this.labelX = labelX;
+	}
+	
 	this.xScale = d3.scale.linear()
-    	.domain([-3.0, 3.0])
+    	.domain(xDomain)
 		.range([this.border.left, this.border.right]);
 	this.data = d3.layout.histogram()
-	    .bins(this.xScale.ticks(20))
+	    .bins(this.xScale.ticks(10))
 	    .frequency(true)
-	    (normals);
+	    (binData);
 
 	this.yScale = d3.scale.linear()
     	.domain([0, d3.max(this.data, function(d) { return d.y; })])
 		.range([this.border.bottom, this.border.top+5]);
 	this.xAxis = d3.svg.axis()
     	.scale(this.xScale)
-    	.ticks(20)
+    	.ticks(10)
       	.orient("bottom");
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
       	.orient("left");
-
-	
-}
+} 
 
 
 
@@ -91,14 +103,21 @@ NormalChart.prototype.draw = function(){
 
 
 	// create X axis
-	this.svg.append("g")
+	var xaxis = this.svg.append("g")
 	    .attr("class", "axis")
 	    .attr("transform", "translate(" + 0 +","+ (this.border.bottom) + ")")
-	    .call(this.xAxis)
-	    .append("text")
-	    	.attr("x", this.border.right-5 )
-	    	.attr("y", -this.border.top/2.0)
-	    	.style("text-anchor", "middle")
+	    .call(this.xAxis);
+	xaxis.selectAll("text")  
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", function(d) {
+            return "rotate(-20)" 
+        });
+	xaxis.append("text")
+    	.attr("x", this.border.right-5 )
+    	.attr("y", -this.border.top/2.0)
+    	.style("text-anchor", "middle")
 	    	.text(this.labelX);
 	this.svg.append("g")
 	    .attr("class", "axis")
@@ -127,19 +146,21 @@ NormalChart.prototype.draw = function(){
 	legend = this.svg.append("g")
 		.attr("class", "legend");
 		//.attr("transform", "translate(" + (_this.border.right)+ "," + (_this.border.top) + ")");
-
+	var lineX = (_this.hasValuesOnX === true)? _this.msv.mean : 0;
 	legend.append("text")
-		.attr("x", _this.xScale(0)-2)
-		.attr("y",_this.border.top + 10)
-	    .style("text-anchor","end")
+		.attr("transform", "rotate(-90)")
+		.attr("y", _this.xScale(lineX)-2)
+		.attr("x",-(_this.border.bottom-10))
+	    //.style("text-anchor","end")
 	    .text("Mean : " + format(parseInt(_this.msv.mean)));
+	
 	
 
 	this.svg.append("line")
 		.attr("class", _this.newName)
 		.style("stroke", "rgba(190,190,230,1.0)")
-		.attr("x1", _this.xScale(0))
-		.attr("x2", _this.xScale(0))
+		.attr("x1", _this.xScale(lineX))
+		.attr("x2", _this.xScale(lineX))
 		.attr("y1", _this.border.bottom)
 		.attr("y2", _this.border.top);
 
@@ -228,11 +249,6 @@ function meanSdVar(array){
 	var msv =  {mean: mn, variance:variance, sd:Math.sqrt(variance)};
 	return msv;
 }
-/*
-	BarChart:-
-	X Axis : Ordinal scale on the values present in the json property(of the data), specified against x axis
-	Y Axis : Linear scale on the values present in the json property(of the data), specified against y axis
-*/
 
 function getQuartiles(array){
 	var sArray = array.sort(function(a,b){ return a - b;});

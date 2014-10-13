@@ -82,7 +82,7 @@
         var line1 = gm.addSvg(0,0.5,0.20,0.20);
         var line2 = gm.addSvg(0.5,0.5,0.20,0.20);
         var pie1 = gm.addSvg(0.5, 0.0, 0.08, 0.20); 
-        var line3 = gm.addSvg(0.6,0.0,0.30,0.20);
+        var line3 = gm.addSvg(0.6,0.0,0.30,0.25);
         gm.updateWindow();
 
         
@@ -120,8 +120,8 @@
             pieChart1.setData([280,200,300,400],["a","b","c","d"],"demographic","Gender");
             pieChart1.setTitle("Demographic");
             pieChart1.draw();
-
-            normal.setData(dist,"distance","totaldistance");//(data,classname[,groupingProperty,legendlabel])
+            normal.setData(dist,"distance");
+            normal.setAxes("totaldistance");
             normal.setTitle("Distribution of bikes by total distance");
             normal.draw();
             var flag = 1;

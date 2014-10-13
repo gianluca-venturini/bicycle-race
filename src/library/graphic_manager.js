@@ -1188,8 +1188,9 @@ GraphicManager.prototype.updateGraphs = function () {
             var time = data.sort(function (a, b) {
                 return (+a.totaltime) - (+b.totaltime);
             });
-            this.timeDistribution.setData(time, "time_distribution", "totaltime");
-            this.timeDistribution.setTitle("Distribution of bikes by total time");
+            this.timeDistribution.setData(time,"time_distribution");
+            this.timeDistribution.setAxes("totaltime", "Time" ,"# of bikes") //(propertyOnX, labelX, labelY) if labelX and labelY are omitted, the graph shows
+            this.timeDistribution.setTitle("Distribution of bikes by total time");// standard deviation and frequency along x and y axes respectively.
             this.timeDistribution.draw();
         }.bind(this));
 
@@ -1198,7 +1199,8 @@ GraphicManager.prototype.updateGraphs = function () {
             var dist = data.sort(function (a, b) {
                 return (+a.totaldistance) - (+b.totaldistance);
             });
-            this.distanceDistribution.setData(dist,"distance_distribution","totaldistance");
+            this.distanceDistribution.setData(dist,"distance_distribution");
+            this.distanceDistribution.setAxes("totaldistance","Distance", "# of bikes");
             this.distanceDistribution.setTitle("Distribution of bikes by distance traveled(in meters)");
             this.distanceDistribution.draw();
         }.bind(this));
