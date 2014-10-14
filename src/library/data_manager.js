@@ -135,7 +135,20 @@ DataManager.prototype.getBikesWeek = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bikeWeeks = json;
+		data = [];
+
+		if(this.selectionMode == "DOUBLE") {
+			// Filter data
+			for(var i in json) {
+				if((json[i].from_station_id == this.selectedStations[0].id &&
+					json[i].to_station_id == this.selectedStations[1].id) ||
+				   (json[i].from_station_id == this.selectedStations[1].id &&
+					json[i].to_station_id == this.selectedStations[0].id))
+					data.push(json[i]);
+			}
+		}
+
+		this.bikeWeeks = data;
 
 		callback(json);
 	}.bind(this));
@@ -177,7 +190,20 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bikeHours = json;
+		data = [];
+
+		if(this.selectionMode == "DOUBLE") {
+			// Filter data
+			for(var i in json) {
+				if((json[i].from_station_id == this.selectedStations[0].id &&
+					json[i].to_station_id == this.selectedStations[1].id) ||
+				   (json[i].from_station_id == this.selectedStations[1].id &&
+					json[i].to_station_id == this.selectedStations[0].id))
+					data.push(json[i]);
+			}
+		}
+
+		this.bikeHours = data;
 
 		callback(json);
 	}.bind(this));
@@ -212,7 +238,20 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bikeHours = json;
+		data = [];
+
+		if(this.selectionMode == "DOUBLE") {
+			// Filter data
+			for(var i in json) {
+				if((json[i].from_station_id == this.selectedStations[0].id &&
+					json[i].to_station_id == this.selectedStations[1].id) ||
+				   (json[i].from_station_id == this.selectedStations[1].id &&
+					json[i].to_station_id == this.selectedStations[0].id))
+					data.push(json[i]);
+			}
+		}
+
+		this.bikeHours = data;
 
 		callback(json);
 	}.bind(this));
@@ -250,7 +289,20 @@ DataManager.prototype.getBikes = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bike = json;
+		data = [];
+
+		if(this.selectionMode == "DOUBLE") {
+			// Filter data
+			for(var i in json) {
+				if((json[i].from_station_id == this.selectedStations[0].id &&
+					json[i].to_station_id == this.selectedStations[1].id) ||
+				   (json[i].from_station_id == this.selectedStations[1].id &&
+					json[i].to_station_id == this.selectedStations[0].id))
+					data.push(json[i]);
+			}
+		}
+
+		this.bike = data;
 
 		callback(json);
 	}.bind(this));
