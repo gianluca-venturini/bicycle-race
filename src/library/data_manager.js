@@ -1,4 +1,11 @@
-function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl, stationAgeUrl, stationFlowUrl) {
+function DataManager(tripUrl, 
+					 stationUrl, 
+					 weatherUrl, 
+					 timeDistributionUrl, 
+					 distanceDistributionUrl, 
+					 stationAgeUrl, 
+					 stationFlowUrl,
+					 rideUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
 	this.weatherUrl = weatherUrl;
@@ -6,6 +13,7 @@ function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, dista
 	this.distanceDistributionUrl = distanceDistributionUrl;
 	this.stationAgeUrl = stationAgeUrl;
 	this.stationFlowUrl = stationFlowUrl;
+	this.rideUrl = rideUrl;
 
 	this.selectedStations = [];
 
@@ -21,6 +29,7 @@ function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, dista
 	this.bike = null;
 	this.timeDistribution = null;
 	this.distanceDistribution = null;
+	this.tripDistanceDistribution = null;
 
 	// Mode
 	this.selectionMode = null; 	// MULTIPLE | DOUBLE
@@ -407,4 +416,54 @@ DataManager.prototype.getFlow = function(callback, stationId, flow) {
 
 		callback(json);
 	}.bind(this));
+}
+
+/*
+	Get the ride distribution
+*/
+DataManager.prototype.getRideDistribution = function(callback) {
+
+	var url = this.rideUrl;
+
+	if(this.tripDistanceDistribution != null)
+		callback(this.tripDistanceDistribution);
+	else
+		queue()
+		.defer(d3.json, url+"?limit=100000&start=0")
+	    .defer(d3.json, url+"?limit=100000&start=100000")
+	    .defer(d3.json, url+"?limit=100000&start=200000")
+	    .defer(d3.json, url+"?limit=100000&start=300000")
+	    .defer(d3.json, url+"?limit=100000&start=400000")
+	    .defer(d3.json, url+"?limit=100000&start=500000")
+	    .defer(d3.json, url+"?limit=100000&start=600000")
+	    .defer(d3.json, url+"?limit=100000&start=700000")
+	    .defer(d3.json, url+"?limit=100000&start=800000")
+	    .defer(d3.json, url+"?limit=100000&start=900000")
+	    .await(function(error, 
+	    				json0, 
+	    				json1, 
+	    				json2, 
+	    				json3, 
+	    				json4, 
+	    				json5, 
+	    				json6, 
+	    				json7, 
+	    				json8, 
+	    				json9) {
+	    	var data = json0.concat(json1);
+	    	var data = data.concat(json2);
+	    	var data = data.concat(json3);
+	    	var data = data.concat(json4);
+	    	var data = data.concat(json5);
+	    	var data = data.concat(json6);
+	    	var data = data.concat(json7);
+	    	var data = data.concat(json8);
+	    	var data = data.concat(json9);
+			if(error)
+				console.log("can't download file " + this.rideUrl);
+
+			this.tripDistanceDistribution = data;
+
+			callback(data);
+		}.bind(this));
 }

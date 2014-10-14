@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="./style/app.css" />
     <link rel="stylesheet" href="./style/chart.css" />
     <script src="./library/jquery-1.11.1.min.js"></script>
-    <script src="./library/leaflet.js"></script>
     <script src="./library/d3.v3.min.js"></script>
+    <script src="./library/queue.v1.min.js"></script>
+    <script src="./library/leaflet.js"></script>
     <script src="./library/geojson-utils.js"></script>
     <script src="./library/graphic_manager.js"></script>
     <script src="./library/data_manager.js"></script>
@@ -175,7 +176,8 @@
         gm.distanceDistribution = normalChart2;
 
         var norm3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
-         // TODO: implement third
+        var normalChart3 = new NormalChart(norm3);
+        gm.tripsDistanceDistribution = normalChart3;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();

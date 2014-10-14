@@ -20,8 +20,10 @@ function GraphicManager(htmlId) {
     this.tripsGender = null;
     this.tripsAge = null;
     this.tripsCustomerType = null;
+
     this.timeDistribution = null;
     this.dinstanceDistribution = null;
+    this.tripsDistanceDistribution = null;
 
     this.svgs = [];
     this.divs = [];
@@ -42,7 +44,9 @@ function GraphicManager(htmlId) {
         "http://data.divvybikeschicago.com/weather.php",
         "http://data.divvybikeschicago.com/time.php",
         "http://data.divvybikeschicago.com/distance.php",
-        "http://data.divvybikeschicago.com/station_age.php");
+        "http://data.divvybikeschicago.com/station_age.php",
+        "http://data.divvybikeschicago.com/flow.php",
+        "http://data.divvybikeschicago.com/ride.php");
 
     this.lastSelected = null;
     this.showStation = false;
@@ -1205,14 +1209,20 @@ GraphicManager.prototype.updateGraphs = function () {
             this.distanceDistribution.draw();
         }.bind(this));
 
+    if(this.tripsDistanceDistribution != null) {
+        /*
+        this.dm.getRideDistribution(function (data) {
+            var dist = data.sort(function (a, b) {
+                return (+a.meters) - (+b.meters);
+            });
+            this.tripsDistanceDistribution.setData(dist,"trips_distance_distribution");
+            this.tripsDistanceDistribution.setAxes("meters","Distance", "# of bikes");
+            this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
+            this.tripsDistanceDistribution.draw();
+        }.bind(this));
+        */
 
-    //gm.bikesHourDayComparison = lineChart2;
-
-    /*
-    this.dayWeekBarGraph = null;
-    this.bikesHourDay = null;
-    this.bikesDayYear = null;
-    */
+    }
 
 };
 
