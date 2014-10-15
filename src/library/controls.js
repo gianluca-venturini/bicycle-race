@@ -362,7 +362,7 @@ DayControl.prototype.setCallbackDayClose = function (callback) {
 function StationControl() {
     this.callbackCompareAll = null;
     this.selectedStation = null;
-    this.callbackCompareAll = null;
+    this.callbackCompareTwo = null;
 }
 
 StationControl.prototype.draw = function () {
@@ -370,8 +370,14 @@ StationControl.prototype.draw = function () {
     d3.select('#stationControl').style('opacity', 0); //TODO change to remove
 
     var self = this;
-    d3.selectAll('.station_compareAll').on("mousedown", function () {
+    d3.selectAll('.station_compareAll').on("click", function () {
         self.callbackCompareAll(this.selectedStation);
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+
+    d3.selectAll('.station_compare2').on("click", function () {
+        self.callbackCompareTwo(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
@@ -380,6 +386,10 @@ StationControl.prototype.draw = function () {
 
 StationControl.prototype.setCallbackCompareAll = function (callback) {
     this.callbackCompareAll = callback;
+};
+
+StationControl.prototype.setCallbackCompareTwo = function (callback) {
+    this.callbackCompareTwo = callback;
 };
 
 ///////////////////////

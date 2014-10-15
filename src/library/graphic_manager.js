@@ -239,6 +239,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                     self.stationControl = stationControl;
                     stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
+                    stationControl.setCallbackCompareTwo(self.selectCompareTwo.bind(self));
 
                     stationControl.draw();
 
@@ -433,36 +434,45 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
 
             //Add callback
             marker.on("click", function (e) {
+                self.highlightStationByMarker(e.target);
+                //}.bind(this));
+            });
 
-                try {
-                    if (this.lastSelected.id !== e.target.id) {
-                        // Invert previous marker's icon and selection
-                        if (this.lastSelected.selected) {
-                            this.lastSelected.selected = !this.lastSelected.selected;
-                        }
-                    }
-                } catch (err) {
-                    // do nothing
-                }
-
-                // Change status of the current marker
-                e.target.selected = !e.target.selected;
-
-                // Update last selected marker
-                this.lastSelected = e.target;
-
-                // Pass info to the controller of the button
-                this.stationControl.selectedStation = e.target.station;
-
-                this.drawSelectedMarkers();
-
-                // Redraw current station's info
-                this.selectedStation(e.target.station);
-
-            }.bind(this));
         }
         break;
     }
+
+};
+
+/**
+ *   Highlight in yellow the current selected station
+ */
+GraphicManager.prototype.highlightStationByMarker = function (marker) {
+
+    try {
+        if (this.lastSelected.id !== marker.id) {
+            // Invert previous marker's icon and selection
+            if (this.lastSelected.selected) {
+                this.lastSelected.selected = !this.lastSelected.selected;
+            }
+        }
+    } catch (err) {
+        // do nothing
+    }
+
+    // Change status of the current marker
+    marker.selected = !marker.selected;
+
+    // Update last selected marker
+    this.lastSelected = marker;
+
+    // Pass info to the controller of the button
+    this.stationControl.selectedStation = marker.station;
+
+    this.drawSelectedMarkers();
+
+    // Redraw current station's info
+    this.selectedStation(marker.station);
 
 };
 
@@ -512,6 +522,17 @@ GraphicManager.prototype.selectedStation = function (station) {
 
 GraphicManager.prototype.selectCompareAll = function (station) {
 
+    // Set mode
+    if (this.dm.selectionMode === null) {
+        this.dm.selectionMode = "MULTIPLE";
+    }
+    // Switch of mode
+    if (this.dm.selectionMode === "DOUBLE") {
+        this.dm.selectedStations = [];
+        this.dm.selectionMode = "MULTIPLE";
+    }
+    console.log(this.dm.selectionMode);
+
     var selectedStations = this.dm.selectedStations;
 
     // Retrieve IDs of the selected
@@ -552,6 +573,65 @@ GraphicManager.prototype.selectCompareAll = function (station) {
     this.hideLineBetweenStations();
     this.showLineBetweenStations();
 
+    this.updateGraphs();
+};
+
+GraphicManager.prototype.selectCompareTwo = function (station) {
+
+    // Set mode
+    if (this.dm.selectionMode === null) {
+        this.dm.selectionMode = "DOUBLE";
+    }
+    // Switch of mode
+    if (this.dm.selectionMode === "MULTIPLE") {
+        this.dm.selectedStations = [];
+        this.dm.selectionMode = "DOUBLE";
+    } else {
+        if (this.dm.selectedStations.length === 2 && this.dm.selectedStations[0].id !== station.id && this.dm.selectedStations[1].id !== station.id) {
+            // Remove the oldest one
+            this.dm.selectedStations.splice(0, 1);
+        }
+    }
+    console.log(this.dm.selectionMode);
+
+
+    var selectedStations = this.dm.selectedStations;
+
+    // Retrieve IDs of the selected
+    var ids = [];
+    for (var id = 0; id < selectedStations.length; id++) {
+        ids.push(selectedStations[id].id);
+    }
+
+    // Update selected stations
+    if (ids.indexOf(station.id) == -1) {
+        // Add the stations to selected
+        selectedStations.push(station);
+    } else {
+        selectedStations.splice(ids.indexOf(station.id), 1);
+    }
+
+    // Retrieve IDs of the selected
+    var ids = [];
+    for (var id = 0; id < selectedStations.length; id++) {
+        ids.push(selectedStations[id].id);
+    }
+
+    // Debug
+    var ss = [];
+    for (var i = 0; i < selectedStations.length; i++)
+        ss.push(selectedStations[i].id);
+    console.log("Selected stations: " + ss);
+
+    if (ids.indexOf(station.id) !== -1) {
+        station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '_compareAll.png';
+        station.marker.setIcon(station.marker.options.icon);
+    } else {
+        station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '.png';
+        station.marker.setIcon(station.marker.options.icon);
+    }
+
+    this.drawSelectedMarkers();
     this.updateGraphs();
 };
 
@@ -1129,8 +1209,8 @@ GraphicManager.prototype.updateGraphs = function () {
             }
         }.bind(this));
 
-    if(this.tripsAge != null)
-        this.dm.getStationsAge(function(data) {
+    if (this.tripsAge != null)
+        this.dm.getStationsAge(function (data) {
             var a = {};
             a.a0_20 = 0;
             a.a21_30 = 0;
@@ -1139,32 +1219,31 @@ GraphicManager.prototype.updateGraphs = function () {
             a.a51_60 = 0;
             a.a61_70 = 0;
             a.a71p = 0;
-            for(var i in data) {
+            for (var i in data) {
                 var station = data[i];
-                for(var j in station.ages) {
+                for (var j in station.ages) {
                     var ag = station.ages[j];
                     var count = +ag.count;
                     var age = +ag.age;
-                    if(age <= 20)
+                    if (age <= 20)
                         a.a0_20 += count;
-                    if(age >= 21 && age <= 30)
+                    if (age >= 21 && age <= 30)
                         a.a21_30 += count;
-                    if(age >= 31 && age <= 40)
+                    if (age >= 31 && age <= 40)
                         a.a31_40 += count;
-                    if(age >= 41 && age <= 50)
+                    if (age >= 41 && age <= 50)
                         a.a41_50 += count;
-                    if(age >= 51 && age <= 60)
+                    if (age >= 51 && age <= 60)
                         a.a51_60 += count;
-                    if(age >= 61 && age <= 70)
+                    if (age >= 61 && age <= 70)
                         a.a61_70 += count;
-                    if(age >= 71)
+                    if (age >= 71)
                         a.a71p += count;
                 }
             }
-            this.tripsAge.setData([a.a0_20, a.a21_30, a.a31_40, a.a41_50, a.a51_60, a.a61_70, a.a71p], 
-                                  ["0-20",  "21-30",  "31-40",  "41-50",  "51-60",  "61-70",  "71+"],
-                                  "demographic",
-                                  "Age");
+            this.tripsAge.setData([a.a0_20, a.a21_30, a.a31_40, a.a41_50, a.a51_60, a.a61_70, a.a71p], ["0-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71+"],
+                "demographic",
+                "Age");
             this.tripsAge.setTitle("Age");
             this.tripsAge.draw();
         }.bind(this));
@@ -1192,9 +1271,9 @@ GraphicManager.prototype.updateGraphs = function () {
             var time = data.sort(function (a, b) {
                 return (+a.totaltime) - (+b.totaltime);
             });
-            this.timeDistribution.setData(time,"time_distribution");
-            this.timeDistribution.setAxes("totaltime", "Time" ,"# of bikes") //(propertyOnX, labelX, labelY) if labelX and labelY are omitted, the graph shows
-            this.timeDistribution.setTitle("Distribution of bikes by total time");// standard deviation and frequency along x and y axes respectively.
+            this.timeDistribution.setData(time, "time_distribution");
+            this.timeDistribution.setAxes("totaltime", "Time", "# of bikes") //(propertyOnX, labelX, labelY) if labelX and labelY are omitted, the graph shows
+            this.timeDistribution.setTitle("Distribution of bikes by total time"); // standard deviation and frequency along x and y axes respectively.
             this.timeDistribution.draw();
         }.bind(this));
 
@@ -1203,13 +1282,13 @@ GraphicManager.prototype.updateGraphs = function () {
             var dist = data.sort(function (a, b) {
                 return (+a.totaldistance) - (+b.totaldistance);
             });
-            this.distanceDistribution.setData(dist,"distance_distribution");
-            this.distanceDistribution.setAxes("totaldistance","Distance", "# of bikes");
+            this.distanceDistribution.setData(dist, "distance_distribution");
+            this.distanceDistribution.setAxes("totaldistance", "Distance", "# of bikes");
             this.distanceDistribution.setTitle("Distribution of bikes by distance traveled(in meters)");
             this.distanceDistribution.draw();
         }.bind(this));
 
-    if(this.tripsDistanceDistribution != null) {
+    if (this.tripsDistanceDistribution != null) {
         /*
         this.dm.getRideDistribution(function (data) {
             var dist = data.sort(function (a, b) {
@@ -1261,6 +1340,15 @@ GraphicManager.prototype.hideLineBetweenStations = function () {
     }
 };
 
-GraphicManager.prototype.selectedStationFromChart = function(stationId) {
-    console.log("Selected: " + stationId);
+GraphicManager.prototype.selectedStationFromChart = function (stationId) {
+
+    var marker = null;
+
+    for (var m in this.markers) {
+        if (this.markers[m].id === +stationId) {
+            marker = this.markers[m];
+            break;
+        }
+    }
+    this.highlightStationByMarker(marker);
 }
