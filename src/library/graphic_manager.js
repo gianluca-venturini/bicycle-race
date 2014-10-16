@@ -451,7 +451,7 @@ GraphicManager.prototype.highlightStationByMarker = function (marker) {
 
     try {
         if (this.lastSelected.id !== marker.id) {
-            // Invert previous marker's icon and selection
+            // Invert previous marker's selection
             if (this.lastSelected.selected) {
                 this.lastSelected.selected = !this.lastSelected.selected;
             }
@@ -491,7 +491,10 @@ GraphicManager.prototype.drawSelectedMarkers = function () {
 
     for (var s in stations) {
         if (ids.indexOf(stations[s].id) !== -1) {
-            stations[s].marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
+            if (this.dm.selectionMode === "MULTIPLE")
+                stations[s].marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + stations[s].popularityLevel + '_compareAll.png';
+            else
+                stations[s].marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + stations[s].popularityLevel + '_compare2.png';
             stations[s].marker.setIcon(stations[s].marker.options.icon);
         } else {
             stations[s].marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + stations[s].popularityLevel + '.png';
@@ -573,6 +576,7 @@ GraphicManager.prototype.selectCompareAll = function (station) {
     this.hideLineBetweenStations();
     this.showLineBetweenStations();
 
+    this.drawSelectedMarkers();
     this.updateGraphs();
 };
 
@@ -593,7 +597,6 @@ GraphicManager.prototype.selectCompareTwo = function (station) {
         }
     }
     console.log(this.dm.selectionMode);
-
 
     var selectedStations = this.dm.selectedStations;
 
@@ -624,7 +627,7 @@ GraphicManager.prototype.selectCompareTwo = function (station) {
     console.log("Selected stations: " + ss);
 
     if (ids.indexOf(station.id) !== -1) {
-        station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '_compareAll.png';
+        station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '_compare2.png';
         station.marker.setIcon(station.marker.options.icon);
     } else {
         station.marker.options.icon.options.iconUrl = './icon/stations_popularity/station_' + station.popularityLevel + '.png';
@@ -718,7 +721,7 @@ GraphicManager.prototype.getWeatherIcon = function (weather) {
         icon = "./icon/weather/clear.png";
         break;
     case "Drizzle":
-        icon = "./icon/weather/rain.png";
+        icon = "./icon/weather/drizzle.png";
         break;
     case "Fog":
         icon = "./icon/weather/fog.png";
@@ -727,7 +730,7 @@ GraphicManager.prototype.getWeatherIcon = function (weather) {
         icon = "./icon/weather/fog.png";
         break;
     case "Heavy Drizzle":
-        icon = "./icon/weather/rain.png";
+        icon = "./icon/weather/drizzle.png";
         break;
     case "Heavy Rain":
         icon = "./icon/weather/heavy_rain.png";
@@ -736,10 +739,10 @@ GraphicManager.prototype.getWeatherIcon = function (weather) {
         icon = "./icon/weather/heavy_thunderstorm.png";
         break;
     case "Light Drizzle":
-        icon = "./icon/weather/rain.png";
+        icon = "./icon/weather/drizzle.png";
         break;
     case "Light Freezing Drizzle":
-        icon = "./icon/weather/rain.png";
+        icon = "./icon/weather/drizzle.png";
         break;
     case "Light Rain":
         icon = "./icon/weather/rain.png";

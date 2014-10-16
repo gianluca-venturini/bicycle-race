@@ -10,23 +10,26 @@
 	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
 	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
 ]>
-<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+<svg version="1.1" id="Icons" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="100px"
 	 viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
 <metadata>
 	<sfw  xmlns="&ns_sfw;">
 		<slices></slices>
-		<sliceSourceBounds  width="16383" height="34.333" y="-67.5" x="-8141.232" bottomLeftOrigin="true"></sliceSourceBounds>
+		<sliceSourceBounds  width="70.826" height="98.527" x="14.624" y="1.236" bottomLeftOrigin="true"></sliceSourceBounds>
 	</sfw>
 </metadata>
-<g id="XMLID_1_">
+<g id="XMLID_2_">
 	<g>
+		<path fill="#08519C" d="M48.835,93.436c-1.21-1.646-29.711-40.61-29.711-57.285c0-17.317,14.082-31.414,31.413-31.414
+			c17.316,0,31.413,14.096,31.413,31.414c0,16.669-28.501,55.637-29.712,57.285L51.1,94.982c-0.127,0.184-0.338,0.281-0.562,0.281
+			c-0.225,0-0.436-0.102-0.562-0.281L48.835,93.436z"/>
 	</g>
 	<g>
-		<path fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" d="M60.42,47.75c0,6.16-4.99,11.15-11.14,11.15
-			c-6.16,0-11.15-4.99-11.15-11.15c0-6.15,4.99-11.15,11.15-11.15C55.43,36.6,60.42,41.6,60.42,47.75z"/>
+		<path fill="none" stroke="#92CD00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+			M50.537,4.737c-17.332,0-31.413,14.096-31.413,31.414c0,16.669,28.501,55.637,29.711,57.285l1.14,1.547
+			c0.126,0.187,0.337,0.281,0.562,0.281c0.227,0,0.438-0.099,0.562-0.281l1.139-1.547C53.449,91.79,81.95,52.823,81.95,36.151
+			C81.95,18.833,67.854,4.737,50.537,4.737z"/>
 	</g>
 </g>
-<rect x="38.304" y="36.6" fill="none" width="21.942" height="22.3"/>
-<text transform="matrix(1 0 0 1 42.0757 53.7354)" font-family="'HelveticaNeue-UltraLight'" font-size="24">+</text>
 </svg>
