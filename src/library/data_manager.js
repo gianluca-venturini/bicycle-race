@@ -135,18 +135,7 @@ DataManager.prototype.getBikesWeek = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		data = [];
-
-		if(this.selectionMode == "DOUBLE") {
-			// Filter data
-			for(var i in json) {
-				if((json[i].from_station_id == this.selectedStations[0].id &&
-					json[i].to_station_id == this.selectedStations[1].id) ||
-				   (json[i].from_station_id == this.selectedStations[1].id &&
-					json[i].to_station_id == this.selectedStations[0].id))
-					data.push(json[i]);
-			}
-		}
+		data = this.filterDataModality(json);
 
 		this.bikeWeeks = data;
 
@@ -190,18 +179,7 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		data = [];
-
-		if(this.selectionMode == "DOUBLE") {
-			// Filter data
-			for(var i in json) {
-				if((json[i].from_station_id == this.selectedStations[0].id &&
-					json[i].to_station_id == this.selectedStations[1].id) ||
-				   (json[i].from_station_id == this.selectedStations[1].id &&
-					json[i].to_station_id == this.selectedStations[0].id))
-					data.push(json[i]);
-			}
-		}
+		data = this.filterDataModality(json);
 
 		this.bikeHours = data;
 
@@ -238,18 +216,7 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		data = [];
-
-		if(this.selectionMode == "DOUBLE") {
-			// Filter data
-			for(var i in json) {
-				if((json[i].from_station_id == this.selectedStations[0].id &&
-					json[i].to_station_id == this.selectedStations[1].id) ||
-				   (json[i].from_station_id == this.selectedStations[1].id &&
-					json[i].to_station_id == this.selectedStations[0].id))
-					data.push(json[i]);
-			}
-		}
+		data = this.filterDataModality(json);
 
 		this.bikeHours = data;
 
@@ -289,18 +256,7 @@ DataManager.prototype.getBikes = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		data = [];
-
-		if(this.selectionMode == "DOUBLE") {
-			// Filter data
-			for(var i in json) {
-				if((json[i].from_station_id == this.selectedStations[0].id &&
-					json[i].to_station_id == this.selectedStations[1].id) ||
-				   (json[i].from_station_id == this.selectedStations[1].id &&
-					json[i].to_station_id == this.selectedStations[0].id))
-					data.push(json[i]);
-			}
-		}
+		data = this.filterDataModality(json);
 
 		this.bike = data;
 
@@ -518,4 +474,24 @@ DataManager.prototype.getRideDistribution = function(callback) {
 
 			callback(data);
 		}.bind(this));
+}
+
+DataManager.prototype.filterDataModality = function(d) {
+	data = [];
+
+	if(this.selectionMode == "DOUBLE" && this.selectedStations.length >= 2) {
+		// Filter data
+		for(var i in d) {
+			if((d[i].from_station_id == this.selectedStations[0].id &&
+				d[i].to_station_id == this.selectedStations[1].id) ||
+			   (d[i].from_station_id == this.selectedStations[1].id &&
+				d[i].to_station_id == this.selectedStations[0].id))
+				data.push(d[i]);
+		}
+	}
+	else {
+		data = d;
+	}
+
+	return data;
 }
