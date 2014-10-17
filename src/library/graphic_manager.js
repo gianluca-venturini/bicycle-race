@@ -525,6 +525,22 @@ GraphicManager.prototype.drawSelectedMarkers = function () {
             }
         }
         break;
+            
+            case "outflow":
+
+        for (var s in stations) {
+            if (ids.indexOf(stations[s].id) !== -1) {
+                if (this.dm.selectionMode === "MULTIPLE")
+                    stations[s].marker.options.icon.options.iconUrl = './icon/stations_outflow/station_' + stations[s].outflowLevel + '_compareAll.png';
+                else
+                    stations[s].marker.options.icon.options.iconUrl = './icon/stations_outflow/station_' + stations[s].outflowLevel + '_compare2.png';
+                stations[s].marker.setIcon(stations[s].marker.options.icon);
+            } else {
+                stations[s].marker.options.icon.options.iconUrl = './icon/stations_outflow/station_' + stations[s].outflowLevel + '.png';
+                stations[s].marker.setIcon(stations[s].marker.options.icon);
+            }
+        }
+        break;
 
     }
 
@@ -671,6 +687,8 @@ GraphicManager.prototype.updateStationControl = function (station) {
 /////////////////////// CONTROLS CALLBACKS ///////////////////////////////////////////
 
 GraphicManager.prototype.selectAll = function () {
+    // Automatically switch to compareAll mode
+    this.dm.selectionMode = "MULTIPLE";
     this.dm.selectedStations = this.stations;
     this.drawSelectedMarkers();
     this.updateGraphs();
@@ -884,6 +902,15 @@ GraphicManager.prototype.selectInflow = function (station) {
 };
 
 GraphicManager.prototype.selectOutflow = function (station) {
+    // Invert the behavior
+    if (this.markerType === "outflow" && this.lastOutflow === station.id) {
+        this.lastOutflow = station.id;
+        this.markerType = "popularity";
+        this.drawSelectedMarkers();
+        this.selectedStation(this.selected);
+        return;
+    }
+    this.lastOutflow = station.id;
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -911,6 +938,40 @@ GraphicManager.prototype.selectInflowCallback = function (flow) {
                 var level = Math.floor(+flow[f].flow * 6);
                 if (level === 6) level = 5;
                 this.stations[s].inflowLevel = level; // store value
+            }
+            //break;
+        }
+    }
+
+    this.drawSelectedMarkers();
+    this.selectedStation(this.selected);
+
+};
+
+GraphicManager.prototype.selectOutflowCallback = function (flow) {
+
+    // Set the marker type
+    this.markerType = "outflow";
+
+    var nums = [];
+    for (var i in flow) {
+        nums.push(+flow[i].count);
+    }
+    var max = Math.max.apply(null, nums);
+
+    // Normalize the flow value
+    for (var i in flow) {
+        flow[i].flow = +flow[i].count / max;
+    }
+
+    // Store the info into the stations
+    for (var s in this.stations) {
+        this.stations[s].outflowLevel = 0; // store default value
+        for (var f in flow) {
+            if (+flow[f].id === this.stations[s].id) {
+                var level = Math.floor(+flow[f].flow * 6);
+                if (level === 6) level = 5;
+                this.stations[s].outflowLevel = level; // store value
             }
             //break;
         }
