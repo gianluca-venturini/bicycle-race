@@ -82,10 +82,12 @@
             cursor: default
         }
         .unselectable {
-            -webkit-user-select: none; /* Chrome/Safari */        
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE10+ */
-
+            -webkit-user-select: none;
+            /* Chrome/Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
             /* Rules below not implemented in browsers yet */
             -o-user-select: none;
             user-select: none;
@@ -107,9 +109,9 @@
         chartBack.style("background-color", "rgba(64, 64, 64, 0.8)");
 
          // Create two svg with graphic manager
-        var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
-        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
-        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
+        var svgLayerControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
+        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.12 + 0.01, 0.07, 0.14); // y taken from previous svg's height
+        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01 + 0.145, 0.07, 0.06);
 
         gm.updateWindow();
 
