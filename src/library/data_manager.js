@@ -19,7 +19,10 @@ function DataManager(tripUrl,
 
 	// Filters
 	this.date = null;
-	this.hour = null;	// format: "hh:mm"
+	this.hour = null;			// format: "hh:mm"
+	this.gender = null;			// "MALE" | "FEMALE" | "UNKNOWN"
+	this.age = null;			// expected a vector [minAge, maxAge]
+	this.customerType = null;	// "CUSTOMER" | "SUBSCRIBER"
 
 	// Data cache
 	this.stations = null;
@@ -400,7 +403,7 @@ DataManager.prototype.getDistanceDistribution = function(callback) {
 
 /*
 	Get the flow for the station
-	flow: IN | OUT
+	flow: "IN" | "OUT"
 */
 DataManager.prototype.getFlow = function(callback, stationId, flow) {
 
@@ -494,4 +497,34 @@ DataManager.prototype.filterDataModality = function(d) {
 	}
 
 	return data;
+}
+
+
+// TODO
+DataManager.prototype.filterDataGender = function(d) {
+	if(this.gender == null)
+		return d;
+
+	data = [];
+
+	for(var i in d) {
+		if(d[i].gender == this.gender)
+			data.push(d[i]);
+	}
+}
+
+// TODO
+DataManager.prototype.filterDataAge = function(d) {
+	if(this.age == null)
+		return d;
+
+	data = [];
+}
+
+// TODO
+DataManager.prototype.filterDataCustomerType = function(d) {
+	if(this.customerType == null)
+		return d;
+
+	data = [];
 }
