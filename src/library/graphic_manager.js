@@ -167,14 +167,56 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
 
     var svg = d3.select("#" + this.mapId).append("svg");
 
-    svg.attr("class", "default")
+    var gm = this;
+
+    svg.attr("class", "default unselectable")
         .attr("_height", height)
         .attr("_width", width)
         .attr("_x", x)
         .attr("_y", y)
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
-        .attr('preserveAspectRatio', 'xMidYMid meet');
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .on("mousedown", function() {
+            console.log("mousedown "+d3.mouse(this));
+            this.mouse = d3.mouse(this);
+            d3.event.stopPropagation();
+        })
+        .on("mouseup", function() {
+            console.log("mouseup "+d3.mouse(this));
+            this.mouse = undefined;
+            d3.event.stopPropagation();
+        })
+        .on("mouseenter", function() {
+            this.mouse = undefined;
+            d3.event.stopPropagation();
+        })
+        .on("mousemove", function() {
+            var mouse = this.mouse;
+            if(this.mouse != undefined) {
+                mouseNow = d3.mouse(this);
+                var pdx = mouseNow[0]-this.mouse[0];
+                var dx = pdx/gm.mapWidth;
+                var pdy = mouseNow[1]-this.mouse[1];
+                var dy = pdy/gm.mapHeight;
+                console.log(pdx, pdy);
+
+                
+                
+                
+                //svg.attr("_x", +parseFloat(svg.attr("_x"))+dx);
+                //svg.attr("_y", +parseFloat(svg.attr("_y"))+dy);
+                svg.style("margin-left", parseFloat(svg.style("margin-left"))+pdx+"px");
+                svg.style("margin-top", parseFloat(svg.style("margin-top"))+pdy+"px");
+                //this.mouse = undefined;
+                //gm.positionSVGs();
+                
+                d3.event.stopPropagation();
+
+                mouseNow = d3.mouse(this);
+                this.mouse = mouseNow;
+            }
+        });
 
     this.svgs.push(svg);
 
