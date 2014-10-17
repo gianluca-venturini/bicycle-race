@@ -301,7 +301,7 @@ CalendarControl.prototype.draw = function () {
 };
 
 CalendarControl.prototype.addDay = function () {
-    if (this.dayCounter === 31)
+    if (this.dayCounter === 31 || (this.dayCounter === 30 && this.month === 9) || (this.dayCounter === 30 && this.month === 11))
         this.dayCounter = 0;
     this.dayCounter++;
     var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
@@ -312,7 +312,10 @@ CalendarControl.prototype.addDay = function () {
 
 CalendarControl.prototype.subDay = function () {
     if (this.dayCounter === 1)
-        this.dayCounter = 32;
+        if (this.month === 9 || this.month === 11)
+            this.dayCounter = 31;
+        else
+            this.dayCounter = 32;
     this.dayCounter--;
     var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
     d3.select('#cal_day').text(text);
@@ -363,6 +366,8 @@ function StationControl() {
     this.callbackCompareAll = null;
     this.selectedStation = null;
     this.callbackCompareTwo = null;
+    this.callbackOutflow = null;
+    this.callbackInflow = null;
 }
 
 StationControl.prototype.draw = function () {
@@ -381,6 +386,18 @@ StationControl.prototype.draw = function () {
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
+    
+    d3.selectAll('.station_inflow').on("click", function () {
+        self.callbackInflow(this.selectedStation);
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+    
+    d3.selectAll('.station_outflow').on("click", function () {
+        self.callbackOutflow(this.selectedStation);
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
 
 };
 
@@ -390,6 +407,14 @@ StationControl.prototype.setCallbackCompareAll = function (callback) {
 
 StationControl.prototype.setCallbackCompareTwo = function (callback) {
     this.callbackCompareTwo = callback;
+};
+
+StationControl.prototype.setCallbackOutflow = function (callback) {
+    this.callbackOutflow = callback;
+};
+
+StationControl.prototype.setCallbackInflow = function (callback) {
+    this.callbackInflow = callback;
 };
 
 ///////////////////////
