@@ -8,6 +8,7 @@ function PieChart (svg){
 	this.chartName=null;
 	this.newName = null;
 	this.title = null;
+	this.data = null;
 	this.border = {
 		left: -75, 
 		right: 75, 
@@ -34,8 +35,8 @@ PieChart.prototype.setData = function(valuesLst, nameLst, className, legendLabel
 	this.data = valuesLst;
 	this.legendNames = nameLst;
 	this.legendLabel = legendLabel;
-	this.radius = (this.border.bottom - this.border.top)/2.0 -2.0; 
-
+	this.radius = (this.border.bottom - this.border.top)/2.5 -2.0; 
+	this.center = {x:(this.border.right+this.border.left)*0.5,y:(this.border.bottom + this.border.top)*0.55};
 	this.color = d3.scale.category20()
 		.domain(this.legendNames);
 
@@ -52,47 +53,54 @@ PieChart.prototype.setData = function(valuesLst, nameLst, className, legendLabel
 
 PieChart.prototype.draw = function(){
 	var _this = this;
+
 	_this.svg.selectAll("." + _this.chartName).remove();
 	this.removeLegend();
-	var commas = d3.format(",");
+	if(this.data !== null && this.data.length > 0 && !this.data.every(isZero)){
 		
-	var graph = this.svg.selectAll("." + _this.newName)
-	  	.data(_this.pie(_this.data));
-		
-	var arcGrp = graph.enter().append("g")
-		.attr("transform", "translate(" + ((_this.border.left + _this.border.right)*0.5) + "," + (_this.border.bottom - _this.radius) + ")")
-	  	.attr("class",  _this.newName);
+		var commas = d3.format(",");
+			
+		var graph = this.svg.selectAll("." + _this.newName)
+		  	.data(_this.pie(_this.data));
+			
+		var arcGrp = graph.enter().append("g")
+			.attr("transform", "translate(" + _this.center.x + "," + _this.center.y + ")")
+		  	.attr("class",  _this.newName);
 
-	arcGrp.append("path")
-      	.attr("d", _this.arc)
-      	.style("fill", function(d,i) { return _this.color(_this.legendNames[i]); })
-		      	
+		arcGrp.append("path")
+	      	.attr("d", _this.arc)
+	      	.style("fill", function(d,i) { return _this.color(_this.legendNames[i]); })
+			      	
 
-  	arcGrp.append("text")
-      	.attr("transform", function(d) { return "translate(" + _this.arc.centroid(d) + ")"; })
-      	.attr("dy", ".35em")
-      	.style("text-anchor", "middle")
-      	.text(function(d) { return commas(d.data); });
-
+	  	arcGrp.append("text")
+	      	.attr("transform", function(d) { return "translate(" + _this.arc.centroid(d) + ")"; })
+	      	.attr("dy", ".35em")
+	      	.style("text-anchor", "middle")
+	      	.text(function(d) { return commas(d.data); });
+	    this.addLegend();
+	}
 
 	/*Set title for graph */
 	if(this.title!== null){
 		this.svg.selectAll(".title").remove();
 		this.svg.append("text")
 			.attr("class", "title")
-			.attr("transform", "translate(" + (_this.border.left*0.5) + "," + (_this.border.top) + ")")
+			.attr("transform", "translate(" + (_this.center.x) + "," + (_this.border.top) + ")")
 		    .style("text-anchor","middle")
 		    .text(_this.title);
 	}
 
-	this.addLegend();
+	
 	if (this.newName!==null){
 		this.chartName = this.newName; 
 
 	}
 	
 }
-	
+
+function isZero(element, index, array) {
+  return element == 0;
+}
 
 PieChart.prototype.addLegend  =  function(){
 	var _this = this;

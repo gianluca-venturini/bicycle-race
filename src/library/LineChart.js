@@ -9,6 +9,7 @@ function LineChart (svg){
 	this.newName = null;
 	this.title = null;
 	this.colorTable = [];
+	this.xHasTime = false;
 	this.border = {
 		left: -75, 
 		right: 190, 
@@ -37,6 +38,7 @@ LineChart.prototype.setData = function(json,className,groupOnProperty, legendLab
 	}
 
 	this.data = json;
+	this.xHasTime = false;
 	this.groupOnProperty = groupOnProperty;
 	if (groupOnProperty !== undefined && groupOnProperty !== null){
 		this.group = d3.set(this.data.map(function(d){ return d[_this.groupOnProperty]; })).values();
@@ -57,33 +59,89 @@ LineChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
 	this.axisY = propertyY;
 	this.labelX = labelX;
 	this.labelY = labelY;
+
 	
 
 }
 
+LineChart.prototype.setTimeDataInX = function(interval,times,timeFormat){
+	this.xHasTime = true;
+	if(interval === "month"){
+		this.interval = d3.time.months;
+	}
+	else if(interval === "day"){
+		this.interval = d3.time.days;
+	}
+	else if( interval === "hour"){
+		this.interval = d3.time.hours;
+	}
+	this.multipleInterval = times;
+	if(timeFormat === "12hr"){
+		this.timeFormat = d3.time.format("%I %p");
+	}
+	else if (timeFormat === "MMM DD"){
+		this.timeFormat = d3.time.format("%b %d");
+	}
+	else
+		this.timeFormat = d3.time.format("%H");
+}
+
+LineChart.prototype.valueToDate = function(val){
+	if(this.interval === d3.time.days || this.interval === d3.time.months){
+		return new Date(val);
+	}
+	else if( this.interval === d3.time.hours){
+		return new Date(0, 0, 0, +val, 0, 0, 0);
+	}
+}
+
 LineChart.prototype.draw = function(){
 	var _this = this;
-	this.xScale = d3.scale.linear()
-		.domain([0, d3.max(this.data, function(d){return +d[_this.axisX];})])
-		.range([this.border.left, this.border.right]);
+
 	this.yScale = d3.scale.linear()
 		.domain([0, d3.max(this.data, function(d){return +d[_this.axisY];})])
 		.range([this.border.bottom, this.border.top]);
-	this.xAxis = d3.svg.axis()
-    	.scale(this.xScale)
-      	.orient("bottom");
+	this.svg.selectAll(".axis").remove();
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
       	.orient("left");
-	
-	
-	var line = d3.svg.line()
+	this.xScale = null;
+	var line = null;
+	if (this.xHasTime === true){
+		this.xScale = d3.time.scale()
+			.domain([d3.min(this.data, function(d){return _this.valueToDate(d[_this.axisX]);}),d3.max(this.data, function(d){return _this.valueToDate(d[_this.axisX]);})])
+			.range([this.border.left, this.border.right]);
+		console.log(this.xScale.domain());
+		this.xAxis = d3.svg.axis()
+	    	.scale(this.xScale)
+	    	.ticks(_this.interval, _this.multipleInterval)
+    		.tickFormat(_this.timeFormat)
+	      	.orient("bottom");
+	    line = d3.svg.line()
+		    .x(function(d) { return _this.xScale(_this.valueToDate(d[_this.axisX])); })
+		    .y(function(d) { return _this.yScale(+d[_this.axisY]); });
+	}
+	else{
+		this.xScale = d3.scale.linear()
+			.domain([0, d3.max(this.data, function(d){return +d[_this.axisX];})])
+			.range([this.border.left, this.border.right]);
+		this.xAxis = d3.svg.axis()
+	    	.scale(this.xScale)
+	      	.orient("bottom");
+	    line = d3.svg.line()
 		    .x(function(d) { return _this.xScale(+d[_this.axisX]); })
 		    .y(function(d) { return _this.yScale(+d[_this.axisY]); });
+	}
+	
+	
+	
+	
+	
 	this.removeLegend();
 	if (this.groupOnProperty !== undefined && this.groupOnProperty !== null){
 		var lst = d3.nest().key(function(d){return d[_this.groupOnProperty];}).entries(_this.data);
 		
+		var tooMany = (lst.length > 10)? true:false;
 
 		/*Join new data*/
 		var graph = this.svg.selectAll("." + this.chartName)
@@ -95,14 +153,14 @@ LineChart.prototype.draw = function(){
       		return line(d.values);
       	})
       	.attr("stroke", function(d){
-      		return _this.color[d.key.hashCode() % 20];
+      		return (tooMany)? "rgba(220,220,220,1.0)" : _this.color[d.key.hashCode() % 20];
       	});
 
       	/*Add new entries*/
       	graph.enter().append("path")
       		.attr("class",this.newName+" pointer line_stroke")
       		.attr("stroke", function(d){
-      			return _this.color[d.key.hashCode() % 20];
+      			return (tooMany)? "rgba(220,220,220,1.0)" : _this.color[d.key.hashCode() % 20];
       		})
       		.attr("d", function(d){
       			return line(d.values);
@@ -112,7 +170,8 @@ LineChart.prototype.draw = function(){
 	      			this.callback(d.key);
       		}.bind(this));
       	graph.exit().remove();
-      	this.addLegend();   // Add a legend if showing more than one group of data
+      	if (!tooMany)
+      		this.addLegend();   // Add a legend if showing more than one group of data
 
 	}
 	else{
@@ -135,7 +194,7 @@ LineChart.prototype.draw = function(){
       	graph.exit().remove();
 	}
 	
-	this.svg.selectAll(".axis").remove();
+	
 
 	// create X axis
 	this.svg.append("g")

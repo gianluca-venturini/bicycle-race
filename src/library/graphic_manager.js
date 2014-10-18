@@ -1070,6 +1070,7 @@ GraphicManager.prototype.updateGraphs = function () {
 
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
+            this.bikesHourDay.setTimeDataInX("hour",2,"12hr");
             this.bikesHourDay.draw();
 
             // Multiple line chart
@@ -1080,6 +1081,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
+            this.bikesHourDayComparison.setTimeDataInX("hour",2,"12hr");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
@@ -1171,11 +1173,12 @@ GraphicManager.prototype.updateGraphs = function () {
             var dy = 1000 * 60 * 60 * 24; // in a day
             var days = dd.map(function (d) {
                 var temp = d;
-                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-30")) / dy;
+                temp["dayCount"] = (new Date(d.day) - new Date("2013-6-27")) / dy;
                 return temp;
             });
-            this.bikesDayYearComparison.setData(days, "dayOfYearMany", "fromStation", "Station");
-            this.bikesDayYearComparison.setAxes("dayCount", "Day", "count", "Rides");
+            this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
+            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYearComparison.setTimeDataInX("month",1,"MMM DD");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
         }.bind(this));
