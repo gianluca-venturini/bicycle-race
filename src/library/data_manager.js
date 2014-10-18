@@ -1,4 +1,11 @@
-function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, distanceDistributionUrl, stationAgeUrl, stationFlowUrl) {
+function DataManager(tripUrl, 
+					 stationUrl, 
+					 weatherUrl, 
+					 timeDistributionUrl, 
+					 distanceDistributionUrl, 
+					 stationAgeUrl, 
+					 stationFlowUrl,
+					 rideUrl) {
 	this.tripUrl = tripUrl;
 	this.stationUrl = stationUrl;
 	this.weatherUrl = weatherUrl;
@@ -6,12 +13,16 @@ function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, dista
 	this.distanceDistributionUrl = distanceDistributionUrl;
 	this.stationAgeUrl = stationAgeUrl;
 	this.stationFlowUrl = stationFlowUrl;
+	this.rideUrl = rideUrl;
 
 	this.selectedStations = [];
 
 	// Filters
 	this.date = null;
-	this.hour = null;	// format: "hh:mm"
+	this.hour = null;			// format: "hh:mm"
+	this.gender = null;			// "MALE" | "FEMALE" | "UNKNOWN"
+	this.age = null;			// expected a vector [minAge, maxAge]
+	this.customerType = null;	// "CUSTOMER" | "SUBSCRIBER"
 
 	// Data cache
 	this.stations = null;
@@ -21,6 +32,7 @@ function DataManager(tripUrl, stationUrl, weatherUrl, timeDistributionUrl, dista
 	this.bike = null;
 	this.timeDistribution = null;
 	this.distanceDistribution = null;
+	this.tripDistanceDistribution = null;
 
 	// Mode
 	this.selectionMode = null; 	// MULTIPLE | DOUBLE
@@ -126,7 +138,9 @@ DataManager.prototype.getBikesWeek = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bikeWeeks = json;
+		data = this.filterDataModality(json);
+
+		this.bikeWeeks = data;
 
 		callback(json);
 	}.bind(this));
@@ -168,7 +182,9 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bikeHours = json;
+		data = this.filterDataModality(json);
+
+		this.bikeHours = data;
 
 		callback(json);
 	}.bind(this));
@@ -203,7 +219,9 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bikeHours = json;
+		data = this.filterDataModality(json);
+
+		this.bikeHours = data;
 
 		callback(json);
 	}.bind(this));
@@ -241,7 +259,9 @@ DataManager.prototype.getBikes = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		this.bike = json;
+		data = this.filterDataModality(json);
+
+		this.bike = data;
 
 		callback(json);
 	}.bind(this));
@@ -383,7 +403,7 @@ DataManager.prototype.getDistanceDistribution = function(callback) {
 
 /*
 	Get the flow for the station
-	flow: IN | OUT
+	flow: "IN" | "OUT"
 */
 DataManager.prototype.getFlow = function(callback, stationId, flow) {
 
@@ -407,4 +427,104 @@ DataManager.prototype.getFlow = function(callback, stationId, flow) {
 
 		callback(json);
 	}.bind(this));
+}
+
+/*
+	Get the ride distribution
+*/
+DataManager.prototype.getRideDistribution = function(callback) {
+
+	var url = this.rideUrl;
+
+	if(this.tripDistanceDistribution != null)
+		callback(this.tripDistanceDistribution);
+	else
+		queue()
+		.defer(d3.json, url+"?limit=100000&start=0")
+	    .defer(d3.json, url+"?limit=100000&start=100000")
+	    .defer(d3.json, url+"?limit=100000&start=200000")
+	    .defer(d3.json, url+"?limit=100000&start=300000")
+	    .defer(d3.json, url+"?limit=100000&start=400000")
+	    .defer(d3.json, url+"?limit=100000&start=500000")
+	    .defer(d3.json, url+"?limit=100000&start=600000")
+	    .defer(d3.json, url+"?limit=100000&start=700000")
+	    .defer(d3.json, url+"?limit=100000&start=800000")
+	    .defer(d3.json, url+"?limit=100000&start=900000")
+	    .await(function(error, 
+	    				json0, 
+	    				json1, 
+	    				json2, 
+	    				json3, 
+	    				json4, 
+	    				json5, 
+	    				json6, 
+	    				json7, 
+	    				json8, 
+	    				json9) {
+	    	var data = json0.concat(json1);
+	    	var data = data.concat(json2);
+	    	var data = data.concat(json3);
+	    	var data = data.concat(json4);
+	    	var data = data.concat(json5);
+	    	var data = data.concat(json6);
+	    	var data = data.concat(json7);
+	    	var data = data.concat(json8);
+	    	var data = data.concat(json9);
+			if(error)
+				console.log("can't download file " + this.rideUrl);
+
+			this.tripDistanceDistribution = data;
+
+			callback(data);
+		}.bind(this));
+}
+
+DataManager.prototype.filterDataModality = function(d) {
+	data = [];
+
+	if(this.selectionMode == "DOUBLE" && this.selectedStations.length >= 2) {
+		// Filter data
+		for(var i in d) {
+			if((d[i].from_station_id == this.selectedStations[0].id &&
+				d[i].to_station_id == this.selectedStations[1].id) ||
+			   (d[i].from_station_id == this.selectedStations[1].id &&
+				d[i].to_station_id == this.selectedStations[0].id))
+				data.push(d[i]);
+		}
+	}
+	else {
+		data = d;
+	}
+
+	return data;
+}
+
+
+// TODO
+DataManager.prototype.filterDataGender = function(d) {
+	if(this.gender == null)
+		return d;
+
+	data = [];
+
+	for(var i in d) {
+		if(d[i].gender == this.gender)
+			data.push(d[i]);
+	}
+}
+
+// TODO
+DataManager.prototype.filterDataAge = function(d) {
+	if(this.age == null)
+		return d;
+
+	data = [];
+}
+
+// TODO
+DataManager.prototype.filterDataCustomerType = function(d) {
+	if(this.customerType == null)
+		return d;
+
+	data = [];
 }

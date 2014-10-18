@@ -9,6 +9,11 @@ if($limit == NULL) {
 	$limit = "100";
 }
 
+$start = htmlentities($_GET['start']);
+if($start == NULL) {
+	$start = "0";
+}
+
 
 class Bike {
 	public $bikeid = "";
@@ -20,7 +25,7 @@ $database = new DataBaseMySQL();
 $database->query("SELECT bikeid, meters
 				  FROM TRIP
 				  ORDER BY meters DESC
-				  LIMIT $limit");
+				  LIMIT $start , $limit");
 
 $reply = [];
 

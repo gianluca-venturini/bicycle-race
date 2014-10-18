@@ -168,6 +168,10 @@ LineChart.prototype.draw = function(){
       		.on("mouseover", function(d) {
 	      		if(this.callback != null)
 	      			this.callback(d.key);
+      		}.bind(this))
+      		.on("mouseout", function(d) {
+	      		if(this.callback != null)
+	      			this.callback(d.key);
       		}.bind(this));
       	graph.exit().remove();
       	if (!tooMany)

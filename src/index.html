@@ -3,22 +3,23 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Project2</title>
-    <link rel="stylesheet" href="/style/leaflet.css" />
-    <link rel="stylesheet" href="/style/app.css" />
-    <link rel="stylesheet" href="/style/chart.css" />
-    <script src="/library/jquery-1.11.1.min.js"></script>
-    <script src="/library/leaflet.js"></script>
-    <script src="/library/d3.v3.min.js"></script>
-    <script src="/library/geojson-utils.js"></script>
-    <script src="/library/graphic_manager.js"></script>
-    <script src="/library/data_manager.js"></script>
-    <script src="/library/controls.js"></script>
-    <script src="/library/marker.js"></script>
-    <script src="/library/BarChart.js"></script>
-    <script src="/library/LineChart.js"></script>
-    <script src="/library/PieChart.js"></script>
-    <script src="/library/slider.js"></script>
-    <script src="/library/NormalChart.js"></script>
+    <link rel="stylesheet" href="./style/leaflet.css" />
+    <link rel="stylesheet" href="./style/app.css" />
+    <link rel="stylesheet" href="./style/chart.css" />
+    <script src="./library/jquery-1.11.1.min.js"></script>
+    <script src="./library/d3.v3.min.js"></script>
+    <script src="./library/queue.v1.min.js"></script>
+    <script src="./library/leaflet.js"></script>
+    <script src="./library/geojson-utils.js"></script>
+    <script src="./library/graphic_manager.js"></script>
+    <script src="./library/data_manager.js"></script>
+    <script src="./library/controls.js"></script>
+    <script src="./library/marker.js"></script>
+    <script src="./library/BarChart.js"></script>
+    <script src="./library/LineChart.js"></script>
+    <script src="./library/PieChart.js"></script>
+    <script src="./library/slider.js"></script>
+    <script src="./library/NormalChart.js"></script>
     <style>
         #map {
             height: 100%;
@@ -69,7 +70,6 @@
         .blur {
             -webkit-filter: blur(10px);
         }
-
         /* Special effects */
         .line_stroke:hover {
             stroke-width: 5px;
@@ -80,6 +80,17 @@
         }
         .default {
             cursor: default
+        }
+        .unselectable {
+            -webkit-user-select: none;
+            /* Chrome/Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
+            /* Rules below not implemented in browsers yet */
+            -o-user-select: none;
+            user-select: none;
         }
     </style>
 </head>
@@ -98,9 +109,13 @@
         chartBack.style("background-color", "rgba(64, 64, 64, 0.8)");
 
          // Create two svg with graphic manager
-        var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
-        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
-        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
+        var svgLayerControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
+        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.12 + 0.01, 0.07, 0.14); // y taken from previous svg's height
+        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01 + 0.145, 0.07, 0.06);
+        //var svgMultimap = gm.addSvg(0, 0.705, 0.07, 0.17);
+        /* Charts controls */
+        var svgStaticChartsControl = gm.addSvg(0.585, 1 - 0.12, 0.07, 0.12); //+ 0.4 / 5
+        var svgHideChartsControl = gm.addSvg(0.585 + 0.07 + 0.002, 1 - 0.12, 0.07, 0.12);
 
         gm.updateWindow();
 
@@ -111,6 +126,8 @@
         var zoomControl = new ZoomControl();
         var stationControl = new StationControl();
         var dayControl = new DayControl();
+        var staticChartsControl = new StaticChartsControl(svgStaticChartsControl);
+        var hideChartsControl = new HideChartsControl(svgHideChartsControl);
 
         selectionControl.setCallbackSelectAll(gm.selectAll.bind(gm));
         selectionControl.setCallbackDeselectAll(gm.deselectAll.bind(gm));
@@ -124,12 +141,15 @@
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
+        staticChartsControl.draw();
+        hideChartsControl.draw();
 
          // Set interactions
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
         layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
 
         gm.addExternalSVGs(gm.updateWindow.bind(gm));
+        gm.addExternalSVGsCharts(gm.updateWindow.bind(gm));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
          //gm.addSubMap(0, 0, 0.07, 0.12, "map3", "lol");
@@ -147,12 +167,12 @@
 
         var line2 = gm.addSvgChart(0.585, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18); // Hour of the day multiple stations
         var lineChart2 = new LineChart(line2);
-        lineChart2.callback = gm.selectedStationFromChart;
+        lineChart2.callback = gm.selectedStationFromChart.bind(gm);
         gm.bikesHourDayComparison = lineChart2;
 
         var line3 = gm.addSvgChart(0.585, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18); // Day of the year, multiple stations
         var lineChart3 = new LineChart(line3);
-        lineChart3.callback = gm.selectedStationFromChart;
+        lineChart3.callback = gm.selectedStationFromChart.bind(gm);
         gm.bikesDayYearComparison = lineChart3;
 
         var pie1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
@@ -175,7 +195,8 @@
         gm.distanceDistribution = normalChart2;
 
         var norm3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
-         // TODO: implement third
+        var normalChart3 = new NormalChart(norm3);
+        gm.tripsDistanceDistribution = normalChart3;
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
