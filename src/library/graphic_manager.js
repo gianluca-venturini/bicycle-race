@@ -233,105 +233,127 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
             d3.xml("./icon/stationControl.svg", "image/svg+xml", function (xmlStation) {
                 d3.xml("./icon/day.svg", "image/svg+xml", function (xmlDay) {
                     d3.xml("./icon/title.svg", "image/svg+xml", function (xmlTitle) {
+                        d3.xml("./icon/multiMap.svg", "image/svg+xml", function (xmlMultimap) {
 
-                        document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
-                        var svg = d3.select("#calendar");
+                            document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
+                            var svg = d3.select("#calendar");
 
-                        svg.attr("_height", 0.24)
-                            .attr("_width", 0.07)
-                            .attr("_x", 0)
-                            .attr("_y", 0.31 + 0.005 + 0.145)
-                            .style("position", "absolute")
-                            .style("background-color", "rgba(64, 64, 64, 0.7)");
+                            svg.attr("_height", 0.24)
+                                .attr("_width", 0.07)
+                                .attr("_x", 0)
+                                .attr("_y", 0.31 + 0.005 + 0.145)
+                                .style("position", "absolute")
+                                .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                        self.svgs.push(svg);
+                            self.svgs.push(svg);
 
-                        var calendarControl = new CalendarControl();
+                            var calendarControl = new CalendarControl();
 
-                        self.calendarControl = calendarControl;
-                        calendarControl.setCallbackSetDate(self.callbackSetDate.bind(self));
+                            self.calendarControl = calendarControl;
+                            calendarControl.setCallbackSetDate(self.callbackSetDate.bind(self));
 
-                        calendarControl.draw();
+                            calendarControl.draw();
 
-                        ////////////////////////////////////
+                            ////////////////////////////////////
 
-                        document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
-                        svg = d3.select("#zoom");
+                            document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
+                            svg = d3.select("#zoom");
 
-                        svg.attr("_height", 0.12)
-                            .attr("_width", 0.07)
-                            .attr("_x", 0)
-                            .attr("_y", 1 - 0.12)
-                            .style("position", "absolute")
-                            .style("background-color", "rgba(64, 64, 64, 0.7)");
+                            svg.attr("_height", 0.12)
+                                .attr("_width", 0.07)
+                                .attr("_x", 0)
+                                .attr("_y", 1 - 0.12)
+                                .style("position", "absolute")
+                                .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                        self.svgs.push(svg);
+                            self.svgs.push(svg);
 
-                        zoomControl.draw();
+                            zoomControl.draw();
 
-                        ////////////////////////////////////
+                            ////////////////////////////////////
 
-                        document.getElementById(self.mapId).appendChild(xmlStation.documentElement);
-                        svg = d3.select("#stationControl");
+                            document.getElementById(self.mapId).appendChild(xmlStation.documentElement);
+                            svg = d3.select("#stationControl");
 
-                        svg.attr("_height", 0.45)
-                            .attr("_width", 0.1)
-                            .attr("_x", 0.072)
-                            .attr("_y", 0.250)
-                            .style("position", "absolute")
-                            .style("background-color", "rgba(64, 64, 64, 0.7)");
+                            svg.attr("_height", 0.45)
+                                .attr("_width", 0.1)
+                                .attr("_x", 0.072)
+                                .attr("_y", 0.250)
+                                .style("position", "absolute")
+                                .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                        self.svgs.push(svg);
+                            self.svgs.push(svg);
 
-                        self.stationControl = stationControl;
-                        stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
-                        stationControl.setCallbackCompareTwo(self.selectCompareTwo.bind(self));
-                        stationControl.setCallbackOutflow(self.selectOutflow.bind(self));
-                        stationControl.setCallbackInflow(self.selectInflow.bind(self));
+                            self.stationControl = stationControl;
+                            stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
+                            stationControl.setCallbackCompareTwo(self.selectCompareTwo.bind(self));
+                            stationControl.setCallbackOutflow(self.selectOutflow.bind(self));
+                            stationControl.setCallbackInflow(self.selectInflow.bind(self));
 
-                        stationControl.draw();
+                            stationControl.draw();
 
-                        ////////////////////////////////////
+                            ////////////////////////////////////
 
-                        document.getElementById(self.mapId).appendChild(xmlDay.documentElement);
-                        svg = d3.select("#dayControl");
+                            document.getElementById(self.mapId).appendChild(xmlDay.documentElement);
+                            svg = d3.select("#dayControl");
 
-                        svg.attr("_height", 0.24 + 0.005)
-                            .attr("_width", 0.1)
-                            .attr("_x", 0.072)
-                            .attr("_y", 0)
-                            .style("position", "absolute")
-                            .style("background-color", "rgba(64, 64, 64, 0.7)");
+                            svg.attr("_height", 0.24 + 0.005)
+                                .attr("_width", 0.1)
+                                .attr("_x", 0.072)
+                                .attr("_y", 0)
+                                .style("position", "absolute")
+                                .style("background-color", "rgba(64, 64, 64, 0.7)");
 
-                        self.svgs.push(svg);
+                            self.svgs.push(svg);
 
-                        self.dayControl = dayControl;
-                        dayControl.setCallbackDayClose(self.callbackDayClose.bind(self));
+                            self.dayControl = dayControl;
+                            dayControl.setCallbackDayClose(self.callbackDayClose.bind(self));
 
-                        dayControl.draw();
-                        self.dayControl.enabled = false;
+                            dayControl.draw();
+                            self.dayControl.enabled = false;
 
-                        var svgSlider = self.addSvg.call(self, 0.072, 0.24 + 0.005 - 0.06, 0.1, 0.06);
-                        callback();
-                        self.slider = new Slider(svgSlider);
-                        self.slider.draw();
-                        self.slider.setCallbackSetHour(self.callbackSetHour.bind(self));
+                            var svgSlider = self.addSvg.call(self, 0.072, 0.24 + 0.005 - 0.06, 0.1, 0.06);
+                            callback();
+                            self.slider = new Slider(svgSlider);
+                            self.slider.draw();
+                            self.slider.setCallbackSetHour(self.callbackSetHour.bind(self));
 
-                        ////////////////////////////////////
-                        
-                        document.getElementById(self.mapId).appendChild(xmlTitle.documentElement);
-                        var svg = d3.select("#title");
+                            ////////////////////////////////////
 
-                        svg.attr("_height", 0.12)
-                            .attr("_width", 0.07)
-                            .attr("_x", 0)
-                            .attr("_y", 0)
-                            .style("position", "absolute")
-                            .style("background-color", "rgba(0, 151, 201, 0.7");
+                            document.getElementById(self.mapId).appendChild(xmlTitle.documentElement);
+                            var svg = d3.select("#title");
 
-                        self.svgs.push(svg);
+                            svg.attr("_height", 0.12)
+                                .attr("_width", 0.07)
+                                .attr("_x", 0)
+                                .attr("_y", 0)
+                                .style("position", "absolute")
+                                .style("background-color", "rgba(0, 151, 201, 0.7");
 
-                        callback();
+                            self.svgs.push(svg);
+
+                            ////////////////////////////////////
+
+                            document.getElementById(self.mapId).appendChild(xmlMultimap.documentElement);
+                            var svg = d3.select("#multimap");
+
+                            svg.attr("_height", 0.17)
+                                .attr("_width", 0.07)
+                                .attr("_x", 0)
+                                .attr("_y", 0.705)
+                                .style("position", "absolute")
+                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+
+                            self.svgs.push(svg);
+
+                            //var multimapControl = new MultimapControl();
+
+                            //multimapControl.setCallbackSetDate(self.callbackSetDate.bind(self));
+
+                            //multimapControl.draw();
+
+                            callback();
+                        });
                     });
                 });
             });
@@ -340,6 +362,61 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
 
 };
+
+GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
+    var self = this;
+    d3.xml("./icon/filter_gender.svg", "image/svg+xml", function (xmlGender) {
+        d3.xml("./icon/filter_age.svg", "image/svg+xml", function (xmlAge) {
+            d3.xml("./icon/filter_user.svg", "image/svg+xml", function (xmlUser) {
+
+                document.getElementById(self.mapId).appendChild(xmlGender.documentElement);
+                var svg = d3.select("#filter_gender");
+
+                svg.attr("_height", 0.12)
+                    .attr("_width", 0.07)
+                    .attr("_x", 0.585 + 0.07 * 2 + 0.002 * 2)
+                    .attr("_y", 1 - 0.12)
+                    .style("position", "absolute")
+                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+
+                self.svgs.push(svg);
+
+                ////////////////////////////////////
+
+                document.getElementById(self.mapId).appendChild(xmlAge.documentElement);
+                var svg = d3.select("#filter_age");
+
+                svg.attr("_height", 0.12)
+                    .attr("_width", 0.07)
+                    .attr("_x", 0.585 + 0.07 * 3 + 0.002 * 3)
+                    .attr("_y", 1 - 0.12)
+                    .style("position", "absolute")
+                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+
+                self.svgs.push(svg);
+
+                ////////////////////////////////////
+
+                document.getElementById(self.mapId).appendChild(xmlUser.documentElement);
+                var svg = d3.select("#filter_user");
+
+                svg.attr("_height", 0.12)
+                    .attr("_width", 0.07)
+                    .attr("_x", 0.585 + 0.07 * 4 + 0.002 * 4)
+                    .attr("_y", 1 - 0.12)
+                    .style("position", "absolute")
+                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+
+                self.svgs.push(svg);
+
+                callback();
+
+            });
+        });
+    });
+
+};
+
 
 GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type) {
     var div = d3.select("#" + this.mapId).append("div");
@@ -507,6 +584,10 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
  *   Highlight in yellow the current selected station
  */
 GraphicManager.prototype.highlightStationByMarker = function (marker) {
+
+    // Disable active flows when highlighting new station
+    this.markerType = "popularity";
+    this.drawSelectedMarkers();
 
     try {
         if (this.lastSelected.id !== marker.id) {
