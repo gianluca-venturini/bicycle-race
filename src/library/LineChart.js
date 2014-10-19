@@ -111,7 +111,6 @@ LineChart.prototype.draw = function(){
 		this.xScale = d3.time.scale()
 			.domain([d3.min(this.data, function(d){return _this.valueToDate(d[_this.axisX]);}),d3.max(this.data, function(d){return _this.valueToDate(d[_this.axisX]);})])
 			.range([this.border.left, this.border.right]);
-		console.log(this.xScale.domain());
 		this.xAxis = d3.svg.axis()
 	    	.scale(this.xScale)
 	    	.ticks(_this.interval, _this.multipleInterval)

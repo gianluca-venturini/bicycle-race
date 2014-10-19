@@ -91,9 +91,6 @@ NormalChart.prototype.draw = function(){
 	bars = this.svg.selectAll("." + this.newName)
 		.data(this.data);
 
-	console.log(this.data);
-
-
 	bars.enter().append("rect")
 		.attr("class",this.newName)
 		.attr("transform", function(d){
