@@ -323,6 +323,8 @@ DataManager.prototype.getStationsAge = function(callback) {
 		url += "to="+this.date;
 	}
 
+	url += "&aggregate=yes";	// Get aggregated results
+
 	// Only selected stations
 	if(this.selectedStations.length > 0)
 		url +="&stations=";
