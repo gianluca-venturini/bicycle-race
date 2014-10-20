@@ -386,13 +386,13 @@ StationControl.prototype.draw = function () {
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
-    
+
     d3.selectAll('.station_inflow').on("click", function () {
         self.callbackInflow(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
-    
+
     d3.selectAll('.station_outflow').on("click", function () {
         self.callbackOutflow(this.selectedStation);
         d3.event.stopPropagation();
@@ -418,7 +418,6 @@ StationControl.prototype.setCallbackInflow = function (callback) {
 };
 
 ///////////////////////
-
 
 function ZoomControl() {
 
@@ -451,3 +450,73 @@ ZoomControl.prototype.setCallbackZoomIn = function (callback) {
 ZoomControl.prototype.setCallbackZoomOut = function (callback) {
     this.callbackZoonOut = callback;
 };
+
+///////////////////////
+
+function StaticChartsControl(svg) {
+    this.svg = svg;
+    this.width = +svg.attr("width").replace("px", "");
+    this.height = +svg.attr("height").replace("px", "");
+    svg.attr("viewBox", "0 0 100 50");
+}
+
+StaticChartsControl.prototype.draw = function () {
+
+    this.text = this.svg.append("text")
+        .attr('id', 'text_statics_charts')
+        .attr('class', 'text_control pointer')
+        .attr("text-anchor", "middle")
+        .attr('x', 50)
+        .attr('y', 25)
+        .attr("dominant-baseline", "central")
+        .style('font-size', '0.9em')
+        .text("Show static charts");
+
+};
+
+StaticChartsControl.prototype.setCallback = function (element, callback) {
+    this.callback = callback;
+
+    // Set the callback
+    d3.select('#' + element).on("mousedown", function () {
+        callback();
+        d3.event.stopPropagation();
+    });
+};
+
+///////////////////////
+
+///////////////////////
+
+function HideChartsControl(svg) {
+    this.svg = svg;
+    this.width = +svg.attr("width").replace("px", "");
+    this.height = +svg.attr("height").replace("px", "");
+    svg.attr("viewBox", "0 0 100 50");
+}
+
+HideChartsControl.prototype.draw = function () {
+
+    this.text = this.svg.append("text")
+        .attr('id', 'text_statics_charts')
+        .attr('class', 'text_control pointer')
+        .attr("text-anchor", "middle")
+        .attr('x', 50)
+        .attr('y', 25)
+        .attr("dominant-baseline", "central")
+        .style('font-size', '0.9em')
+        .text("Hide all charts");
+
+};
+
+HideChartsControl.prototype.setCallback = function (element, callback) {
+    this.callback = callback;
+
+    // Set the callback
+    d3.select('#' + element).on("mousedown", function () {
+        callback();
+        d3.event.stopPropagation();
+    });
+};
+
+///////////////////////

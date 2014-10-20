@@ -4,15 +4,18 @@ function NormalChart (svg){
 	this.newName = null;
 	this.title = null;
 	this.hasValuesOnX = false;
+	
 	this.border = {
 		left: -75, 
-		right: 190, 
+		right: 140, 
 		top: 10, 
-		bottom: 75, 
-		left2: 200,
-		right2: 290
+		bottom: 85, 
+		left2: 150,
+		right2: 250,
+		top2: 20, 
+		bottom2: 75
 	};
-	this.svg.attr("viewBox","-100 0 400 100");
+	this.svg.attr("viewBox","-100 0 300 100");
 }
 
 
@@ -71,6 +74,7 @@ NormalChart.prototype.setAxes = function(propertyX, labelX, labelY){
 	this.xAxis = d3.svg.axis()
     	.scale(this.xScale)
     	.ticks(10)
+    	.tickSize(2)
       	.orient("bottom");
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
@@ -86,9 +90,6 @@ NormalChart.prototype.draw = function(){
 	this.svg.selectAll(".axis").remove();
 	bars = this.svg.selectAll("." + this.newName)
 		.data(this.data);
-
-	console.log(this.data);
-
 
 	bars.enter().append("rect")
 		.attr("class",this.newName)
@@ -112,7 +113,7 @@ NormalChart.prototype.draw = function(){
         .attr("dx", "-.8em")
         .attr("dy", ".15em")
         .attr("transform", function(d) {
-            return "rotate(-20)" 
+            return "rotate(-15)" 
         });
 	xaxis.append("text")
     	.attr("x", this.border.right-5 )
@@ -177,22 +178,22 @@ NormalChart.prototype.drawBox = function(){
 	this.svg.selectAll(".box").remove();
 	var yscale = d3.scale.linear()
 		.domain([this.quartiles[0], this.quartiles[4]])
-		.range([this.border.bottom,this.border.top]);
+		.range([this.border.bottom2,this.border.top2]);
 
 	boxGrp = this.svg.append("g")
 		.attr("class", "box")
-		.attr("transform", "translate(" + ((this.border.left2 + this.border.right2)*0.5) + "," + (this.border.top/5) + ")");
+		.attr("transform", "translate(" + ((this.border.left2 + this.border.right2)*0.5) + "," + (this.border.top2/5) + ")");
 
 	boxGrp.append("line")
 		.attr("x1", 0)
-		.attr("y1", this.border.bottom)
+		.attr("y1", this.border.bottom2)
 		.attr("x2", 12)
-		.attr("y2", this.border.bottom);
+		.attr("y2", this.border.bottom2);
 	boxGrp.append("line")
 		.attr("x1", 0)
-		.attr("y1", this.border.top)
+		.attr("y1", this.border.top2)
 		.attr("x2", 12)
-		.attr("y2", this.border.top);
+		.attr("y2", this.border.top2);
 	boxGrp.append("rect")
 		.attr("x",1)
 		.attr("y", yscale(this.quartiles[3]))
@@ -201,13 +202,13 @@ NormalChart.prototype.drawBox = function(){
 	boxGrp.append("line")
 		.style("stroke-dasharray","2,2")
 		.attr("x1", 6)
-		.attr("y1", this.border.top)
+		.attr("y1", this.border.top2)
 		.attr("x2", 6)
 		.attr("y2", yscale(this.quartiles[3]));
 	boxGrp.append("line")
 		.style("stroke-dasharray","2,2")
 		.attr("x1", 6)
-		.attr("y1", this.border.bottom)
+		.attr("y1", this.border.bottom2)
 		.attr("x2", 6)
 		.attr("y2", yscale(this.quartiles[1]));
 	boxGrp.append("line")

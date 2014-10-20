@@ -17,6 +17,8 @@
     <script src="/library/LineChart.js"></script>
     <script src="/library/PieChart.js"></script>
     <script src="/library/NormalChart.js"></script>
+    <script src="/library/StarChart.js"></script>
+    <script src="/library/ImbalanceChart.js"></script>
 
    
     <style>
@@ -52,6 +54,12 @@
             font-family: sans-serif;
             font-size: 0.4rem;
         }
+
+        .star text{
+            font-family: sans-serif;
+            font-size: 0.3rem;
+        }
+
         
         .distance{
             fill:rgba(140,70,70,0.9);
@@ -83,6 +91,8 @@
         var line2 = gm.addSvg(0.5,0.5,0.20,0.20);
         var pie1 = gm.addSvg(0.5, 0.0, 0.08, 0.20); 
         var line3 = gm.addSvg(0.6,0.0,0.30,0.25);
+        var star1 = gm.addSvg(0.8, 0.6, 0.08, 0.20); 
+        var imbalance1 = gm.addSvg(0,0.8,0.20,0.20);
         gm.updateWindow();
 
         
@@ -95,10 +105,12 @@
         .defer(d3.json,"data.json") //data.json at the time of this writing contains info about stations 5,25, and 50
         .defer(d3.json,"data2.json")//data2.json at the time of this writing contains info about stations 5,25,50,30,and 60
         .defer(d3.json, "data3.json")
+        .defer(d3.json, "inflow.json")
+        .defer(d3.json, "outflow.json")
         .await(process);
 
 
-        function process(error,json, json2, json3){ 
+        function process(error,json, json2, json3, json4, json5){ 
             var multiJson = json.array.sort(function(a,b){
                 return (+a.hour) - (+b.hour);
             });
@@ -117,19 +129,48 @@
             
             var barChart1 = new BarChart(bar1); 
             var pieChart1 = new PieChart(pie1);
+            var starChart1 = new StarChart(star1);
+            var imbalanceChart1 = new ImbalanceChart(imbalance1);
+
             pieChart1.setData([280,200,300,400],["a","b","c","d"],"demographic","Gender");
             pieChart1.setTitle("Demographic");
             pieChart1.draw();
+            starChart1.setTitle("Rides");
+            starChart1.setData(jsonLine,"star"); //(data,className)
+            starChart1.setProperty("hour","count"); //(propertyTheta, propertyR)
+            starChart1.draw();
             normal.setData(dist,"distance");
             normal.setAxes("totaldistance");
             normal.setTitle("Distribution of bikes by total distance");
             normal.draw();
+
+            /*Prepare inflow and outflow data for imbalance chart:
+                Queries used for pulling inflow.json and outflow.json:
+                    http://data.divvybikeschicago.com/station.php?stations=42,50,53,67,80,84,92&demographic=IN
+                    http://data.divvybikeschicago.com/station.php?stations=42,50,53,67,80,84,92&demographic=OUT
+
+            */
+            var inflow = json4.array;
+            var outflow = json5.array;
+            var imbalanceData = inflow.map(function(d,i){
+                var temp = {
+                    id: d.id,
+                    inflow: (+d.customer) + (+d.subscriber),
+                    outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
+                };
+                return temp;
+            });
+            console.log(imbalanceData);
+            imbalanceChart1.setData(imbalanceData,"imbalance");
+            imbalanceChart1.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
+            imbalanceChart1.draw();
             var flag = 1;
             var switchgraphs = function(){
                 if (flag == 1){
                     lineChart1.setTitle("Multiline"); 
                     lineChart1.setData(multiJson,"hourOfDayMany", "fromStation", "Station" );//(data,classname[,groupingProperty,legendlabel])
                     lineChart1.setAxes("hour","Hour", "count", "Rides"); //X and Y axes respectively
+                    lineChart1.setTimeDataInX("hour",2,"12hr");
                     lineChart1.draw();
                     lineChart2.setData(multiJson,"hourOfDayMany", "fromStation", "Station" );
                     lineChart2.setAxes("hour","Hour", "count", "Rides"); 

@@ -82,10 +82,12 @@
             cursor: default
         }
         .unselectable {
-            -webkit-user-select: none; /* Chrome/Safari */        
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE10+ */
-
+            -webkit-user-select: none;
+            /* Chrome/Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
             /* Rules below not implemented in browsers yet */
             -o-user-select: none;
             user-select: none;
@@ -107,9 +109,13 @@
         chartBack.style("background-color", "rgba(64, 64, 64, 0.8)");
 
          // Create two svg with graphic manager
-        var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
-        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
-        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
+        var svgLayerControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
+        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.12 + 0.01, 0.07, 0.14); // y taken from previous svg's height
+        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01 + 0.145, 0.07, 0.06);
+        //var svgMultimap = gm.addSvg(0, 0.705, 0.07, 0.17);
+        /* Charts controls */
+        var svgStaticChartsControl = gm.addSvg(0.585, 1 - 0.12, 0.07, 0.12); //+ 0.4 / 5
+        var svgHideChartsControl = gm.addSvg(0.585 + 0.07 + 0.002, 1 - 0.12, 0.07, 0.12);
 
         gm.updateWindow();
 
@@ -120,6 +126,8 @@
         var zoomControl = new ZoomControl();
         var stationControl = new StationControl();
         var dayControl = new DayControl();
+        var staticChartsControl = new StaticChartsControl(svgStaticChartsControl);
+        var hideChartsControl = new HideChartsControl(svgHideChartsControl);
 
         selectionControl.setCallbackSelectAll(gm.selectAll.bind(gm));
         selectionControl.setCallbackDeselectAll(gm.deselectAll.bind(gm));
@@ -133,12 +141,15 @@
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
+        staticChartsControl.draw();
+        hideChartsControl.draw();
 
          // Set interactions
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
         layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
 
         gm.addExternalSVGs(gm.updateWindow.bind(gm));
+        gm.addExternalSVGsCharts(gm.updateWindow.bind(gm));
 
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
          //gm.addSubMap(0, 0, 0.07, 0.12, "map3", "lol");
