@@ -44,7 +44,7 @@ if($flow == "IN")
 	$database->query("	SELECT S.id, COUNT(*) as count
 						FROM TRIP T, STATION S
 						WHERE S.id = T.to_station_id
-							AND T.from_station_id = '$station'
+							AND T.from_station_id LIKE '$station'
 							AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
 						GROUP BY S.id
 						ORDER BY S.id
@@ -55,7 +55,7 @@ else if($flow == "OUT")
 	$database->query("	SELECT S.id, COUNT(*) as count
 						FROM TRIP T, STATION S
 						WHERE S.id = T.from_station_id
-							AND T.to_station_id = '$station'
+							AND T.to_station_id LIKE '$station'
 							AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
 						GROUP BY S.id
 						ORDER BY S.id
