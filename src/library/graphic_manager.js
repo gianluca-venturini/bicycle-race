@@ -211,6 +211,10 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
                 //svg.attr("_y", +parseFloat(svg.attr("_y"))+dy);
                 svg.style("margin-left", parseFloat(svg.style("margin-left"))+pdx+"px");
                 svg.style("margin-top", parseFloat(svg.style("margin-top"))+pdy+"px");
+
+                svg.attr("_x", parseFloat(svg.style("margin-left"))/gm.mapWidth);
+                svg.attr("_y", parseFloat(svg.style("margin-top"))/gm.mapHeight);
+                
                 //this.mouse = undefined;
                 //gm.positionSVGs();
                 
@@ -345,6 +349,8 @@ GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type)
     gm.createMap(type);
 
     this.graphicManagers.push(gm);
+
+    return gm;
 };
 
 /*
@@ -421,6 +427,7 @@ GraphicManager.prototype.updateWindow = function () {
         var gm = this.graphicManagers[g];
         gm.updateWindow();
     }
+    //$(window).trigger('resize');
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1468,4 +1475,40 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
         }
     }
     this.highlightStationByMarker(marker);
+}
+
+GraphicManager.prototype.showMaps = function (stationId) {
+
+    this.map.remove();
+
+    this.gm1 = gm.addSubMap(0.1, 0.1, 0.4, 0.4, "map4", "satellitar");
+    this.gm2 = gm.addSubMap(0.1, 0.6, 0.4, 0.4, "map5", "normal");
+    this.gm3 = gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map6", "grey");
+    this.gm4 = gm.addSubMap(0.6, 0.6, 0.4, 0.4, "map7", "lol");
+
+
+    this.gm1.dm = this.dm;
+    this.gm2.dm = this.dm;
+    this.gm3.dm = this.dm;
+    this.gm4.dm = this.dm;
+
+    
+    this.gm1.drawMarkers("popularity");
+    this.gm2.drawMarkers("popularity");
+    this.gm3.drawMarkers("popularity");
+    this.gm4.drawMarkers("popularity");
+
+    this.gm1.updateWindow();
+    this.gm2.updateWindow();
+    this.gm3.updateWindow();
+    this.gm4.updateWindow();
+
+    this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
+    this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
+    this.gm3.map.on("moveend", function(){$(window).trigger('resize');});
+    this.gm4.map.on("moveend", function(){$(window).trigger('resize');});
+}
+
+GraphicManager.prototype.hideMaps = function (stationId) {
+    this.gm1.map.remove();
 }
