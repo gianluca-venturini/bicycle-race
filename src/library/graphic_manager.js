@@ -25,6 +25,10 @@ function GraphicManager(htmlId) {
     this.dinstanceDistribution = null;
     this.tripsDistanceDistribution = null;
 
+    this.imbalance = null;
+
+    this.momentDay = null;
+
     this.svgs = [];
     this.divs = [];
     this.graphicManagers = [];
@@ -1580,6 +1584,32 @@ GraphicManager.prototype.updateGraphs = function () {
         }.bind(this));
         */
 
+    }
+
+    if(this.imbalance != null) {
+        this.dm.getInOutFlow(function(inflow, outflow) {
+            var imbalanceData = inflow.map(function(d,i){
+                var temp = {
+                    id: d.id,
+                    inflow: (+d.customer) + (+d.subscriber),
+                    outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
+                };
+                return temp;
+            });
+            this.imbalance.setData(imbalanceData,"imbalance");
+            this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
+            this.imbalance.draw();
+        });
+        
+    }
+
+    if(this.momentDay != null) {
+        this.dm.getBikesHourDay(function (data) {
+            this.momentDay.setTitle("Rides");
+            this.momentDay.setData(data,"star"); //(data,className)
+            this.momentDay.setProperty("hour","count"); //(propertyTheta, propertyR)
+            this.momentDay.draw();
+        });
     }
 
 };

@@ -429,6 +429,45 @@ DataManager.prototype.getFlow = function(callback, stationId, flow) {
 	}.bind(this));
 }
 
+DataManager.prototype.getInOutFlow = function(callback) {
+
+	if(this.selectedStations.length == 0) {
+		callback([]);
+		return;
+	}
+
+	var url = this.stationUrl;
+	url += "?";
+
+	if(this.date != null) {
+		url += "&";
+		url += "from="+this.date;
+		url += "&";
+		url += "to="+this.date;
+	}
+
+	// Only selected stations
+	if(this.selectedStations.length > 0)
+		url +="&stations=";
+		for(var s in this.selectedStations) {
+			var station = this.selectedStations[s].id;
+			if(s == 0)
+				url+=station;
+			else
+				url+=","+station;
+		}
+
+	queue()
+	.defer(d3.json, url+"&demographic=IN")
+	.defer(d3.json, url+"&demographic=OUT")
+	.await(function(error, inflow, outflow) {
+		if(error)
+			console.log("can't download file " + this.stationUrl);
+
+		callback(inflow, outflow);
+	}.bind(this));
+}
+
 /*
 	Get the ride distribution
 */
