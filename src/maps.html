@@ -1,0 +1,133 @@
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Project2</title>
+    <link rel="stylesheet" href="./style/leaflet.css" />
+    <link rel="stylesheet" href="./style/app.css" />
+    <link rel="stylesheet" href="./style/chart.css" />
+    <script src="./library/jquery-1.11.1.min.js"></script>
+    <script src="./library/d3.v3.min.js"></script>
+    <script src="./library/queue.v1.min.js"></script>
+    <script src="./library/leaflet.js"></script>
+    <script src="./library/geojson-utils.js"></script>
+    <script src="./library/graphic_manager.js"></script>
+    <script src="./library/data_manager.js"></script>
+    <script src="./library/controls.js"></script>
+    <script src="./library/marker.js"></script>
+    <script src="./library/BarChart.js"></script>
+    <script src="./library/LineChart.js"></script>
+    <script src="./library/PieChart.js"></script>
+    <script src="./library/slider.js"></script>
+    <script src="./library/NormalChart.js"></script>
+    <script src="./library/StarChart.js"></script>
+    <script src="./library/ImbalanceChart.js"></script>
+    <style>
+        #map {
+            height: 100%;
+        }
+        .submap {
+            border: solid 1px black;
+        }
+        /* Chart style */
+        .daysOfWeek {
+            fill: rgba(160, 210, 180, 0.8);
+        }
+        .hourOfDayMany {
+            fill: none;
+            stroke-width: 1px;
+        }
+        .dayOfYearMany {
+            fill: none;
+            stroke-width: 1px;
+        }
+        .hourOfDay {
+            fill: none;
+            stroke: rgba(200, 100, 90, 0.9);
+            stroke-width: 1px;
+        }
+        .hourOfDayArea {
+            fill: rgba(200, 100, 90, 0.9);
+            stroke: rgba(200, 100, 90, 0.9);
+            stroke-width: 1px;
+        }
+        .demographic path {
+            stroke: rgba(230, 230, 230, 1.0);
+        }
+        .demographic text {
+            font-family: sans-serif;
+            font-size: 0.4rem;
+        }
+        .distance_distribution {
+            fill: rgba(140, 70, 70, 0.9);
+            stroke: rgba(140, 70, 70, 0.9);
+            stroke-width: 1px;
+        }
+        .time_distribution {
+            fill: rgba(140, 70, 70, 0.9);
+            stroke: rgba(140, 70, 70, 0.9);
+            stroke-width: 1px;
+        }
+        .star text{
+            font-family: sans-serif;
+            font-size: 0.3rem;
+        }
+        /* Blur effect */
+        .blur {
+            -webkit-filter: blur(10px);
+        }
+        /* Special effects */
+        .line_stroke:hover {
+            stroke-width: 5px;
+        }
+        /* Cursor style */
+        .pointer {
+            cursor: pointer
+        }
+        .default {
+            cursor: default
+        }
+        .unselectable {
+            -webkit-user-select: none;
+            /* Chrome/Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
+            /* Rules below not implemented in browsers yet */
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body style="position: relative; display:block; height: 100%; width: 100%;">
+    <div id="lol" style="position: relative; height: 100%; width: 100%; display: inline-block; float: left;">
+        <div style="width: 50%; height: 100%; position: relative; display: inline-block; float: left;">
+            <div id="map1" style="width: 100%; height: 100%; position: relative; display: inline-block; float: left;"></div>
+        </div>
+        <div style="width: 50%; height: 100%; position: relative; display: inline-block; float: left;">
+            <div id="map2" style="width: 100%; height: 100%; position: relative; display: inline-block; float: left;"></div>
+        </div>
+    </div>
+
+    <script>
+        var gm1 = new GraphicManager("map1");
+        var gm2 = new GraphicManager("map2");
+
+        gm1.createMap("grey");
+        gm2.createMap("grey");
+
+        gm1.drawMarkers("popularity");
+        gm2.drawMarkers("popularity");
+
+        gm1.updateWindow();
+        gm2.updateWindow();
+
+         // Need this call in  order to inform the graphics manager that something changed
+        window.onresize = gm1.updateWindow.bind(gm1);
+
+    </script>
+</body>
+
+</html>

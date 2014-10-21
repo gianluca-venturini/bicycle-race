@@ -1549,6 +1549,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 this.tripsCustomerType.setTitle("Customer type");
                 this.tripsCustomerType.draw();
             }
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.tripsAge != null)
@@ -1588,6 +1589,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 "Age");
             this.tripsAge.setTitle("Age");
             this.tripsAge.draw();
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.bikesDayYearComparison != null)
@@ -1607,6 +1609,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.timeDistribution != null)
@@ -1629,6 +1632,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.distanceDistribution.setAxes("totaldistance", "Distance", "# of bikes");
             this.distanceDistribution.setTitle("Distribution of bikes by distance traveled(in meters)");
             this.distanceDistribution.draw();
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.tripsDistanceDistribution != null) {
@@ -1641,6 +1645,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.setAxes("meters","Distance", "# of bikes");
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
+            $(window).trigger('resize');
         }.bind(this));
         */
 
@@ -1659,6 +1664,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.imbalance.setData(imbalanceData, "imbalance");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
+            $(window).trigger('resize');
         });
 
     }
@@ -1669,6 +1675,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.momentDay.setData(data, "star"); //(data,className)
             this.momentDay.setProperty("hour", "count"); //(propertyTheta, propertyR)
             this.momentDay.draw();
+            $(window).trigger('resize');
         });
     }
 
@@ -1722,15 +1729,10 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
     this.highlightStationByMarker(marker);
 }
 
-GraphicManager.prototype.showMaps = function (stationId) {
+GraphicManager.prototype.showMaps = function () {
 
-    this.map.remove();
-
-    this.gm1 = gm.addSubMap(0.1, 0.1, 0.4, 0.4, "map4", "satellitar");
-    this.gm2 = gm.addSubMap(0.1, 0.6, 0.4, 0.4, "map5", "normal");
-    this.gm3 = gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map6", "grey");
-    this.gm4 = gm.addSubMap(0.6, 0.6, 0.4, 0.4, "map7", "lol");
-
+    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar");
+    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal");
 
     this.gm1.dm = this.dm;
     this.gm2.dm = this.dm;
@@ -1740,28 +1742,18 @@ GraphicManager.prototype.showMaps = function (stationId) {
 
     this.gm1.drawMarkers("popularity");
     this.gm2.drawMarkers("popularity");
-    this.gm3.drawMarkers("popularity");
-    this.gm4.drawMarkers("popularity");
 
     this.gm1.updateWindow();
     this.gm2.updateWindow();
-    this.gm3.updateWindow();
-    this.gm4.updateWindow();
 
-    this.gm1.map.on("moveend", function () {
-        $(window).trigger('resize');
-    });
-    this.gm2.map.on("moveend", function () {
-        $(window).trigger('resize');
-    });
-    this.gm3.map.on("moveend", function () {
-        $(window).trigger('resize');
-    });
-    this.gm4.map.on("moveend", function () {
-        $(window).trigger('resize');
-    });
+    //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
+    //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
 }
 
-GraphicManager.prototype.hideMaps = function (stationId) {
+GraphicManager.prototype.hideMaps = function () {
     this.gm1.map.remove();
+    this.gm2.map.remove();
+
+    d3.select("#map2").remove();
+    d3.select("#map3").remove();
 }
