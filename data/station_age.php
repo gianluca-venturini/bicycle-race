@@ -41,6 +41,23 @@ $aggregate = htmlentities($_GET['aggregate']);
 if($aggregate != NULL)
 	$aggregate = True;
 
+// Filters
+$gender = htmlentities($_GET['gender']);
+$ageMin = htmlentities($_GET['age_min']);
+$ageMax = htmlentities($_GET['age_max']);
+$costumerType = htmlentities($_GET['customer_type']);
+
+if($gender == NULL)
+	$gender="%";
+
+$ageDisabled="0";
+if($ageMax == NULL || $ageMax == NULL)
+	$ageDisabled="1";
+
+if($costumerType == NULL)
+	$costumerType="%";
+
+
 $database = new DataBaseMySQL();
 
 
@@ -89,6 +106,9 @@ else {
 							AND age_in_2014 <> '0'
 							AND (id IN ($ids) OR '$idDisabled'='1')
 							AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
+							AND gender LIKE '$gender'
+							AND usertype LIKE '$costumerType'
+							AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
 						GROUP BY age_in_2014
 						ORDER BY age
 					");
