@@ -20,30 +20,30 @@
                 <tspan id="station_name" class="text_control" font-family="Roboto" font-size="11" font-weight="300" fill="white" x="0" y="15" textLength="143"></tspan>
             </text>
             <text transform="translate(26.249935 33.429133)" fill="white">
-                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="43.12627" y="6">ID:</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="43.12627" y="6">ID:</tspan>
             </text>
-            <text transform="translate(77.475396 33.429133)" fill="white">
-                <tspan id="station_id" class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="3" y="6"></tspan>
+            <text transform="translate(79 33.429133)" fill="white">
+                <tspan id="station_id" class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="3" y="6"></tspan>
             </text>
-            <text transform="translate(15.62993 45.61811)" fill="white">
-                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="22.066275" y="6" textLength="38.79">POPULARITY :</tspan>
+            <text transform="translate(15.62993 49)" fill="white">
+                <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="22.066275" y="6">POPULARITY :</tspan>
             </text>
-            <text transform="translate(77.475396 45.61811)" fill="white">
-                <tspan id="station_pop" class="text_control" font-family="Roboto" font-size="7" font-weight="300" fill="white" x="3" y="6"></tspan>
+            <text transform="translate(87 49)" fill="white">
+                <tspan id="station_pop" class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="3" y="6"></tspan>
             </text>
-            <rect class="pointer station_compareAll" x="12.62993" y="126.094484" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
+            <rect class="pointer station_compareAll" id="station_compareAll_rect" x="12.62993" y="126.094484" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
             <text class="pointer station_compareAll" transform="translate(15.62993 135.594484)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="39.564093" y="8">compare all</tspan>
             </text>
-            <rect class="pointer station_outflow" x="12.62993" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
+            <rect class="pointer station_outflow" id="station_outflow_rect" x="12.62993" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
             <text class="pointer station_outflow" id="station_outflow" transform="translate(15.62993 83.728345)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="11.355121" y="8">outflow</tspan>
             </text>
-            <rect class="pointer station_inflow" x="83.879873" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
+            <rect class="pointer station_inflow" id="station_inflow_rect" x="83.879873" y="74.228345" width="53.750242" height="29" fill="#616161" fill-opacity=".81" />
             <text class="pointer station_inflow" id="station_inflow" transform="translate(86.879873 83.728345)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="14.023121" y="8">inflow</tspan>
             </text>
-            <rect class="pointer station_compare2" id="station_compare2" x="12.62993" y="160.32283" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
+            <rect class="pointer station_compare2" id="station_compare2_rect" x="12.62993" y="160.32283" width="125.000186" height="29" fill="#616161" fill-opacity=".81" />
             <text class="pointer station_compare2" transform="translate(15.62993 169.82283)" fill="white">
                 <tspan class="text_control" font-family="Roboto" font-size="8" font-weight="300" fill="white" x="40.896093" y="8">compare 2</tspan>
             </text>
