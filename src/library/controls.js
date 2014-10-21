@@ -451,7 +451,10 @@ ZoomControl.prototype.setCallbackZoomOut = function (callback) {
     this.callbackZoonOut = callback;
 };
 
-///////////////////////
+////////////////////////
+/*  CHARTS CONTROLS   */
+////////////////////////
+
 
 function StaticChartsControl(svg) {
     this.svg = svg;
@@ -520,3 +523,33 @@ HideChartsControl.prototype.setCallback = function (element, callback) {
 };
 
 ///////////////////////
+
+function FilterGenderControl() {
+    this.gender = null;
+    this.callbackSetMale = null;
+    this.callbackSetFemale = null;
+}
+
+FilterGenderControl.prototype.draw = function () {
+    var self = this;
+
+    d3.select('#filter_male').on("click", function () {
+        self.callbackSetMale();
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+
+    d3.select('#filter_female').on("click", function () {
+        self.callbackSetFemale();
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+};
+
+FilterGenderControl.prototype.setCallbackSetMale = function (callback) {
+    this.callbackSetMale = callback;
+};
+
+FilterGenderControl.prototype.setCallbackSetFemale = function (callback) {
+    this.callbackSetFemale = callback;
+};

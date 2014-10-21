@@ -384,6 +384,12 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                     .style("background-color", "rgba(64, 64, 64, 0.7)");
 
                 self.svgs.push(svg);
+                var filterGenderControl = new FilterGenderControl();
+                self.filterGenderControl = filterGenderControl;
+                filterGenderControl.draw();
+
+                filterGenderControl.setCallbackSetMale(self.callbackSetMale.bind(self));
+                filterGenderControl.setCallbackSetFemale(self.callbackSetFemale.bind(self));
 
                 ////////////////////////////////////
 
@@ -1147,6 +1153,38 @@ GraphicManager.prototype.selectOutflowCallback = function (flow) {
     this.selectedStation(this.selected);
 
 };
+
+GraphicManager.prototype.callbackSetMale = function () {
+    var self = this.filterGenderControl;
+    if (self.gender === "MALE") {
+        self.gender = null;
+        this.dm.gender = null;
+        d3.select("#filter_male").style("stroke", "none");
+    } else {
+        self.gender = "MALE";
+        this.dm.gender = "MALE";
+        d3.select("#filter_male").style("stroke", "white");
+        d3.select("#filter_female").style("stroke", "none");
+    }
+    console.log(this.dm.gender);
+    this.updateGraphs();
+}
+
+GraphicManager.prototype.callbackSetFemale = function () {
+    var self = this.filterGenderControl;
+    if (self.gender === "FEMALE") {
+        self.gender = null;
+        this.dm.gender = null;
+        d3.select("#filter_female").style("stroke", "none");
+    } else {
+        self.gender = "FEMALE";
+        this.dm.gender = "FEMALE";
+        d3.select("#filter_female").style("stroke", "white");
+        d3.select("#filter_male").style("stroke", "none");
+    }
+    console.log(this.dm.gender);
+    this.updateGraphs();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
