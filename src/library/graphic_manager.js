@@ -350,6 +350,12 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                             self.svgs.push(svg);
 
+                            d3.select('#multimap').on("click", function () {
+                                self.showMaps();
+                                d3.event.stopPropagation();
+                            }.bind(self))
+                                .style('-webkit-user-select', 'none');
+
                             //var multimapControl = new MultimapControl();
 
                             //multimapControl.setCallbackSetDate(self.callbackSetDate.bind(self));
@@ -1268,6 +1274,8 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
 };
 
 GraphicManager.prototype.selectAllStationsInArea = function (area) {
+    // Automatically switch to compareAll mode
+    this.dm.selectionMode = "MULTIPLE";
     this.selectedArea = area;
     this.dm.getStations(this.selectStationsInAreaCallback.bind(this));
 };
