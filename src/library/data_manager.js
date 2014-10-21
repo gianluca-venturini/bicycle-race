@@ -90,12 +90,15 @@ DataManager.prototype.getTrips = function(callback) {
 		return;
 	}
 
+	var url = this.tripUrl;
+	url += this.filters();
+
 	if(this.trips != null)
 		callback(this.trips);
 	else
-		d3.json(this.tripUrl, function(error, json) {
+		d3.json(url, function(error, json) {
 			if(error)
-				console.log("can't download file " + this.tripUrl);
+				console.log("can't download file " + url);
 
 			this.trips = json;
 
@@ -129,6 +132,8 @@ DataManager.prototype.getBikesWeek = function(callback) {
 			else
 				url+=","+station;
 		}
+
+	url += this.filters();
 
 	/* NO CACHE FOR NOW
 	if(this.bikeWeeks != null)
@@ -173,11 +178,8 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 				url+=","+station;
 		}
 
-	/*
-	if(this.bikeHours != null)
-		callback(this.trips);
-	else
-		*/
+	url += this.filters();
+
 	d3.json(url, function(error, json) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
@@ -210,18 +212,11 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 				url+=","+station;
 		}
 
-	/*
-	if(this.bikeHours != null)
-		callback(this.trips);
-	else
-		*/
+	url += this.filters();
+	
 	d3.json(url, function(error, json) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
-
-		data = this.filterDataModality(json);
-
-		this.bikeHours = data;
 
 		callback(json);
 	}.bind(this));
@@ -255,6 +250,9 @@ DataManager.prototype.getBikes = function(callback) {
 		url += "to="+this.date;
 	}
 	*/
+
+	url += this.filters();
+
 	d3.json(url, function(error, json) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
@@ -298,6 +296,8 @@ DataManager.prototype.getStationsDemographic = function(callback) {
 				url+=","+station;
 		}
 
+	url += this.filters();
+
 	d3.json(url, function(error, json) {
 		if(error)
 			console.log("can't download file " + this.stationUrl);
@@ -335,6 +335,8 @@ DataManager.prototype.getStationsAge = function(callback) {
 			else
 				url+=","+station;
 		}
+
+	url += this.filters();
 
 	d3.json(url, function(error, json) {
 		if(error)
@@ -540,32 +542,26 @@ DataManager.prototype.filterDataModality = function(d) {
 	return data;
 }
 
+DataManager.prototype.filters = function() {
+	/*
+	this.gender = null;			// "MALE" | "FEMALE" | "UNKNOWN"
+	this.age = null;			// expected a vector [minAge, maxAge]
+	this.customerType = null;	// "CUSTOMER" | "SUBSCRIBER"
+	*/
+	var url = "";
 
-// TODO
-DataManager.prototype.filterDataGender = function(d) {
-	if(this.gender == null)
-		return d;
-
-	data = [];
-
-	for(var i in d) {
-		if(d[i].gender == this.gender)
-			data.push(d[i]);
+	if(this.gender != null) {
+		url+="&gender="+this.gender.toLowerCase();
 	}
-}
 
-// TODO
-DataManager.prototype.filterDataAge = function(d) {
-	if(this.age == null)
-		return d;
+	if(this.age != null) {
+		url+="&age_min="+this.age[0];
+		url+="&age_max="+this.age[1];
+	}
 
-	data = [];
-}
+	if(this.customerType != null) {
+		url+="&customer_type="+this.customerType.toLowerCase();
+	}
 
-// TODO
-DataManager.prototype.filterDataCustomerType = function(d) {
-	if(this.customerType == null)
-		return d;
-
-	data = [];
+	return url;
 }

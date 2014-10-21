@@ -1736,9 +1736,6 @@ GraphicManager.prototype.showMaps = function () {
 
     this.gm1.dm = this.dm;
     this.gm2.dm = this.dm;
-    this.gm3.dm = this.dm;
-    this.gm4.dm = this.dm;
-
 
     this.gm1.drawMarkers("popularity");
     this.gm2.drawMarkers("popularity");
@@ -1756,4 +1753,6 @@ GraphicManager.prototype.hideMaps = function () {
 
     d3.select("#map2").remove();
     d3.select("#map3").remove();
+
+    this.graphicManagers = [];
 }

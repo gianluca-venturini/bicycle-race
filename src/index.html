@@ -215,10 +215,6 @@
         gm.drawMarkers("popularity");
         gm.updateWindow();
 
-
-        setTimeout(function(){ gm.showMaps() }.bind(gm), 10000);
-        setTimeout(function(){ gm.hideMaps() }.bind(gm), 14000);
-
          // Need this call in  order to inform the graphics manager that something changed
         window.onresize = gm.updateWindow.bind(gm);
     </script>
