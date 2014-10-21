@@ -2,57 +2,52 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg id="dayControl" class="day_box default" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 120 100" width="10pc" height="100pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
-    <!--defs>
-        <font-face font-family="Roboto" font-size="12" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.99585" descent="-212.99744" font-weight="500">
-            <font-face-src><font-face-name name="HelveticaNeue" /></font-face-src>
-        </font-face>
-        <font-face font-family="Helvetica" font-size="12" units-per-em="1000" underline-position="-75.683594" underline-thickness="49.316406" slope="0" x-height="522.94922" cap-height="717.28516" ascent="770.01953" descent="-229.98047" font-weight="500">
-            <font-face-src><font-face-name name="Helvetica" /></font-face-src>
-        </font-face>
-        <font-face font-family="Roboto" font-size="5" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.99585" descent="-212.99744" font-weight="500">
-            <font-face-src><font-face-name name="HelveticaNeue" /></font-face-src>
-        </font-face>
-    </defs-->
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <g>
             <rect x="0" y="0" width="119.9999" height="100" fill="#616161" fill-opacity="0" />
-            <text transform="translate(5 5.5)" fill="white">
+            <text transform="translate(5 3.5)" fill="black">
                 <tspan class="text_control" id="day_name" font-family="Roboto" font-size="12" font-weight="300" x="26" y="11"></tspan>
             </text>
             <rect x="105.82667" y="0" width="14.173228" height="14.173228" fill="#616161" fill-opacity=".81" />
-            <text id="day_close" class="pointer" transform="translate(105.82667 .08661413)" fill="white">
-                <tspan class="text_control" font-size="12" font-weight="500" fill="white" x="3.084661" y="11" textLength="8.0039062">X</tspan>
+            <text id="day_close" class="pointer" transform="translate(105.82667 .08661413)" fill="black">
+                <tspan class="text_control" font-family="Helvetica" font-size="12" font-weight="500" x="3.084661" y="11" textLength="8.0039062">X</tspan>
             </text>
-            <rect x="6.845524" y="23.527558" width="45.381818" height="39" id="path" />
+            <rect x="7.1461702" y="30.645669" width="43.054545" height="37" id="path" />
             <clipPath id="clip_path">
                 <use xl:href="#path" />
             </clipPath>
             <g clip-path="url(#clip_path)">
-                <image id="day_image" width="32.914286" height="28.285714" transform="translate(6.845524 23.527558) scale(1.3787879)" />
+                <image id="day_image" width="32.914286" height="28.285714" transform="translate(7.1461702 30.645669) scale(1.3080808)" />
             </g>
-            <text transform="translate(65.188876 28.673227)" fill="white">
-                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="19.255">weather:</tspan>
+            <text transform="translate(27 20.145669)" fill="black">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="300" x="0" y="7" textLength="26.957">weather:</tspan>
             </text>
-            <text transform="translate(90.13376 28.673227)" fill="white">
-                <tspan class="text_control" id="day_weather" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
+            <text transform="translate(56 20.145669)" fill="black">
+                <tspan class="text_control" id="day_weather" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7"></tspan>
             </text>
-            <text transform="translate(65.188876 41.673227)" fill="white">
-                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="17.41">sunrise:</tspan>
+            <text transform="translate(55.200716 43.822834)" fill="black">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7" textLength="24.374">sunrise:</tspan>
             </text>
-            <text transform="translate(90.13376 41.673227)" fill="white">
-                <tspan class="text_control" id="day_sunrise" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
+            <text transform="translate(82.385825 43.822834)" fill="black">
+                <tspan class="text_control" id="day_sunrise" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7"></tspan>
             </text>
-            <text transform="translate(65.188876 54.673227)" fill="white">
-                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="16.21">sunset:</tspan>
+            <text transform="translate(55.200716 55.5)" fill="black">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7" textLength="22.694">sunset:</tspan>
             </text>
-            <text transform="translate(90.13376 54.673227)" fill="white">
-                <tspan class="text_control" id="day_sunset" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
+            <text transform="translate(82.385825 55.5)" fill="black">
+                <tspan class="text_control" id="day_sunset" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7"></tspan>
             </text>
-            <text transform="translate(45.015698 69.14567)" fill="white">
-                <tspan class="text_control" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5" textLength="11.485">hour:</tspan>
+            <text transform="translate(42.417322 67.846455)" fill="black">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7" textLength="16.079">hour:</tspan>
             </text>
-            <text transform="translate(61.314763 69.14567)" fill="white">
-                <tspan class="text_control" id="day_hour" font-family="Roboto" font-size="5" font-weight="500" x="0" y="5"></tspan>
+            <text transform="translate(61.314763 67.846455)" fill="black">
+                <tspan class="text_control" id="day_hour" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7"></tspan>
+            </text>
+            <text transform="translate(55.200716 32.145669)" fill="black">
+                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7">temperature:</tspan>
+            </text>
+            <text transform="translate(97 32.145669)" fill="black">
+                <tspan class="text_control" id="day_temperature" font-family="Roboto" font-size="7" font-weight="500" x="0" y="7"></tspan>
             </text>
         </g>
     </g>

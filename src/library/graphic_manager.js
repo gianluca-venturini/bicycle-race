@@ -594,6 +594,8 @@ GraphicManager.prototype.highlightStationByMarker = function (marker) {
 
     // Disable active flows when highlighting new station
     this.markerType = "popularity";
+    d3.select("#station_inflow_rect").style("stroke", "none");
+    d3.select("#station_outflow_rect").style("stroke", "none");
     this.drawSelectedMarkers();
 
     try {
@@ -729,6 +731,9 @@ GraphicManager.prototype.selectedStation = function (station) {
 
 GraphicManager.prototype.selectCompareAll = function (station) {
 
+    // Highlight click
+    d3.select("#station_compareAll_rect").style("stroke", "red").transition().delay(400).style("stroke", "none");
+
     // Set mode
     if (this.dm.selectionMode === null) {
         this.dm.selectionMode = "MULTIPLE";
@@ -764,6 +769,9 @@ GraphicManager.prototype.selectCompareAll = function (station) {
 };
 
 GraphicManager.prototype.selectCompareTwo = function (station) {
+
+    // Highlight click
+    d3.select("#station_compare2_rect").style("stroke", "lightgreen").transition().delay(400).style("stroke", "none");
 
     // Set mode
     if (this.dm.selectionMode === null) {
@@ -868,12 +876,14 @@ GraphicManager.prototype.callbackSetDate = function () {
     // Show weather
     this.dm.getWeather(this.weatherCallback.bind(this));
 
-    //this.removeBikes();
-    //this.drawBikesInMoment();
+    // Show sunrise and sunset
+
     this.updateGraphs();
 };
 
 GraphicManager.prototype.weatherCallback = function (weather) {
+
+    console.log(weather);
 
     this.weather = weather;
 
@@ -993,16 +1003,22 @@ GraphicManager.prototype.getWeatherByHour = function () {
     var hour_user = +(h_ + m_);
 
     var weather_user = null;
+    var temperature_user = null;
     var temp = 0;
     for (var i in weather) {
         if (weather[i].hour <= hour_user && weather[i].hour > temp) {
             temp = weather[i].hour;
             weather_user = weather[i].conditions;
+            temperature_user = weather[i].temperature;
         }
     }
 
     d3.select('#day_image').attr("xlink:href", this.getWeatherIcon(weather_user));
     d3.select('#day_weather').text(weather_user);
+    if (temperature_user === null)
+        d3.select('#day_temperature').text("");
+    else
+        d3.select('#day_temperature').text(temperature_user + "°");
 
 };
 
@@ -1035,6 +1051,7 @@ GraphicManager.prototype.callbackSetHour = function () {
 GraphicManager.prototype.selectInflow = function (station) {
     // Invert the behavior
     if (this.markerType === "inflow" && this.lastInflow === station.id) {
+        d3.select("#station_inflow_rect").style("stroke", "none");
         this.lastInflow = station.id;
         this.markerType = "popularity";
         this.drawSelectedMarkers();
@@ -1042,12 +1059,15 @@ GraphicManager.prototype.selectInflow = function (station) {
         return;
     }
     this.lastInflow = station.id;
+    d3.select("#station_inflow_rect").style("stroke", "red");
+    d3.select("#station_outflow_rect").style("stroke", "none");
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
 };
 
 GraphicManager.prototype.selectOutflow = function (station) {
     // Invert the behavior
     if (this.markerType === "outflow" && this.lastOutflow === station.id) {
+        d3.select("#station_outflow_rect").style("stroke", "none");
         this.lastOutflow = station.id;
         this.markerType = "popularity";
         this.drawSelectedMarkers();
@@ -1055,6 +1075,8 @@ GraphicManager.prototype.selectOutflow = function (station) {
         return;
     }
     this.lastOutflow = station.id;
+    d3.select("#station_outflow_rect").style("stroke", "lightgreen");
+    d3.select("#station_inflow_rect").style("stroke", "none");
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -1436,7 +1458,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDay.setTimeDataInX("hour",2,"12hr");
+            this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
             this.bikesHourDay.draw();
 
             // Multiple line chart
@@ -1448,7 +1470,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDayComparison.setTimeDataInX("hour",2,"12hr");
+            this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
@@ -1544,7 +1566,7 @@ GraphicManager.prototype.updateGraphs = function () {
             });
             this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
-            this.bikesDayYearComparison.setTimeDataInX("month",1,"MMM DD");
+            this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
         }.bind(this));
@@ -1586,9 +1608,9 @@ GraphicManager.prototype.updateGraphs = function () {
 
     }
 
-    if(this.imbalance != null) {
-        this.dm.getInOutFlow(function(inflow, outflow) {
-            var imbalanceData = inflow.map(function(d,i){
+    if (this.imbalance != null) {
+        this.dm.getInOutFlow(function (inflow, outflow) {
+            var imbalanceData = inflow.map(function (d, i) {
                 var temp = {
                     id: d.id,
                     inflow: (+d.customer) + (+d.subscriber),
@@ -1596,18 +1618,18 @@ GraphicManager.prototype.updateGraphs = function () {
                 };
                 return temp;
             });
-            this.imbalance.setData(imbalanceData,"imbalance");
+            this.imbalance.setData(imbalanceData, "imbalance");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
         });
-        
+
     }
 
-    if(this.momentDay != null) {
+    if (this.momentDay != null) {
         this.dm.getBikesHourDay(function (data) {
             this.momentDay.setTitle("Rides");
-            this.momentDay.setData(data,"star"); //(data,className)
-            this.momentDay.setProperty("hour","count"); //(propertyTheta, propertyR)
+            this.momentDay.setData(data, "star"); //(data,className)
+            this.momentDay.setProperty("hour", "count"); //(propertyTheta, propertyR)
             this.momentDay.draw();
         });
     }
@@ -1677,7 +1699,7 @@ GraphicManager.prototype.showMaps = function (stationId) {
     this.gm3.dm = this.dm;
     this.gm4.dm = this.dm;
 
-    
+
     this.gm1.drawMarkers("popularity");
     this.gm2.drawMarkers("popularity");
     this.gm3.drawMarkers("popularity");
@@ -1688,10 +1710,18 @@ GraphicManager.prototype.showMaps = function (stationId) {
     this.gm3.updateWindow();
     this.gm4.updateWindow();
 
-    this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
-    this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
-    this.gm3.map.on("moveend", function(){$(window).trigger('resize');});
-    this.gm4.map.on("moveend", function(){$(window).trigger('resize');});
+    this.gm1.map.on("moveend", function () {
+        $(window).trigger('resize');
+    });
+    this.gm2.map.on("moveend", function () {
+        $(window).trigger('resize');
+    });
+    this.gm3.map.on("moveend", function () {
+        $(window).trigger('resize');
+    });
+    this.gm4.map.on("moveend", function () {
+        $(window).trigger('resize');
+    });
 }
 
 GraphicManager.prototype.hideMaps = function (stationId) {
