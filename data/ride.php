@@ -16,9 +16,13 @@ if($start == NULL) {
 
 
 class Bike {
-	public $bikeid = "";
-	public $meters = "";
+	public $count = "";
+	public $from_meters = "";
+	public $to_meters = "";
 }
+
+// Number of categories
+$categories = htmlentities($_GET['categories']);
 
 // Filters
 $gender = htmlentities($_GET['gender']);
@@ -39,26 +43,46 @@ if($costumerType == NULL)
 
 $database = new DataBaseMySQL();
 
-$database->query("SELECT bikeid, meters
-				  FROM TRIP
-				  WHERE gender LIKE '$gender'
-					AND usertype LIKE '$costumerType'
-					AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
-				  ORDER BY meters DESC
-				  LIMIT $start , $limit");
-
 $reply = [];
 
-$row = $database->fetch_next_row();
-while($row) {
+for($i=0; $i<$categories; $i++) {
 
-	$t = new Bike();
-	$t->bikeid = intval($row['bikeid']);
-	$t->meters = $row['meters'];
-  
+	$database->query("SELECT COUNT(*) as count,
+						(SELECT MAX(meters)
+						 FROM TRIP)/$categories*$i	as from_meters,
+						(SELECT MAX(meters)
+						 FROM TRIP)/$categories*($i+1) as to_meters
+					  FROM TRIP
+					  WHERE gender LIKE '$gender'
+						AND usertype LIKE '$costumerType'
+						AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
+						AND meters >= (
+											(SELECT MAX(meters)
+						 				 	 FROM TRIP) -
+											(SELECT MIN(meters)
+						 				 	 FROM TRIP)
+									  )/$categories*$i
+						AND meters < (
+											(SELECT MAX(meters)
+						 				 	 FROM TRIP) -
+											(SELECT MIN(meters)
+						 				 	 FROM TRIP)
+									  )/$categories*($i+1)");
+
+
+
 	$row = $database->fetch_next_row();
+	while($row) {
 
-	array_push($reply, $t);
+		$t = new Bike();
+		$t->count = intval($row['count']);
+		$t->from_meters = $row['from_meters'];
+		$t->to_meters = $row['to_meters'];
+	  
+		$row = $database->fetch_next_row();
+
+		array_push($reply, $t);
+	}
 }
 
 echo json_encode($reply);

@@ -1,11 +1,12 @@
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #FFF;
  }
 
 .axis text{
 	font-family: sans-serif;
+	fill: #FFF;
 	font-size: 0.4rem;
 }
 
@@ -13,11 +14,13 @@
 .legend text{
 	font-family: sans-serif;
 	font-size: 0.4rem;
+	fill: #FFF;
 }
 .title{
 	font-family: sans-serif;
 	font-size: 0.7rem;
 	font-weight: 600;
+	fill: #FFF;
 }
 
 .box line,
@@ -30,4 +33,5 @@
 	font-family: sans-serif;
 	font-size: 0.5rem;
 	text-anchor:end;
+	fill: #FFF;
 }

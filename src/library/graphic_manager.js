@@ -163,7 +163,7 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
-        .style("background-color", "rgba(64, 64, 64, 0.7)");
+        .style("background-color", "rgba(10, 10, 10, 0.8)");
 
     this.svgs.push(svg);
 
@@ -247,7 +247,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0)
                                 .attr("_y", 0.31 + 0.005 + 0.145)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -268,7 +268,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0)
                                 .attr("_y", 1 - 0.12)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -284,7 +284,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0.072)
                                 .attr("_y", 0.250)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -306,7 +306,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0.072)
                                 .attr("_y", 0)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -346,7 +346,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0)
                                 .attr("_y", 0.705)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -387,7 +387,7 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                     .attr("_x", 0.585 + 0.07 * 2 + 0.002 * 2)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                 self.svgs.push(svg);
                 var filterGenderControl = new FilterGenderControl();
@@ -407,7 +407,7 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                     .attr("_x", 0.585 + 0.07 * 3 + 0.002 * 3)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                 self.svgs.push(svg);
 
@@ -421,7 +421,7 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                     .attr("_x", 0.585 + 0.07 * 4 + 0.002 * 4)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                 self.svgs.push(svg);
 
@@ -1505,6 +1505,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
             this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
+            //this.bikesHourDay.setColor(["#FFAABB","#AABBCC"]);
             this.bikesHourDay.draw();
 
             // Multiple line chart
