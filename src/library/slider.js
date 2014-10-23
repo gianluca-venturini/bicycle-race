@@ -116,8 +116,10 @@ Slider.prototype.draw = function () {
         self.hour = h + ":" + m;
         //console.log(value, "-->", h + ":" + m);
 
+        var displayedHour = self.toAmericanHour(h, m);
+
         // Update hour label
-        d3.select("#day_hour").text(self.hour);
+        d3.select("#day_hour").text(displayedHour);
 
         self.callbackSetHour();
 
@@ -128,6 +130,18 @@ Slider.prototype.draw = function () {
         .style("opacity", "0")
         .style("pointer-events", "none");
 
+};
+
+Slider.prototype.toAmericanHour = function (h, m) {
+    var suffix = (h >= 12 && h <= 24) ? "PM" : "AM";
+    var hh = h;
+    if (h >= 13 && h <= 24) {
+        hh = h - 12;
+        hh = hh < 10 ? "0" + hh : hh;
+    }
+    if (+hh === 0) hh = 12;
+    var hour = hh + ":" + m + " " + suffix;
+    return hour;
 };
 
 Slider.prototype.reset = function () {

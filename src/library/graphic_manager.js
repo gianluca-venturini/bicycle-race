@@ -923,13 +923,33 @@ GraphicManager.prototype.callbackSetDate = function () {
     this.dm.getWeather(this.weatherCallback.bind(this));
 
     // Show sunrise and sunset
+    var jdate = new Date(2013, month - 1, day, 12);
+    var times = SunCalc.getTimes(jdate, 41.8369, -87.6847);
+
+    var h = times.sunrise.getHours();
+    var m = times.sunrise.getMinutes();
+    var sunrise = this.toAmericanHour(h, m);
+    h = times.sunset.getHours();
+    m = times.sunset.getMinutes();
+    var sunset = this.toAmericanHour(h, m);
+
+    d3.select("#day_sunrise").text(sunrise);
+    d3.select("#day_sunset").text(sunset);
 
     this.updateGraphs();
 };
 
-GraphicManager.prototype.weatherCallback = function (weather) {
+GraphicManager.prototype.toAmericanHour = function (h, m) {
+    var suffix = (h >= 12 && h <= 24) ? "PM" : "AM";
+    var hh = (h >= 13 && h <= 24) ? h - 12 : h;
+    if (+hh === 0) hh = 12;
+    hh = hh < 10 ? "0" + hh : hh;
+    m = m < 10 ? "0" + m : m;
+    var hour = hh + ":" + m + " " + suffix;
+    return hour;
+};
 
-    console.log(weather);
+GraphicManager.prototype.weatherCallback = function (weather) {
 
     this.weather = weather;
 
