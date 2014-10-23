@@ -374,17 +374,20 @@ DataManager.prototype.getTimeDistribution = function(callback) {
 
 	var url = this.timeDistributionUrl;
 
+
+	url += "?"+this.filters();
+	/*
 	if(this.timeDistribution != null)
 		callback(this.timeDistribution);
-	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.timeDistributionUrl);
+	else */
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.timeDistributionUrl);
 
-			this.timeDistribution = json;
+		this.timeDistribution = json;
 
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 // Get time distribution of bike trips
@@ -392,17 +395,21 @@ DataManager.prototype.getDistanceDistribution = function(callback) {
 
 	var url = this.distanceDistributionUrl;
 
+	url += "?"+this.filters();
+
+	/*
 	if(this.distanceDistribution != null)
 		callback(this.distanceDistribution);
 	else
-		d3.json(url, function(error, json) {
-			if(error)
-				console.log("can't download file " + this.distanceDistributionUrl);
+	*/
+	d3.json(url, function(error, json) {
+		if(error)
+			console.log("can't download file " + this.distanceDistributionUrl);
 
-			this.distanceDistribution = json;
+		this.distanceDistribution = json;
 
-			callback(json);
-		}.bind(this));
+		callback(json);
+	}.bind(this));
 }
 
 /*
@@ -424,6 +431,8 @@ DataManager.prototype.getFlow = function(callback, stationId, flow) {
 		url += "&";
 		url += "to="+this.date;
 	}
+
+	url += this.filters();
 
 	d3.json(url, function(error, json) {
 		if(error)
@@ -461,6 +470,8 @@ DataManager.prototype.getInOutFlow = function(callback) {
 				url+=","+station;
 		}
 
+	url += this.filters();
+
 	queue()
 	.defer(d3.json, url+"&demographic=IN")
 	.defer(d3.json, url+"&demographic=OUT")
@@ -479,47 +490,51 @@ DataManager.prototype.getRideDistribution = function(callback) {
 
 	var url = this.rideUrl;
 
+	url += "?"+this.filters();
+
+	/*
 	if(this.tripDistanceDistribution != null)
 		callback(this.tripDistanceDistribution);
 	else
-		queue()
-		.defer(d3.json, url+"?limit=100000&start=0")
-	    .defer(d3.json, url+"?limit=100000&start=100000")
-	    .defer(d3.json, url+"?limit=100000&start=200000")
-	    .defer(d3.json, url+"?limit=100000&start=300000")
-	    .defer(d3.json, url+"?limit=100000&start=400000")
-	    .defer(d3.json, url+"?limit=100000&start=500000")
-	    .defer(d3.json, url+"?limit=100000&start=600000")
-	    .defer(d3.json, url+"?limit=100000&start=700000")
-	    .defer(d3.json, url+"?limit=100000&start=800000")
-	    .defer(d3.json, url+"?limit=100000&start=900000")
-	    .await(function(error, 
-	    				json0, 
-	    				json1, 
-	    				json2, 
-	    				json3, 
-	    				json4, 
-	    				json5, 
-	    				json6, 
-	    				json7, 
-	    				json8, 
-	    				json9) {
-	    	var data = json0.concat(json1);
-	    	var data = data.concat(json2);
-	    	var data = data.concat(json3);
-	    	var data = data.concat(json4);
-	    	var data = data.concat(json5);
-	    	var data = data.concat(json6);
-	    	var data = data.concat(json7);
-	    	var data = data.concat(json8);
-	    	var data = data.concat(json9);
-			if(error)
-				console.log("can't download file " + this.rideUrl);
+	*/
+	queue()
+	.defer(d3.json, url+"?limit=100000&start=0")
+	.defer(d3.json, url+"?limit=100000&start=100000")
+	.defer(d3.json, url+"?limit=100000&start=200000")
+	.defer(d3.json, url+"?limit=100000&start=300000")
+	.defer(d3.json, url+"?limit=100000&start=400000")
+	.defer(d3.json, url+"?limit=100000&start=500000")
+	.defer(d3.json, url+"?limit=100000&start=600000")
+	.defer(d3.json, url+"?limit=100000&start=700000")
+	.defer(d3.json, url+"?limit=100000&start=800000")
+	.defer(d3.json, url+"?limit=100000&start=900000")
+	.await(function(error,
+					json0,
+					json1,
+					json2,
+					json3,
+					json4,
+					json5,
+					json6,
+					json7,
+					json8,
+					json9) {
+		var data = json0.concat(json1);
+		var data = data.concat(json2);
+		var data = data.concat(json3);
+		var data = data.concat(json4);
+		var data = data.concat(json5);
+		var data = data.concat(json6);
+		var data = data.concat(json7);
+		var data = data.concat(json8);
+		var data = data.concat(json9);
+		if(error)
+			console.log("can't download file " + this.rideUrl);
 
-			this.tripDistanceDistribution = data;
+		this.tripDistanceDistribution = data;
 
-			callback(data);
-		}.bind(this));
+		callback(data);
+	}.bind(this));
 }
 
 DataManager.prototype.filterDataModality = function(d) {
