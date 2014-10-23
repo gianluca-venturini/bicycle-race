@@ -9,7 +9,7 @@
                 <tspan class="text_control" font-family="Roboto" font-size="9" font-weight="500" x="24.777032" y="9">Filter by age:</tspan>
             </text>
             <text transform="translate(34.19685 15.5)" fill="black">
-                <tspan id="age_from" class="text_control" font-family="Helvetica Neue" font-size="9" font-weight="500" x=".07538552" y="9" textLength="11.676">100</tspan>
+                <tspan id="age_from" class="text_control" font-family="Helvetica Neue" font-size="9" font-weight="500" x=".07538552" y="9" textLength="11.676">15</tspan>
             </text>
             <text transform="translate(48.700803 15.5)" fill="black">
                 <tspan class="text_control" font-family="Helvetica Neue" font-size="9" font-weight="500" x=".1385" y="9" textLength="2.723">-</tspan>
