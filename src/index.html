@@ -22,7 +22,10 @@
     <script src="./library/NormalChart.js"></script>
     <script src="./library/StarChart.js"></script>
     <script src="./library/ImbalanceChart.js"></script>
+    <script src="./library/legend.js"></script>
     <style>
+        /* Import roboto font from Google */
+        @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
         #map {
             height: 100%;
         }
@@ -79,6 +82,28 @@
         /* Special effects */
         .line_stroke:hover {
             stroke-width: 5px;
+        }
+        /* Legend */
+        img.icon_legend {
+            height: 90%;
+            margin: auto;
+            display: inline-block;
+            float: left;
+            margin-left: 30%;
+        }
+        div.icon_legend {
+            height: 16.6%;
+            margin: auto;
+            display: block;
+            width: 50%;
+        }
+        div.icon_legend div {   /* Icon legend text */
+            margin-left: 1%;
+            display: inline-block;
+            float: left;
+            color: #FFF;
+            font-family: 'Roboto';
+            font-size: 0.7em;
         }
         /* Cursor style */
         .pointer {
@@ -211,6 +236,13 @@
         var momentDay1 = gm.addSvg(0.3, 0.7, 0.20 - 0.01, 0.18);
         var momentDay = new StarChart(momentDay1);
         gm.momentDay = momentDay;
+
+        var legend = gm.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
+        gm.addLegend(legend);
+        //gm.showLegend();
+        //gm.hideLegend();
+
+        gm.legend.draw("stations_outflow", 0, 100);
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
