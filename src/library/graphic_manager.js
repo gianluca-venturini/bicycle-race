@@ -177,6 +177,7 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
     var gm = this;
 
     svg.attr("class", "default unselectable")
+        .attr("class", "chart")
         .attr("_height", height)
         .attr("_width", width)
         .attr("_x", x)

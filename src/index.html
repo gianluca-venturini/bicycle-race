@@ -113,7 +113,7 @@
 
          // Background of the charts
         var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.8);
-        chartBack.style("background-color", "rgba(10, 10, 10, 0.8)");
+        chartBack.attr("class", "chart").style("background-color", "rgba(10, 10, 10, 0.8)");
 
          // Create two svg with graphic manager
         var svgLayerControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
@@ -143,7 +143,7 @@
 
         zoomControl.setCallbackZoomIn(gm.zoomIn.bind(gm));
         zoomControl.setCallbackZoomOut(gm.zoomOut.bind(gm));
-
+        
          // Draw the SVGs
         layerControl.draw();
         selectionControl.draw();

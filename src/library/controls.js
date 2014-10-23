@@ -496,19 +496,39 @@ function HideChartsControl(svg) {
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
     svg.attr("viewBox", "0 0 100 50");
+    this.hide = true;
 }
 
 HideChartsControl.prototype.draw = function () {
 
     this.text = this.svg.append("text")
-        .attr('id', 'text_statics_charts')
+        .attr('id', 'text_hide_charts')
         .attr('class', 'text_control pointer')
         .attr("text-anchor", "middle")
         .attr('x', 50)
         .attr('y', 25)
         .attr("dominant-baseline", "central")
         .style('font-size', '0.9em')
-        .text("Hide all charts");
+        .text("Hide charts");
+
+    d3.select('#text_hide_charts').on("click", function () {
+        this.hide = !this.hide;
+        if (this.hide) {
+            d3.selectAll(".chart")
+                .style("opacity", "0")
+                .style("pointer-events", "none");
+            d3.select("#text_hide_charts").text("Show charts");
+        } else {
+            d3.selectAll(".chart")
+                .style("opacity", "1")
+                .style("pointer-events", "all");
+            d3.select("#text_hide_charts").text("Hide charts");
+        }
+
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+
 
 };
 
