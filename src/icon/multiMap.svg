@@ -6,39 +6,22 @@
         <g>
             <rect x="0" y="0" width="100.000064" height="100.000064" fill="#616161" fill-opacity="0" />
             <text transform="translate(5 10.535433)" fill="black">
-                <tspan class="text_control" font-family="Roboto" font-size="13" x="0" y="12">Multi-map mode</tspan>
+                <tspan class="text_control" font-family="Helvetica Neue" font-size="11" font-weight="500" x="4.338532" y="10" textLength="81.323">Multi-map mode</tspan>
             </text>
-            <rect x="16.776013" y="32.881889" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-            <rect x="20.490385" y="32.881889" width="25.795275" height="25.795275" id="path" />
+            <rect x="13.033709" y="35.43307" width="73.932646" height="42.23622" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <rect x="21.826771" y="43.653542" width="25.795275" height="25.795275" id="path" />
             <clipPath id="clip_path">
                 <use xl:href="#path" />
             </clipPath>
             <g clip-path="url(#clip_path)">
-                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(20.490385 32.881889) scale(.040585014)" />
+                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(21.826771 43.653542) scale(.040585014)" />
             </g>
-            <rect x="50.000032" y="32.881889" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-            <rect x="53.714404" y="32.881889" width="25.795275" height="25.795275" id="path_2" />
+            <rect x="53.858266" y="43.653542" width="25.795275" height="25.795275" id="path_2" />
             <clipPath id="clip_path_2">
                 <use xl:href="#path_2" />
             </clipPath>
             <g clip-path="url(#clip_path_2)">
-                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(53.714404 32.881889) scale(.040585014)" />
-            </g>
-            <rect x="16.776013" y="58.690053" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-            <rect x="20.490385" y="58.690053" width="25.795275" height="25.795275" id="path_3" />
-            <clipPath id="clip_path_3">
-                <use xl:href="#path_3" />
-            </clipPath>
-            <g clip-path="url(#clip_path_3)">
-                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(20.490385 58.690053) scale(.040585014)" />
-            </g>
-            <rect x="50.000032" y="58.690053" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-            <rect x="53.714404" y="58.690053" width="25.795275" height="25.795275" id="path_4" />
-            <clipPath id="clip_path_4">
-                <use xl:href="#path_4" />
-            </clipPath>
-            <g clip-path="url(#clip_path_4)">
-                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(53.714404 58.690053) scale(.040585014)" />
+                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(53.858266 43.653542) scale(.040585014)" />
             </g>
         </g>
     </g>

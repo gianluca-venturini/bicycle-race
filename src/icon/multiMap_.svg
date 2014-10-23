@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="multimap" class="pointer" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100" width="101pt" height="101pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+    <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+        <g>
+            <rect x="0" y="0" width="100.000064" height="100.000064" fill="#616161" fill-opacity="0" />
+            <text transform="translate(5 10.535433)" fill="black">
+                <tspan class="text_control" font-family="Roboto" font-size="13" x="0" y="12">Multi-map mode</tspan>
+            </text>
+            <rect x="16.776013" y="32.881889" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <rect x="20.490385" y="32.881889" width="25.795275" height="25.795275" id="path" />
+            <clipPath id="clip_path">
+                <use xl:href="#path" />
+            </clipPath>
+            <g clip-path="url(#clip_path)">
+                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(20.490385 32.881889) scale(.040585014)" />
+            </g>
+            <rect x="50.000032" y="32.881889" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <rect x="53.714404" y="32.881889" width="25.795275" height="25.795275" id="path_2" />
+            <clipPath id="clip_path_2">
+                <use xl:href="#path_2" />
+            </clipPath>
+            <g clip-path="url(#clip_path_2)">
+                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(53.714404 32.881889) scale(.040585014)" />
+            </g>
+            <rect x="16.776013" y="58.690053" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <rect x="20.490385" y="58.690053" width="25.795275" height="25.795275" id="path_3" />
+            <clipPath id="clip_path_3">
+                <use xl:href="#path_3" />
+            </clipPath>
+            <g clip-path="url(#clip_path_3)">
+                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(20.490385 58.690053) scale(.040585014)" />
+            </g>
+            <rect x="50.000032" y="58.690053" width="33.22402" height="25.808164" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+            <rect x="53.714404" y="58.690053" width="25.795275" height="25.795275" id="path_4" />
+            <clipPath id="clip_path_4">
+                <use xl:href="#path_4" />
+            </clipPath>
+            <g clip-path="url(#clip_path_4)">
+                <image xl:href="./icon/minimap.png" width="635.5862" height="635.5862" transform="translate(53.714404 58.690053) scale(.040585014)" />
+            </g>
+        </g>
+    </g>
+</svg>

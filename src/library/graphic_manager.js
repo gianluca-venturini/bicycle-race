@@ -21,9 +21,15 @@ function GraphicManager(htmlId) {
     this.tripsAge = null;
     this.tripsCustomerType = null;
 
+    this.legend = null;
+
     this.timeDistribution = null;
     this.dinstanceDistribution = null;
     this.tripsDistanceDistribution = null;
+
+    this.imbalance = null;
+
+    this.momentDay = null;
 
     this.svgs = [];
     this.divs = [];
@@ -159,11 +165,29 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
         .style("position", "absolute")
         .attr("viewBox", "0 0 100 100")
         .attr('preserveAspectRatio', 'xMidYMid meet')
-        .style("background-color", "rgba(64, 64, 64, 0.7)");
+        .style("background-color", "rgba(10, 10, 10, 0.8)");
 
     this.svgs.push(svg);
 
     return svg;
+};
+
+GraphicManager.prototype.addDiv = function (x, y, width, height) {
+
+    var div = d3.select("#" + this.mapId).append("div");
+
+    div.attr("class", "default")
+        .attr("_height", height)
+        .attr("_width", width)
+        .attr("_x", x)
+        .attr("_y", y)
+        .style("position", "absolute")
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style("background-color", "rgba(10, 10, 10, 0.8)");
+
+    this.divs.push(div);
+
+    return div;
 };
 
 GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
@@ -173,6 +197,7 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
     var gm = this;
 
     svg.attr("class", "default unselectable")
+        .attr("class", "chart")
         .attr("_height", height)
         .attr("_width", width)
         .attr("_x", x)
@@ -243,7 +268,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0)
                                 .attr("_y", 0.31 + 0.005 + 0.145)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -264,7 +289,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0)
                                 .attr("_y", 1 - 0.12)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -280,7 +305,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0.072)
                                 .attr("_y", 0.250)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -302,7 +327,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0.072)
                                 .attr("_y", 0)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
 
@@ -342,9 +367,15 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                                 .attr("_x", 0)
                                 .attr("_y", 0.705)
                                 .style("position", "absolute")
-                                .style("background-color", "rgba(64, 64, 64, 0.7)");
+                                .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                             self.svgs.push(svg);
+
+                            d3.select('#multimap').on("click", function () {
+                                self.showMaps();
+                                d3.event.stopPropagation();
+                            }.bind(self))
+                                .style('-webkit-user-select', 'none');
 
                             //var multimapControl = new MultimapControl();
 
@@ -377,9 +408,15 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                     .attr("_x", 0.585 + 0.07 * 2 + 0.002 * 2)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                 self.svgs.push(svg);
+                var filterGenderControl = new FilterGenderControl();
+                self.filterGenderControl = filterGenderControl;
+                filterGenderControl.draw();
+
+                filterGenderControl.setCallbackSetMale(self.callbackSetMale.bind(self));
+                filterGenderControl.setCallbackSetFemale(self.callbackSetFemale.bind(self));
 
                 ////////////////////////////////////
 
@@ -387,13 +424,20 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                 var svg = d3.select("#filter_age");
 
                 svg.attr("_height", 0.12)
-                    .attr("_width", 0.07)
+                    .attr("_width", 0.1)
                     .attr("_x", 0.585 + 0.07 * 3 + 0.002 * 3)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)")
+                    .attr("viewBox", "0 0 100 57");
 
                 self.svgs.push(svg);
+
+                var svgSliderDouble = self.addSvg.call(self, 0.585 + 0.07 * 3 + 0.002 * 3, 1 - 0.065, 0.1, 0.06);
+                callback();
+                self.sliderDouble = new SliderDouble(svgSliderDouble);
+                self.sliderDouble.draw();
+                self.sliderDouble.setCallbackSetAge(self.callbackSetAge.bind(self));
 
                 ////////////////////////////////////
 
@@ -402,12 +446,18 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
 
                 svg.attr("_height", 0.12)
                     .attr("_width", 0.07)
-                    .attr("_x", 0.585 + 0.07 * 4 + 0.002 * 4)
+                    .attr("_x", 0.585 + 0.07 * 4 + 0.002 * 4 + 0.03)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(64, 64, 64, 0.7)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                 self.svgs.push(svg);
+                var filterUserControl = new FilterUserControl();
+                self.filterUserControl = filterUserControl;
+                filterUserControl.draw();
+
+                filterUserControl.setCallbackSetCustomer(self.callbackSetCustomer.bind(self));
+                filterUserControl.setCallbackSetSubscriber(self.callbackSetSubscriber.bind(self));
 
                 callback();
 
@@ -436,6 +486,8 @@ GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type)
     gm.createMap(type);
 
     this.graphicManagers.push(gm);
+
+    return gm;
 };
 
 /*
@@ -512,6 +564,7 @@ GraphicManager.prototype.updateWindow = function () {
         var gm = this.graphicManagers[g];
         gm.updateWindow();
     }
+    //$(window).trigger('resize');
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -587,6 +640,8 @@ GraphicManager.prototype.highlightStationByMarker = function (marker) {
 
     // Disable active flows when highlighting new station
     this.markerType = "popularity";
+    d3.select("#station_inflow_rect").style("stroke", "none");
+    d3.select("#station_outflow_rect").style("stroke", "none");
     this.drawSelectedMarkers();
 
     try {
@@ -722,6 +777,9 @@ GraphicManager.prototype.selectedStation = function (station) {
 
 GraphicManager.prototype.selectCompareAll = function (station) {
 
+    // Highlight click
+    d3.select("#station_compareAll_rect").style("stroke", "red").transition().delay(400).style("stroke", "none");
+
     // Set mode
     if (this.dm.selectionMode === null) {
         this.dm.selectionMode = "MULTIPLE";
@@ -757,6 +815,9 @@ GraphicManager.prototype.selectCompareAll = function (station) {
 };
 
 GraphicManager.prototype.selectCompareTwo = function (station) {
+
+    // Highlight click
+    d3.select("#station_compare2_rect").style("stroke", "lightgreen").transition().delay(400).style("stroke", "none");
 
     // Set mode
     if (this.dm.selectionMode === null) {
@@ -861,9 +922,31 @@ GraphicManager.prototype.callbackSetDate = function () {
     // Show weather
     this.dm.getWeather(this.weatherCallback.bind(this));
 
-    //this.removeBikes();
-    //this.drawBikesInMoment();
+    // Show sunrise and sunset
+    var jdate = new Date(2013, month - 1, day, 12);
+    var times = SunCalc.getTimes(jdate, 41.8369, -87.6847);
+
+    var h = times.sunrise.getHours();
+    var m = times.sunrise.getMinutes();
+    var sunrise = this.toAmericanHour(h, m);
+    h = times.sunset.getHours();
+    m = times.sunset.getMinutes();
+    var sunset = this.toAmericanHour(h, m);
+
+    d3.select("#day_sunrise").text(sunrise);
+    d3.select("#day_sunset").text(sunset);
+
     this.updateGraphs();
+};
+
+GraphicManager.prototype.toAmericanHour = function (h, m) {
+    var suffix = (h >= 12 && h <= 24) ? "PM" : "AM";
+    var hh = (h >= 13 && h <= 24) ? h - 12 : h;
+    if (+hh === 0) hh = 12;
+    hh = hh < 10 ? "0" + hh : hh;
+    m = m < 10 ? "0" + m : m;
+    var hour = hh + ":" + m + " " + suffix;
+    return hour;
 };
 
 GraphicManager.prototype.weatherCallback = function (weather) {
@@ -986,16 +1069,22 @@ GraphicManager.prototype.getWeatherByHour = function () {
     var hour_user = +(h_ + m_);
 
     var weather_user = null;
+    var temperature_user = null;
     var temp = 0;
     for (var i in weather) {
         if (weather[i].hour <= hour_user && weather[i].hour > temp) {
             temp = weather[i].hour;
             weather_user = weather[i].conditions;
+            temperature_user = weather[i].temperature;
         }
     }
 
     d3.select('#day_image').attr("xlink:href", this.getWeatherIcon(weather_user));
     d3.select('#day_weather').text(weather_user);
+    if (temperature_user === null)
+        d3.select('#day_temperature').text("");
+    else
+        d3.select('#day_temperature').text(temperature_user + "°");
 
 };
 
@@ -1025,9 +1114,20 @@ GraphicManager.prototype.callbackSetHour = function () {
 
 };
 
+GraphicManager.prototype.callbackSetAge = function () {
+
+    // Set age
+    this.dm.age = this.sliderDouble.age;
+    this.updateGraphs();
+
+};
+
 GraphicManager.prototype.selectInflow = function (station) {
     // Invert the behavior
     if (this.markerType === "inflow" && this.lastInflow === station.id) {
+        // Disable flow view and legend
+        d3.select("#station_inflow_rect").style("stroke", "none");
+        this.hideLegend();
         this.lastInflow = station.id;
         this.markerType = "popularity";
         this.drawSelectedMarkers();
@@ -1035,12 +1135,18 @@ GraphicManager.prototype.selectInflow = function (station) {
         return;
     }
     this.lastInflow = station.id;
+    this.showLegend();
+    this.legend.draw("stations_inflow", 0, 5);
+    d3.select("#station_inflow_rect").style("stroke", "red");
+    d3.select("#station_outflow_rect").style("stroke", "none");
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
 };
 
 GraphicManager.prototype.selectOutflow = function (station) {
     // Invert the behavior
     if (this.markerType === "outflow" && this.lastOutflow === station.id) {
+        d3.select("#station_outflow_rect").style("stroke", "none");
+        this.hideLegend();
         this.lastOutflow = station.id;
         this.markerType = "popularity";
         this.drawSelectedMarkers();
@@ -1048,6 +1154,10 @@ GraphicManager.prototype.selectOutflow = function (station) {
         return;
     }
     this.lastOutflow = station.id;
+    this.showLegend();
+    this.legend.draw("stations_outflow", 0, 5);
+    d3.select("#station_outflow_rect").style("stroke", "lightgreen");
+    d3.select("#station_inflow_rect").style("stroke", "none");
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -1118,6 +1228,66 @@ GraphicManager.prototype.selectOutflowCallback = function (flow) {
     this.selectedStation(this.selected);
 
 };
+
+GraphicManager.prototype.callbackSetMale = function () {
+    var self = this.filterGenderControl;
+    if (self.gender === "MALE") {
+        self.gender = null;
+        this.dm.gender = null;
+        d3.select("#filter_male").style("stroke", "none");
+    } else {
+        self.gender = "MALE";
+        this.dm.gender = "MALE";
+        d3.select("#filter_male").style("stroke", "white");
+        d3.select("#filter_female").style("stroke", "none");
+    }
+    this.updateGraphs();
+}
+
+GraphicManager.prototype.callbackSetFemale = function () {
+    var self = this.filterGenderControl;
+    if (self.gender === "FEMALE") {
+        self.gender = null;
+        this.dm.gender = null;
+        d3.select("#filter_female").style("stroke", "none");
+    } else {
+        self.gender = "FEMALE";
+        this.dm.gender = "FEMALE";
+        d3.select("#filter_female").style("stroke", "white");
+        d3.select("#filter_male").style("stroke", "none");
+    }
+    this.updateGraphs();
+}
+
+GraphicManager.prototype.callbackSetCustomer = function () {
+    var self = this.filterUserControl;
+    if (self.user === "CUSTOMER") {
+        self.user = null;
+        this.dm.customerType = null;
+        d3.select("#filter_customer").style("stroke", "none");
+    } else {
+        self.user = "CUSTOMER";
+        this.dm.customerType = "CUSTOMER";
+        d3.select("#filter_customer").style("stroke", "white");
+        d3.select("#filter_subscriber").style("stroke", "none");
+    }
+    this.updateGraphs();
+}
+
+GraphicManager.prototype.callbackSetSubscriber = function () {
+    var self = this.filterUserControl;
+    if (self.user === "SUBSCRIBER") {
+        self.user = null;
+        this.dm.customerType = null;
+        d3.select("#filter_subscriber").style("stroke", "none");
+    } else {
+        self.user = "SUBSCRIBER";
+        this.dm.customerType = "SUBSCRIBER";
+        d3.select("#filter_subscriber").style("stroke", "white");
+        d3.select("#filter_customer").style("stroke", "none");
+    }
+    this.updateGraphs();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1201,6 +1371,8 @@ GraphicManager.prototype.pointInArea = function (point, coordinates) {
 };
 
 GraphicManager.prototype.selectAllStationsInArea = function (area) {
+    // Automatically switch to compareAll mode
+    this.dm.selectionMode = "MULTIPLE";
     this.selectedArea = area;
     this.dm.getStations(this.selectStationsInAreaCallback.bind(this));
 };
@@ -1429,7 +1601,8 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDay.setTimeDataInX("hour",2,"12hr");
+            this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
+            //this.bikesHourDay.setColor(["#FFAABB","#AABBCC"]);
             this.bikesHourDay.draw();
 
             // Multiple line chart
@@ -1441,7 +1614,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDayComparison.setTimeDataInX("hour",2,"12hr");
+            this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
@@ -1482,6 +1655,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 this.tripsCustomerType.setTitle("Customer type");
                 this.tripsCustomerType.draw();
             }
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.tripsAge != null)
@@ -1521,8 +1695,10 @@ GraphicManager.prototype.updateGraphs = function () {
                 "Age");
             this.tripsAge.setTitle("Age");
             this.tripsAge.draw();
+            $(window).trigger('resize');
         }.bind(this));
 
+    /*
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
@@ -1537,9 +1713,45 @@ GraphicManager.prototype.updateGraphs = function () {
             });
             this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
-            this.bikesDayYearComparison.setTimeDataInX("month",1,"MMM DD");
+            this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
             this.bikesDayYearComparison.setTitle("Rides")
             this.bikesDayYearComparison.draw();
+            $(window).trigger('resize');
+        }.bind(this));
+    */
+
+    if (this.bikesDayYearComparison != null)
+        this.dm.getBikesDayYear(function (data) {
+            var days = [];
+
+            for (var i in data) {
+                if (days.indexOf(data[i].day) == -1)
+                    days.push(data[i].day);
+            }
+
+            // Sum up all the day of the year
+            var d = [];
+            var k = 0;
+            for (var i in days) {
+                var day = days[i];
+                var line = {};
+                line.day = day;
+                line.count = 0;
+                while (k < data.length && data[k].day == day) {
+                    line.count += data[k].count;
+                    k += 1;
+                }
+                d.push(line);
+            }
+
+            var dy = 1000 * 60 * 60 * 24; // in a day
+
+            this.bikesDayYearComparison.setData(d, "dayOfYearMany");
+            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
+            this.bikesDayYearComparison.setTitle("Rides")
+            this.bikesDayYearComparison.draw();
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.timeDistribution != null)
@@ -1562,6 +1774,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.distanceDistribution.setAxes("totaldistance", "Distance", "# of bikes");
             this.distanceDistribution.setTitle("Distribution of bikes by distance traveled(in meters)");
             this.distanceDistribution.draw();
+            $(window).trigger('resize');
         }.bind(this));
 
     if (this.tripsDistanceDistribution != null) {
@@ -1574,9 +1787,38 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.setAxes("meters","Distance", "# of bikes");
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
+            $(window).trigger('resize');
         }.bind(this));
         */
 
+    }
+
+    if (this.imbalance != null) {
+        this.dm.getInOutFlow(function (inflow, outflow) {
+            var imbalanceData = inflow.map(function (d, i) {
+                var temp = {
+                    id: d.id,
+                    inflow: (+d.customer) + (+d.subscriber),
+                    outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
+                };
+                return temp;
+            });
+            this.imbalance.setData(imbalanceData, "imbalance");
+            this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
+            this.imbalance.draw();
+            $(window).trigger('resize');
+        });
+
+    }
+
+    if (this.momentDay != null) {
+        this.dm.getBikesHourDay(function (data) {
+            this.momentDay.setTitle("Rides");
+            this.momentDay.setData(data, "star"); //(data,className)
+            this.momentDay.setProperty("hour", "count"); //(propertyTheta, propertyR)
+            this.momentDay.draw();
+            $(window).trigger('resize');
+        });
     }
 
 };
@@ -1627,4 +1869,46 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
         }
     }
     this.highlightStationByMarker(marker);
+}
+
+GraphicManager.prototype.showMaps = function () {
+
+    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar");
+    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal");
+
+    this.gm1.dm = this.dm;
+    this.gm2.dm = this.dm;
+
+    this.gm1.drawMarkers("popularity");
+    this.gm2.drawMarkers("popularity");
+
+    this.gm1.updateWindow();
+    this.gm2.updateWindow();
+
+    //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
+    //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
+}
+
+GraphicManager.prototype.hideMaps = function () {
+    this.gm1.map.remove();
+    this.gm2.map.remove();
+
+    d3.select("#map2").remove();
+    d3.select("#map3").remove();
+
+    this.graphicManagers = [];
+}
+
+GraphicManager.prototype.addLegend = function (legend) {
+    this.legend = new Legend(legend);
+}
+
+GraphicManager.prototype.showLegend = function () {
+    if (this.legend != null)
+        this.legend.show();
+}
+
+GraphicManager.prototype.hideLegend = function () {
+    if (this.legend != null)
+        this.legend.hide();
 }

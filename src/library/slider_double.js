@@ -1,4 +1,4 @@
-function Slider(svg) {
+function SliderDouble(svg) {
 
     this.margin = {
         top: 5,
@@ -7,10 +7,10 @@ function Slider(svg) {
         left: 5
     };
 
-    this.rootSvg = svg.attr("class", "day_box");
+    this.rootSvg = svg;
     this.svg = svg.append("g")
         .attr("transform", "translate(" + this.margin.left + ",0)")
-        .attr('id', 'gslider');
+        .attr('id', 'gsliderDouble');
 
     this.width = +svg.attr("width").replace("px", "") - this.margin.left - this.margin.right;
     this.height = +svg.attr("height").replace("px", "") - this.margin.bottom - this.margin.top;
@@ -20,7 +20,7 @@ function Slider(svg) {
     //this.height_ = 100;
 
     this.x = d3.scale.linear()
-        .domain([0, 23.59])
+        .domain([15, 100])
         .range([0, this.width])
         .clamp(true);
 
@@ -28,11 +28,11 @@ function Slider(svg) {
         .x(this.x)
         .extent([0, 0]);
 
-    this.callbackSetHour = null;
-    this.hour = null;
+    this.callbackSetAge = null;
+    this.age = [0, 110];
 }
 
-Slider.prototype.draw = function () {
+SliderDouble.prototype.draw = function () {
 
     var self = this;
 
@@ -69,29 +69,28 @@ Slider.prototype.draw = function () {
         .remove();
 
     slider.select(".background")
-        .attr("class", "day_box")
         .attr("height", this.height)
         .attr("width", this.width)
         .style('cursor', 'pointer');
 
-    var handle = slider.append("circle")
+    var handle1 = slider.append("circle")
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
-        .attr("r", 7);
-    this.handle = handle;
+        .attr("r", 6);
+    this.handle1 = handle1;
 
-    var node = document.getElementById("gslider");
+    var handle2 = slider.append("circle")
+        .attr("class", "handle")
+        .attr("transform", "translate(0," + height / 2 + ")")
+        .attr("r", 6);
+    handle2.attr("cx", 120);
+    this.handle2 = handle2;
+
+    var node = document.getElementById("gsliderDouble");
     var bb = node.getBBox();
     this.rootSvg.attr("viewBox", "0 0 " + bb.width + " " + bb.height)
         .style("background-color", "");
 
-    /*slider
-        .call(brush.event)
-        .transition()
-        .duration(750)
-        .call(brush.extent([10, 10]))
-        .call(brush.event);
-        */
     this.brush.on("brush", brushed);
 
     function brushed() {
@@ -104,53 +103,22 @@ Slider.prototype.draw = function () {
             d3.event.sourceEvent.stopPropagation();
         }
 
-        handle.attr("cx", x(value));
+        if (Math.abs(handle1.attr("cx") - x(value)) < Math.abs(handle2.attr("cx") - x(value))) {
+            handle1.attr("cx", x(value));
+            self.age[0] = Math.floor(value);
+            d3.select("#age_from").text(self.age[0]);
+        } else {
+            handle2.attr("cx", x(value));
+            self.age[1] = Math.floor(value);
+            d3.select("#age_to").text(self.age[1]);
+        }
 
-        // Compute hour
-        var h = Math.floor(value);
-        var m = Math.floor((value - h) * 60);
-        h = h < 10 ? "0" + h : h;
-        m = m < 10 ? "0" + m : m;
-
-        // Set hour
-        self.hour = h + ":" + m;
-        //console.log(value, "-->", h + ":" + m);
-
-        var displayedHour = self.toAmericanHour(h, m);
-
-        // Update hour label
-        d3.select("#day_hour").text(displayedHour);
-
-        self.callbackSetHour();
+        self.callbackSetAge();
 
     }
 
-    // Hide day and slider at the beginning
-    d3.selectAll(".day_box")
-        .style("opacity", "0")
-        .style("pointer-events", "none");
-
 };
 
-Slider.prototype.toAmericanHour = function (h, m) {
-    var suffix = (h >= 12 && h <= 24) ? "PM" : "AM";
-    var hh = h;
-    if (h >= 13 && h <= 24) {
-        hh = h - 12;
-        hh = hh < 10 ? "0" + hh : hh;
-    }
-    if (+hh === 0) hh = 12;
-    var hour = hh + ":" + m + " " + suffix;
-    return hour;
-};
-
-Slider.prototype.reset = function () {
-    this.brush.extent([0, 0]);
-    this.handle.attr("cx", this.x(0));
-    this.hour = null;
-    d3.select("#day_hour").text("");
-};
-
-Slider.prototype.setCallbackSetHour = function (callback) {
-    this.callbackSetHour = callback;
+SliderDouble.prototype.setCallbackSetAge = function (callback) {
+    this.callbackSetAge = callback;
 };

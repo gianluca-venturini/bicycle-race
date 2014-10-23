@@ -40,6 +40,22 @@ if($demographic == NULL) {
 	$demographic = "NONE";
 }
 
+// Filters
+$gender = htmlentities($_GET['gender']);
+$ageMin = htmlentities($_GET['age_min']);
+$ageMax = htmlentities($_GET['age_max']);
+$costumerType = htmlentities($_GET['customer_type']);
+
+if($gender == NULL)
+	$gender="%";
+
+$ageDisabled="0";
+if($ageMax == NULL || $ageMax == NULL)
+	$ageDisabled="1";
+
+if($costumerType == NULL)
+	$costumerType="%";
+
 $database = new DataBaseMySQL();
 
 switch($demographic) {
@@ -60,19 +76,31 @@ switch($demographic) {
 								   (SELECT COUNT(*)
 								    FROM TRIP
 								   	WHERE from_station_id = S.id
-								   	AND gender = 'Male'	) AS male,
+								   	AND gender = 'Male'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS male,
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE from_station_id = S.id
-								   	AND gender = 'Female') AS female,
+								   	AND gender = 'Female'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS female,
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE from_station_id = S.id
-								   	AND usertype = 'Customer') AS customer,
+								   	AND usertype = 'Customer'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS customer,
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE from_station_id = S.id
-								   	AND usertype = 'Subscriber') AS subscriber
+								   	AND usertype = 'Subscriber'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS subscriber
 									FROM STATION S
 									WHERE (id IN ($ids) OR '$idDisabled'='1')
 						");
@@ -87,19 +115,31 @@ switch($demographic) {
 								   (SELECT COUNT(*)
 								    FROM TRIP
 								   	WHERE to_station_id = S.id
-								   	AND gender = 'Male'	) AS male,
+								   	AND gender = 'Male'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS male,
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE to_station_id = S.id
-								   	AND gender = 'Female') AS female,
+								   	AND gender = 'Female'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS female,
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE to_station_id = S.id
-								   	AND usertype = 'Customer') AS customer,
+								   	AND usertype = 'Customer'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS customer,
 								   	(SELECT COUNT(*)
 								   	FROM TRIP
 								   	WHERE to_station_id = S.id
-								   	AND usertype = 'Subscriber') AS subscriber
+								   	AND usertype = 'Subscriber'
+								   	AND gender LIKE '$gender'
+                                    AND usertype LIKE '$costumerType'
+                                    AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')) AS subscriber
 									FROM STATION S
 									WHERE (id IN ($ids) OR '$idDisabled'='1')
 						");

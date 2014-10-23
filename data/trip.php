@@ -52,6 +52,21 @@ if($to == NULL)
 $aggregate = htmlentities($_GET['aggregate']);
 $coordinates = htmlentities($_GET['coordinates']);
 
+// Filters
+$gender = htmlentities($_GET['gender']);
+$ageMin = htmlentities($_GET['age_min']);
+$ageMax = htmlentities($_GET['age_max']);
+$costumerType = htmlentities($_GET['customer_type']);
+
+if($gender == NULL)
+	$gender="%";
+
+$ageDisabled="0";
+if($ageMax == NULL || $ageMax == NULL)
+	$ageDisabled="1";
+
+if($costumerType == NULL)
+	$costumerType="%";
 
 $database = new DataBaseMySQL();
 
@@ -63,6 +78,9 @@ switch($aggregate) {
 							FROM TRIP 
 						 	WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
 								AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
+								AND gender LIKE '$gender'
+								AND usertype LIKE '$costumerType'
+								AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
 						 	GROUP BY DATE_FORMAT(startdate,'%a'), from_station_id
 						");
 		breaK;
@@ -72,6 +90,9 @@ switch($aggregate) {
 						  FROM TRIP
 						  WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
 						  	AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
+						  	AND gender LIKE '$gender'
+							AND usertype LIKE '$costumerType'
+							AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
 						  GROUP BY DATE_FORMAT(startdate,'%Y-%c-%e'), from_station_id
 						");
 		breaK;
@@ -81,6 +102,9 @@ switch($aggregate) {
 						  FROM TRIP 
 						  WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
 						  	AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
+						  	AND gender LIKE '$gender'
+							AND usertype LIKE '$costumerType'
+							AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
 						  GROUP BY DATE_FORMAT(startdate,'%k'), from_station_id
 						");
 		breaK;
@@ -101,6 +125,9 @@ switch($aggregate) {
 							  	AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
 							  	AND S1.id = T.from_station_id
 							  	AND S2.id = T.to_station_id
+							  	AND gender LIKE '$gender'
+								AND usertype LIKE '$costumerType'
+								AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
 							");
 		}
 		else
@@ -111,6 +138,9 @@ switch($aggregate) {
 							  FROM TRIP 
 							  WHERE (from_station_id IN ($ids) OR to_station_id IN ($ids) OR '$idDisabled'='1')
 							  	AND (startdate >= '$from' AND startdate <= '$to 23:59')
+							  	AND gender LIKE '$gender'
+								AND usertype LIKE '$costumerType'
+								AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
 							");
 			
 }

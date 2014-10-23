@@ -19,8 +19,15 @@
     <script src="./library/LineChart.js"></script>
     <script src="./library/PieChart.js"></script>
     <script src="./library/slider.js"></script>
+    <script src="./library/slider_double.js"></script>
     <script src="./library/NormalChart.js"></script>
+    <script src="./library/StarChart.js"></script>
+    <script src="./library/ImbalanceChart.js"></script>
+    <script src="./library/legend.js"></script>
+    <script src="./library/suncalc.js"></script>
     <style>
+        /* Import roboto font from Google */
+        @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
         #map {
             height: 100%;
         }
@@ -33,21 +40,21 @@
         }
         .hourOfDayMany {
             fill: none;
-            stroke-width: 1px;
+            stroke-width: 2px;
         }
         .dayOfYearMany {
             fill: none;
-            stroke-width: 1px;
+            stroke-width: 2px;
         }
         .hourOfDay {
             fill: none;
             stroke: rgba(200, 100, 90, 0.9);
-            stroke-width: 1px;
+            stroke-width: 2px;
         }
         .hourOfDayArea {
             fill: rgba(200, 100, 90, 0.9);
             stroke: rgba(200, 100, 90, 0.9);
-            stroke-width: 1px;
+            stroke-width: 2px;
         }
         .demographic path {
             stroke: rgba(230, 230, 230, 1.0);
@@ -66,13 +73,40 @@
             stroke: rgba(140, 70, 70, 0.9);
             stroke-width: 1px;
         }
+        .star text {
+            font-family: sans-serif;
+            font-size: 0.3rem;
+        }
         /* Blur effect */
         .blur {
             -webkit-filter: blur(10px);
         }
         /* Special effects */
         .line_stroke:hover {
-            stroke-width: 5px;
+            stroke-width: 7px;
+        }
+        /* Legend */
+        img.icon_legend {
+            height: 90%;
+            margin: auto;
+            display: inline-block;
+            float: left;
+            margin-left: 30%;
+        }
+        div.icon_legend {
+            height: 16.6%;
+            margin: auto;
+            display: block;
+            width: 50%;
+        }
+        div.icon_legend div {
+            /* Icon legend text */
+            margin-left: 1%;
+            display: inline-block;
+            float: left;
+            color: #FFF;
+            font-family: 'Roboto';
+            font-size: 0.7em;
         }
         /* Cursor style */
         .pointer {
@@ -97,7 +131,7 @@
 
 <body>
     <div id="lol">
-        <div id="map"></div>
+        <div id="map" style="width: 100%; height: 100%; position: relative; display: inline-block; float: left;"></div>
     </div>
 
     <script>
@@ -105,14 +139,14 @@
         gm.createMap("grey");
 
          // Background of the charts
-        var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.8);
-        chartBack.style("background-color", "rgba(64, 64, 64, 0.8)");
+        var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.82);
+        chartBack.attr("class", "chart").style("background-color", "rgba(10, 10, 10, 0.8)");
 
          // Create two svg with graphic manager
         var svgLayerControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
         var svgSelectionControl = gm.addSvg(0, 0.120 + 0.12 + 0.01, 0.07, 0.14); // y taken from previous svg's height
         var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01 + 0.145, 0.07, 0.06);
-        //var svgMultimap = gm.addSvg(0, 0.705, 0.07, 0.17);
+         //var svgMultimap = gm.addSvg(0, 0.705, 0.07, 0.17);
         /* Charts controls */
         var svgStaticChartsControl = gm.addSvg(0.585, 1 - 0.12, 0.07, 0.12); //+ 0.4 / 5
         var svgHideChartsControl = gm.addSvg(0.585 + 0.07 + 0.002, 1 - 0.12, 0.07, 0.12);
@@ -197,6 +231,21 @@
         var norm3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
         var normalChart3 = new NormalChart(norm3);
         gm.tripsDistanceDistribution = normalChart3;
+
+        var imbalance1 = gm.addSvg(0.3, 0.5, 0.20 - 0.01, 0.18);
+        var imbalance = new ImbalanceChart(imbalance1);
+        gm.imbalance = imbalance;
+
+        var momentDay1 = gm.addSvg(0.3, 0.7, 0.20 - 0.01, 0.18);
+        var momentDay = new StarChart(momentDay1);
+        gm.momentDay = momentDay;
+
+        var legend = gm.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
+        gm.addLegend(legend);
+         //gm.showLegend();
+         //gm.hideLegend();
+
+        gm.legend.draw("stations_outflow", 0, 100);
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
