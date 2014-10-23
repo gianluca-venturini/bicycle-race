@@ -1105,7 +1105,9 @@ GraphicManager.prototype.callbackSetAge = function () {
 GraphicManager.prototype.selectInflow = function (station) {
     // Invert the behavior
     if (this.markerType === "inflow" && this.lastInflow === station.id) {
+        // Disable flow view and legend
         d3.select("#station_inflow_rect").style("stroke", "none");
+        this.hideLegend();
         this.lastInflow = station.id;
         this.markerType = "popularity";
         this.drawSelectedMarkers();
@@ -1113,6 +1115,8 @@ GraphicManager.prototype.selectInflow = function (station) {
         return;
     }
     this.lastInflow = station.id;
+    this.showLegend();
+    this.legend.draw("stations_inflow", 0, 5);
     d3.select("#station_inflow_rect").style("stroke", "red");
     d3.select("#station_outflow_rect").style("stroke", "none");
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
@@ -1122,6 +1126,7 @@ GraphicManager.prototype.selectOutflow = function (station) {
     // Invert the behavior
     if (this.markerType === "outflow" && this.lastOutflow === station.id) {
         d3.select("#station_outflow_rect").style("stroke", "none");
+        this.hideLegend();
         this.lastOutflow = station.id;
         this.markerType = "popularity";
         this.drawSelectedMarkers();
@@ -1129,6 +1134,8 @@ GraphicManager.prototype.selectOutflow = function (station) {
         return;
     }
     this.lastOutflow = station.id;
+    this.showLegend();
+    this.legend.draw("stations_outflow", 0, 5);
     d3.select("#station_outflow_rect").style("stroke", "lightgreen");
     d3.select("#station_inflow_rect").style("stroke", "none");
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
@@ -1698,7 +1705,7 @@ GraphicManager.prototype.updateGraphs = function () {
             var days = [];
 
             for (var i in data) {
-                if(days.indexOf(data[i].day) == -1)
+                if (days.indexOf(data[i].day) == -1)
                     days.push(data[i].day);
             }
 
@@ -1872,16 +1879,16 @@ GraphicManager.prototype.hideMaps = function () {
     this.graphicManagers = [];
 }
 
-GraphicManager.prototype.addLegend = function(legend) {
+GraphicManager.prototype.addLegend = function (legend) {
     this.legend = new Legend(legend);
 }
 
-GraphicManager.prototype.showLegend = function() {
-    if(this.legend != null)
+GraphicManager.prototype.showLegend = function () {
+    if (this.legend != null)
         this.legend.show();
 }
 
-GraphicManager.prototype.hideLegend = function() {
-    if(this.legend != null)
+GraphicManager.prototype.hideLegend = function () {
+    if (this.legend != null)
         this.legend.hide();
 }
