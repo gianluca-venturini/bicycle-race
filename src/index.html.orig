@@ -3,45 +3,156 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Project2</title>
-    <link rel="stylesheet" href="/style/leaflet.css" />
-    <link rel="stylesheet" href="/style/app.css" />
-    <script src="/library/leaflet.js"></script>
-    <script src="/library/d3.v3.min.js"></script>
-    <script src="/library/geojson-utils.js"></script>
-    <script src="/library/graphic_manager.js"></script>
-    <script src="/library/data_manager.js"></script>
-    <script src="/library/controls.js"></script>
-    <script src="/library/marker.js"></script>
+    <link rel="stylesheet" href="./style/leaflet.css" />
+    <link rel="stylesheet" href="./style/app.css" />
+    <link rel="stylesheet" href="./style/chart.css" />
+    <script src="./library/jquery-1.11.1.min.js"></script>
+    <script src="./library/d3.v3.min.js"></script>
+    <script src="./library/queue.v1.min.js"></script>
+    <script src="./library/leaflet.js"></script>
+    <script src="./library/geojson-utils.js"></script>
+    <script src="./library/graphic_manager.js"></script>
+    <script src="./library/data_manager.js"></script>
+    <script src="./library/controls.js"></script>
+    <script src="./library/marker.js"></script>
+    <script src="./library/BarChart.js"></script>
+    <script src="./library/LineChart.js"></script>
+    <script src="./library/PieChart.js"></script>
+    <script src="./library/slider.js"></script>
+    <script src="./library/slider_double.js"></script>
+    <script src="./library/NormalChart.js"></script>
+    <script src="./library/StarChart.js"></script>
+    <script src="./library/ImbalanceChart.js"></script>
+    <script src="./library/legend.js"></script>
     <style>
+        /* Import roboto font from Google */
+        @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
         #map {
             height: 100%;
         }
         .submap {
             border: solid 1px black;
         }
+        /* Chart style */
+        .daysOfWeek {
+            fill: rgba(160, 210, 180, 0.8);
+        }
+        .hourOfDayMany {
+            fill: none;
+            stroke-width: 1px;
+        }
+        .dayOfYearMany {
+            fill: none;
+            stroke-width: 1px;
+        }
+        .hourOfDay {
+            fill: none;
+            stroke: rgba(200, 100, 90, 0.9);
+            stroke-width: 1px;
+        }
+        .hourOfDayArea {
+            fill: rgba(200, 100, 90, 0.9);
+            stroke: rgba(200, 100, 90, 0.9);
+            stroke-width: 1px;
+        }
+        .demographic path {
+            stroke: rgba(230, 230, 230, 1.0);
+        }
+        .demographic text {
+            font-family: sans-serif;
+            font-size: 0.4rem;
+        }
+        .distance_distribution {
+            fill: rgba(140, 70, 70, 0.9);
+            stroke: rgba(140, 70, 70, 0.9);
+            stroke-width: 1px;
+        }
+        .time_distribution {
+            fill: rgba(140, 70, 70, 0.9);
+            stroke: rgba(140, 70, 70, 0.9);
+            stroke-width: 1px;
+        }
+        .star text {
+            font-family: sans-serif;
+            font-size: 0.3rem;
+        }
+        /* Blur effect */
+        .blur {
+            -webkit-filter: blur(10px);
+        }
+        /* Special effects */
+        .line_stroke:hover {
+            stroke-width: 5px;
+        }
+        /* Legend */
+        img.icon_legend {
+            height: 90%;
+            margin: auto;
+            display: inline-block;
+            float: left;
+            margin-left: 30%;
+        }
+        div.icon_legend {
+            height: 16.6%;
+            margin: auto;
+            display: block;
+            width: 50%;
+        }
+        div.icon_legend div {   /* Icon legend text */
+            margin-left: 1%;
+            display: inline-block;
+            float: left;
+            color: #FFF;
+            font-family: 'Roboto';
+            font-size: 0.7em;
+        }
+        /* Cursor style */
+        .pointer {
+            cursor: pointer
+        }
+        .default {
+            cursor: default
+        }
+        .unselectable {
+            -webkit-user-select: none;
+            /* Chrome/Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
+            /* Rules below not implemented in browsers yet */
+            -o-user-select: none;
+            user-select: none;
+        }
     </style>
 </head>
 
 <body>
-    <div id="map"></div>
+    <div id="lol">
+        <div id="map" style="width: 100%; height: 100%; position: relative; display: inline-block; float: left;"></div>
+    </div>
 
     <script>
         var gm = new GraphicManager("map");
         gm.createMap("grey");
 
-         // Create two svg with graphic manager
-         //var svgControls = gm.addSvg(0, 0, 0.07, 0.5);
-        var svgLayerControl = gm.addSvg(0, 0, 0.07, 0.12);
-        var svgSelectionControl = gm.addSvg(0, 0.125, 0.07, 0.12); // y taken from previous svg's height
-        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01, 0.07, 0.06);
-
+         // Background of the charts
 <<<<<<< HEAD
-        var svgDayControl = gm.addSvg(0.072, 0, 0.07, 0.24 + 0.005);
-         //var svgZoomControl = gm.addSvg(0, 0, 0.24, 0.07);
+        var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.8);
+        chartBack.attr("class", "chart").style("background-color", "rgba(10, 10, 10, 0.8)");
 =======
-        var svgDayControl = gm.addSvg(0.075, 0, 0.07, 0.24);
-        var svgZoomControl = gm.addSvg(0, 0.32, 0.04, 0.24);
->>>>>>> 02f8ff04ebf9f70d1e65613c652d52e232866a64
+        var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.82);
+        chartBack.style("background-color", "rgba(10, 10, 10, 0.8)");
+>>>>>>> 9a1b7aef4bf1b3cec04fe22bdbb99cf40738ae37
+
+         // Create two svg with graphic manager
+        var svgLayerControl = gm.addSvg(0, 0.120 + 0.005, 0.07, 0.12); // y taken from previous svg's height
+        var svgSelectionControl = gm.addSvg(0, 0.120 + 0.12 + 0.01, 0.07, 0.14); // y taken from previous svg's height
+        var svgEnableCalendarControl = gm.addSvg(0, 0.12 * 2 + 0.01 + 0.145, 0.07, 0.06);
+         //var svgMultimap = gm.addSvg(0, 0.705, 0.07, 0.17);
+        /* Charts controls */
+        var svgStaticChartsControl = gm.addSvg(0.585, 1 - 0.12, 0.07, 0.12); //+ 0.4 / 5
+        var svgHideChartsControl = gm.addSvg(0.585 + 0.07 + 0.002, 1 - 0.12, 0.07, 0.12);
 
         gm.updateWindow();
 
@@ -49,38 +160,95 @@
         var layerControl = new LayerControl(svgLayerControl);
         var selectionControl = new SelectionControl(svgSelectionControl);
         var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
-        var dayControl = new DayControl(svgDayControl);
-<<<<<<< HEAD
-         //var zoomControl = new ZoomControl(svgZoomControl);
-=======
-        var zoomControl = new ZoomControl(svgZoomControl);
->>>>>>> 02f8ff04ebf9f70d1e65613c652d52e232866a64
+        var zoomControl = new ZoomControl();
+        var stationControl = new StationControl();
+        var dayControl = new DayControl();
+        var staticChartsControl = new StaticChartsControl(svgStaticChartsControl);
+        var hideChartsControl = new HideChartsControl(svgHideChartsControl);
 
+        selectionControl.setCallbackSelectAll(gm.selectAll.bind(gm));
+        selectionControl.setCallbackDeselectAll(gm.deselectAll.bind(gm));
         selectionControl.setCallbackShowCA(gm.addCommunityMap.bind(gm));
         selectionControl.setCallbackHideCA(gm.removeCommunityMap.bind(gm));
 
         zoomControl.setCallbackZoomIn(gm.zoomIn.bind(gm));
         zoomControl.setCallbackZoomOut(gm.zoomOut.bind(gm));
-
+        
          // Draw the SVGs
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
-        dayControl.draw();
-<<<<<<< HEAD
-         //zoomControl.draw();
-=======
-        zoomControl.draw();        
->>>>>>> 02f8ff04ebf9f70d1e65613c652d52e232866a64
+        staticChartsControl.draw();
+        hideChartsControl.draw();
 
          // Set interactions
-         //c1.setPressCallback(c2.changeColor.bind(c2));
-         //c2.setPressCallback(c1.changeColor.bind(c1));
         layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
         layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
 
+        gm.addExternalSVGs(gm.updateWindow.bind(gm));
+        gm.addExternalSVGsCharts(gm.updateWindow.bind(gm));
+
          //gm.addSubMap(0.6, 0.1, 0.4, 0.4, "map2", "satellitar");
-         //gm.addSubMap(0.6, 0.5, 0.4, 0.4, "map3", "lol");
+         //gm.addSubMap(0, 0, 0.07, 0.12, "map3", "lol");
+
+        /*
+            Graph integration
+        */
+        var bar1 = gm.addSvgChart(0.585, 0.05 + 0.02, 0.20 - 0.01, 0.18); // Day of the week
+        var barChart1 = new BarChart(bar1);
+        gm.dayWeekBarGraph = barChart1;
+
+        var line1 = gm.addSvgChart(0.585, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18); // Hour of the day sum
+        var lineChart1 = new LineChart(line1);
+        gm.bikesHourDay = lineChart1;
+
+        var line2 = gm.addSvgChart(0.585, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18); // Hour of the day multiple stations
+        var lineChart2 = new LineChart(line2);
+        lineChart2.callback = gm.selectedStationFromChart.bind(gm);
+        gm.bikesHourDayComparison = lineChart2;
+
+        var line3 = gm.addSvgChart(0.585, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18); // Day of the year, multiple stations
+        var lineChart3 = new LineChart(line3);
+        lineChart3.callback = gm.selectedStationFromChart.bind(gm);
+        gm.bikesDayYearComparison = lineChart3;
+
+        var pie1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
+        var pie2 = gm.addSvgChart(0.585 + (0.20 - 0.01) / 3 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
+        var pie3 = gm.addSvgChart(0.585 + (0.20 - 0.01) * 2 / 3 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
+
+        var pieChart1 = new PieChart(pie1);
+        var pieChart2 = new PieChart(pie2);
+        var pieChart3 = new PieChart(pie3);
+        gm.tripsGender = pieChart1;
+        gm.tripsAge = pieChart2;
+        gm.tripsCustomerType = pieChart3;
+
+        var norm1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.02, 0.20 - 0.01, 0.18);
+        var normalChart1 = new NormalChart(norm1);
+        gm.timeDistribution = normalChart1;
+
+        var norm2 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
+        var normalChart2 = new NormalChart(norm2);
+        gm.distanceDistribution = normalChart2;
+
+        var norm3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
+        var normalChart3 = new NormalChart(norm3);
+        gm.tripsDistanceDistribution = normalChart3;
+
+        var imbalance1 = gm.addSvg(0.3, 0.5, 0.20 - 0.01, 0.18);
+        var imbalance = new ImbalanceChart(imbalance1);
+        gm.imbalance = imbalance;
+
+        var momentDay1 = gm.addSvg(0.3, 0.7, 0.20 - 0.01, 0.18);
+        var momentDay = new StarChart(momentDay1);
+        gm.momentDay = momentDay;
+
+        var legend = gm.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
+        gm.addLegend(legend);
+        //gm.showLegend();
+        //gm.hideLegend();
+
+        gm.legend.draw("stations_outflow", 0, 100);
 
         gm.drawMarkers("popularity");
         gm.updateWindow();
