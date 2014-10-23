@@ -16,6 +16,7 @@ function GraphicManager(htmlId) {
     this.dayWeekBarGraph = null;
     this.bikesHourDay = null;
     this.bikesHourDayComparison = null;
+    this.bikesDayYear = null;
     this.bikesDayYearComparison = null;
     this.tripsGender = null;
     this.tripsAge = null;
@@ -1645,6 +1646,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
+                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0"]);
                 this.tripsGender.draw();
             }
 
@@ -1801,10 +1803,14 @@ GraphicManager.prototype.updateGraphs = function () {
                     inflow: (+d.customer) + (+d.subscriber),
                     outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
                 };
-                if(temp.inflow > temp.outflow)
+                if(temp.inflow > temp.outflow) {
                     temp.inflow -= temp.outflow;
-                else
+                    temp.outflow = 0;
+                }
+                else {
                     temp.outflow -= temp.inflow;
+                    temp.inflow = 0;
+                }
 
                 return temp;
             });

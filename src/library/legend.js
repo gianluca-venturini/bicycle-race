@@ -20,6 +20,12 @@ Legend.prototype.draw = function (type, min, max) {
         .text(function (d) {
             return "" + Math.round((max - min) / 6 * d);
         });
+
+    legend.selectAll("img.icon_legend")
+        .data(data)
+        .attr("src", function (d) {
+            return "./icon/" + type + "/station_" + d + ".png";
+        });
 }
 
 Legend.prototype.hide = function () {
