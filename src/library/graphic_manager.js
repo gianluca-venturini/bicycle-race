@@ -1466,8 +1466,8 @@ GraphicManager.prototype.drawBikes = function () {
 
         // Draw line
         var line = L.polyline([from, to], {
-            color: 'red',
-            fillColor: 'red',
+            color: '#3DB5E7',
+            fillColor: '#3DB5E7',
             fillOpacity: 0.5,
             weight: 3
         }).addTo(this.map);
@@ -1481,8 +1481,8 @@ GraphicManager.prototype.drawBikes = function () {
 
         // Draw circle
         var circle = L.circle([coordinate[0], coordinate[1]], 20, {
-            color: 'red',
-            fillColor: '#f03',
+            color: '#3DB5E7',
+            fillColor: '#3DB5E7',
             fillOpacity: 0.5
         }).addTo(this.map);
 
