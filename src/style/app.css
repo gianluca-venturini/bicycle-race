@@ -48,3 +48,8 @@ body {
     pointer-events: none;
 }
 /*////////////////////////////*/
+@font-face {
+	font-family: "GT Pressura Mono";
+    font-weight: bold;
+	src: url("./GT-Pressura-Mono-Bold.otf") format("font/opentype");
+}

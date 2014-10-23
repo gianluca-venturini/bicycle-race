@@ -553,3 +553,35 @@ FilterGenderControl.prototype.setCallbackSetMale = function (callback) {
 FilterGenderControl.prototype.setCallbackSetFemale = function (callback) {
     this.callbackSetFemale = callback;
 };
+
+///////////////////////
+
+function FilterUserControl() {
+    this.user = null;
+    this.callbackSetCustomer = null;
+    this.callbackSetSubscriber = null;
+}
+
+FilterUserControl.prototype.draw = function () {
+    var self = this;
+
+    d3.select('#filter_customer').on("click", function () {
+        self.callbackSetCustomer();
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+
+    d3.select('#filter_subscriber').on("click", function () {
+        self.callbackSetSubscriber();
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
+};
+
+FilterUserControl.prototype.setCallbackSetCustomer = function (callback) {
+    this.callbackSetCustomer = callback;
+};
+
+FilterUserControl.prototype.setCallbackSetSubscriber = function (callback) {
+    this.callbackSetSubscriber = callback;
+};

@@ -6,11 +6,11 @@
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <g>
             <rect x="0" y="-35527137e-22" width="100.000064" height="50.000032" fill="#616161" fill-opacity="0" />
-            <circle id="zoom_minus" class="pointer" cx="26.984268" cy="25.000016" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" fill="white" fill-opacity="0"/>
-            <circle id="zoom_plus" class="pointer" cx="72.055133" cy="25.000016" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" fill="white" fill-opacity="0"/>
-            <line x1="40.172636" y1="25.228346" x2="13.795899" y2="25.228346" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" pointer-events="none"/>
-            <line x1="71.555133" y1="11.811647" x2="71.555133" y2="38.188385" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" pointer-events="none"/>
-            <line x1="85.2435" y1="25.228346" x2="58.866764" y2="25.228346" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".6" pointer-events="none"/>
+            <circle id="zoom_minus" class="pointer" cx="26.984268" cy="25.000016" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" fill="white" fill-opacity="0"/>
+            <circle id="zoom_plus" class="pointer" cx="72.055133" cy="25.000016" r="17.91343" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" fill="white" fill-opacity="0"/>
+            <line x1="40.172636" y1="25.228346" x2="13.795899" y2="25.228346" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" pointer-events="none"/>
+            <line x1="71.555133" y1="11.811647" x2="71.555133" y2="38.188385" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" pointer-events="none"/>
+            <line x1="85.2435" y1="25.228346" x2="58.866764" y2="25.228346" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" pointer-events="none"/>
         </g>
     </g>
 </svg>
