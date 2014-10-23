@@ -49,9 +49,7 @@ LineChart.prototype.setData = function(json,className,groupOnProperty, legendLab
 }
 
 LineChart.prototype.setColor = function(colorLst){
-	this.color = d3.scale.ordinal()
-		.domain(this.group)
-		.range(colorLst);
+	this.color = colorLst;
 }
 
 LineChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
@@ -152,14 +150,14 @@ LineChart.prototype.draw = function(){
       		return line(d.values);
       	})
       	.attr("stroke", function(d){
-      		return (tooMany)? "rgba(220,220,220,1.0)" : _this.color[d.key.hashCode() % 20];
+      		return (tooMany)? "rgba(220,220,220,1.0)" : _this.color[d.key.hashCode() % _this.color.length];
       	});
 
       	/*Add new entries*/
       	graph.enter().append("path")
       		.attr("class",this.newName+" pointer line_stroke")
       		.attr("stroke", function(d){
-      			return (tooMany)? "rgba(220,220,220,1.0)" : _this.color[d.key.hashCode() % 20];
+      			return (tooMany)? "rgba(220,220,220,1.0)" : _this.color[d.key.hashCode() % _this.color.length];
       		})
       		.attr("d", function(d){
       			return line(d.values);
@@ -241,7 +239,7 @@ LineChart.prototype.addLegend  =  function(){
 	var _this = this;
 	
 	
-	var legendSize = (this.border.bottom - this.border.top)/15.0;
+	var legendSize = (this.border.bottom - this.border.top)/10.0;
 	//svgHandle.selectAll(".legend").remove();
 	legend = this.svg.selectAll(".legend")
   		.data(this.group);
@@ -260,12 +258,12 @@ LineChart.prototype.addLegend  =  function(){
 	    .attr("y", legendSize)
 	    //.style("stroke", "black")
 	    .style("fill", function(d){
-	    	return _this.color[d.hashCode() % 20];
+	    	return _this.color[d.hashCode() %  _this.color.length];
 	    });
 
 	legendGrp.append("text")
 	    .attr("y", legendSize*2)
-	    //.attr("dy", ".4em")
+	    .attr("dy", "-.2em")
 	    .style("text-anchor","end")
 	    .text(function(d){return d;});
 

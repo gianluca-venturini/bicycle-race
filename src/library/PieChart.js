@@ -106,7 +106,7 @@ PieChart.prototype.addLegend  =  function(){
 	var _this = this;
 	
 	
-	var legendSize = (this.border.bottom - this.border.top)/15.0;
+	var legendSize = (this.border.bottom - this.border.top)/10.0;
 	//svgHandle.selectAll(".legend").remove();
 	legend = this.svg.selectAll(".legend")
   		.data(this.legendNames);
@@ -130,7 +130,7 @@ PieChart.prototype.addLegend  =  function(){
 
 	legendGrp.append("text")
 	    .attr("y", legendSize*2)
-	    //.attr("dy", ".4em")
+	    .attr("dy", "-.2em")
 	    .style("text-anchor","end")
 	    .text(function(d){return d;});
 

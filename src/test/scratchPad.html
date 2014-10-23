@@ -53,11 +53,13 @@
         .demographic text{
             font-family: sans-serif;
             font-size: 0.4rem;
+            fill:rgba(230,230,230,1.0);
         }
 
         .star text{
             font-family: sans-serif;
             font-size: 0.3rem;
+            fill:rgba(230,230,230,1.0);
         }
 
         
@@ -170,7 +172,7 @@
                     lineChart1.setTitle("Multiline"); 
                     lineChart1.setData(multiJson,"hourOfDayMany", "fromStation", "Station" );//(data,classname[,groupingProperty,legendlabel])
                     lineChart1.setAxes("hour","Hour", "count", "Rides"); //X and Y axes respectively
-                    lineChart1.setTimeDataInX("hour",2,"12hr");
+                    lineChart1.setTimeDataInX("hour",3,"12hr");
                     lineChart1.draw();
                     lineChart2.setData(multiJson,"hourOfDayMany", "fromStation", "Station" );
                     lineChart2.setAxes("hour","Hour", "count", "Rides"); 

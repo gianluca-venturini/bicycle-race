@@ -138,24 +138,34 @@ ImbalanceChart.prototype.draw = function(){
 	
 
 	this.svg.selectAll(".axis").remove();
-	this.svg.append("line")
+	/*this.svg.append("line")
 		.attr("class", "axis")
-		.attr("stroke", "rgba(0,0,0,1.0)")
+		//.attr("stroke", "rgba(0,0,0,1.0)")
 		.attr("x1", this.border.left)
 		.attr("y1", this.border.midY)
 		.attr("x2", this.border.right)
-		.attr("y2", this.border.midY);
+		.attr("y2", this.border.midY);*/
 
 	// create X axis
-	this.svg.append("g")
+	var xaxisGrp = this.svg.append("g")
 	    .attr("class", "axis")
-	    .attr("transform", "translate(" + 0 +","+ (this.border.bottom) + ")")
-	    .call(this.xAxis)
-	    .append("text")
+	    .attr("transform", "translate(" + 0 +","+ (this.border.bottom) + ")");
+
+	xaxisGrp.call(this.xAxis);
+	xaxisGrp.append("line")
+		//.attr("class", "axis")
+		//.attr("stroke", "rgba(0,0,0,1.0)")
+		.attr("x1", this.border.left)
+		.attr("y1", this.border.midY-this.border.bottom)
+		.attr("x2", this.border.right)
+		.attr("y2", this.border.midY-this.border.bottom);
+	xaxisGrp.append("text")
 	    	.attr("x", this.border.right-5 )
 	    	.attr("y", -this.border.top/2.0)
 	    	.style("text-anchor", "middle")
 	    	.text(this.labelX);
+	
+
 	this.svg.append("g")
 	    .attr("class", "axis")
 	    .attr("transform", "translate(" + (this.border.left) +","+ 0+ ")")
