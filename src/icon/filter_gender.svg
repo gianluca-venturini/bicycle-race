@@ -2,19 +2,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg id="filter_gender" class="default" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 50" width="102pt" height="51pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
-    <defs>
-        <font-face font-family="Roboto" font-size="7" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.99585" descent="-212.99744" font-weight="500">
-            <font-face-src><font-face-name name="HelveticaNeue" /></font-face-src>
-        </font-face>
-        <font-face font-family="Helvetica" font-size="10" units-per-em="1000" underline-position="-75.683594" underline-thickness="49.316406" slope="0" x-height="522.94922" cap-height="717.28516" ascent="770.01953" descent="-229.98047" font-weight="500">
-            <font-face-src><font-face-name name="Helvetica" /></font-face-src>
-        </font-face>
-    </defs>
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <g>
             <rect x="0" y="-35527137e-22" width="100.000064" height="50.000032" fill="#616161" fill-opacity="0" />
             <text transform="translate(5 6.5)" fill="black">
-                <tspan class="text_control" font-family="Roboto" font-size="7" font-weight="500" x="19.590032" y="7" textLength="50.82">Filter by gender:</tspan>
+                <tspan class="text_control" font-family="Roboto" font-size="9" font-weight="500" x="15" y="3">Filter by gender:</tspan>
             </text>
             <rect class="pointer" id="filter_male" x="7.9370077" y="21.826771" width="36.566928" height="18.283464" fill="#616161" fill-opacity=".81" />
             <text class="pointer" style="pointer-events:none;" transform="translate(16.07874 24.968503)" fill="black">

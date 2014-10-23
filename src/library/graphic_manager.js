@@ -403,13 +403,20 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
                 var svg = d3.select("#filter_age");
 
                 svg.attr("_height", 0.12)
-                    .attr("_width", 0.07)
+                    .attr("_width", 0.1)
                     .attr("_x", 0.585 + 0.07 * 3 + 0.002 * 3)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
-                    .style("background-color", "rgba(10, 10, 10, 0.8)");
+                    .style("background-color", "rgba(10, 10, 10, 0.8)")
+                    .attr("viewBox", "0 0 100 57");
 
                 self.svgs.push(svg);
+
+                var svgSliderDouble = self.addSvg.call(self, 0.585 + 0.07 * 3 + 0.002 * 3, 1 - 0.065, 0.1, 0.06);
+                callback();
+                self.sliderDouble = new SliderDouble(svgSliderDouble);
+                self.sliderDouble.draw();
+                self.sliderDouble.setCallbackSetAge(self.callbackSetAge.bind(self));
 
                 ////////////////////////////////////
 
@@ -418,12 +425,18 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
 
                 svg.attr("_height", 0.12)
                     .attr("_width", 0.07)
-                    .attr("_x", 0.585 + 0.07 * 4 + 0.002 * 4)
+                    .attr("_x", 0.585 + 0.07 * 4 + 0.002 * 4 + 0.03)
                     .attr("_y", 1 - 0.12)
                     .style("position", "absolute")
                     .style("background-color", "rgba(10, 10, 10, 0.8)");
 
                 self.svgs.push(svg);
+                var filterUserControl = new FilterUserControl();
+                self.filterUserControl = filterUserControl;
+                filterUserControl.draw();
+
+                filterUserControl.setCallbackSetCustomer(self.callbackSetCustomer.bind(self));
+                filterUserControl.setCallbackSetSubscriber(self.callbackSetSubscriber.bind(self));
 
                 callback();
 
@@ -1060,6 +1073,14 @@ GraphicManager.prototype.callbackSetHour = function () {
 
 };
 
+GraphicManager.prototype.callbackSetAge = function () {
+
+    // Set age
+    this.dm.age = this.sliderDouble.age;
+    this.updateGraphs();
+
+};
+
 GraphicManager.prototype.selectInflow = function (station) {
     // Invert the behavior
     if (this.markerType === "inflow" && this.lastInflow === station.id) {
@@ -1172,7 +1193,6 @@ GraphicManager.prototype.callbackSetMale = function () {
         d3.select("#filter_male").style("stroke", "white");
         d3.select("#filter_female").style("stroke", "none");
     }
-    console.log(this.dm.gender);
     this.updateGraphs();
 }
 
@@ -1188,7 +1208,36 @@ GraphicManager.prototype.callbackSetFemale = function () {
         d3.select("#filter_female").style("stroke", "white");
         d3.select("#filter_male").style("stroke", "none");
     }
-    console.log(this.dm.gender);
+    this.updateGraphs();
+}
+
+GraphicManager.prototype.callbackSetCustomer = function () {
+    var self = this.filterUserControl;
+    if (self.user === "CUSTOMER") {
+        self.user = null;
+        this.dm.customerType = null;
+        d3.select("#filter_customer").style("stroke", "none");
+    } else {
+        self.user = "CUSTOMER";
+        this.dm.customerType = "CUSTOMER";
+        d3.select("#filter_customer").style("stroke", "white");
+        d3.select("#filter_subscriber").style("stroke", "none");
+    }
+    this.updateGraphs();
+}
+
+GraphicManager.prototype.callbackSetSubscriber = function () {
+    var self = this.filterUserControl;
+    if (self.user === "SUBSCRIBER") {
+        self.user = null;
+        this.dm.customerType = null;
+        d3.select("#filter_subscriber").style("stroke", "none");
+    } else {
+        self.user = "SUBSCRIBER";
+        this.dm.customerType = "SUBSCRIBER";
+        d3.select("#filter_subscriber").style("stroke", "white");
+        d3.select("#filter_customer").style("stroke", "none");
+    }
     this.updateGraphs();
 }
 
