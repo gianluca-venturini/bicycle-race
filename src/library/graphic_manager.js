@@ -21,6 +21,8 @@ function GraphicManager(htmlId) {
     this.tripsAge = null;
     this.tripsCustomerType = null;
 
+    this.legend = null;
+
     this.timeDistribution = null;
     this.dinstanceDistribution = null;
     this.tripsDistanceDistribution = null;
@@ -168,6 +170,24 @@ GraphicManager.prototype.addSvg = function (x, y, width, height) {
     this.svgs.push(svg);
 
     return svg;
+};
+
+GraphicManager.prototype.addDiv = function (x, y, width, height) {
+
+    var div = d3.select("#" + this.mapId).append("div");
+
+    div.attr("class", "default")
+        .attr("_height", height)
+        .attr("_width", width)
+        .attr("_x", x)
+        .attr("_y", y)
+        .style("position", "absolute")
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style("background-color", "rgba(10, 10, 10, 0.8)");
+
+    this.divs.push(div);
+
+    return div;
 };
 
 GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
@@ -1651,6 +1671,7 @@ GraphicManager.prototype.updateGraphs = function () {
             $(window).trigger('resize');
         }.bind(this));
 
+    /*
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
@@ -1664,6 +1685,41 @@ GraphicManager.prototype.updateGraphs = function () {
                 return temp;
             });
             this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
+            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
+            this.bikesDayYearComparison.setTitle("Rides")
+            this.bikesDayYearComparison.draw();
+            $(window).trigger('resize');
+        }.bind(this));
+    */
+
+    if (this.bikesDayYearComparison != null)
+        this.dm.getBikesDayYear(function (data) {
+            var days = [];
+
+            for (var i in data) {
+                if(days.indexOf(data[i].day) == -1)
+                    days.push(data[i].day);
+            }
+
+            // Sum up all the day of the year
+            var d = [];
+            var k = 0;
+            for (var i in days) {
+                var day = days[i];
+                var line = {};
+                line.day = day;
+                line.count = 0;
+                while (k < data.length && data[k].day == day) {
+                    line.count += data[k].count;
+                    k += 1;
+                }
+                d.push(line);
+            }
+
+            var dy = 1000 * 60 * 60 * 24; // in a day
+
+            this.bikesDayYearComparison.setData(d, "dayOfYearMany");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
             this.bikesDayYearComparison.setTitle("Rides")
@@ -1814,4 +1870,18 @@ GraphicManager.prototype.hideMaps = function () {
     d3.select("#map3").remove();
 
     this.graphicManagers = [];
+}
+
+GraphicManager.prototype.addLegend = function(legend) {
+    this.legend = new Legend(legend);
+}
+
+GraphicManager.prototype.showLegend = function() {
+    if(this.legend != null)
+        this.legend.show();
+}
+
+GraphicManager.prototype.hideLegend = function() {
+    if(this.legend != null)
+        this.legend.hide();
 }
