@@ -1621,7 +1621,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsGender != null) {
-                this.tripsGender.setData([+d.male, +d.female, +d.female], ["Male", "Female", "Unknown"],
+                this.tripsGender.setData([+d.male, +d.female, +d.unknown], ["Male", "Female", "Unknown"],
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
@@ -1629,7 +1629,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsCustomerType != null) {
-                this.tripsCustomerType.setData([+d.male, +d.female], ["Customer", "Subscriber"],
+                this.tripsCustomerType.setData([+d.customer, +d.subscriber], ["Customer", "Subscriber"],
                     "demographic",
                     "Customer");
                 this.tripsCustomerType.setTitle("Customer type");
@@ -1781,6 +1781,11 @@ GraphicManager.prototype.updateGraphs = function () {
                     inflow: (+d.customer) + (+d.subscriber),
                     outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
                 };
+                if(temp.inflow > temp.outflow)
+                    temp.inflow -= temp.outflow;
+                else
+                    temp.outflow -= temp.inflow;
+
                 return temp;
             });
             this.imbalance.setData(imbalanceData, "imbalance");
