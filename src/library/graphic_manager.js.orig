@@ -1150,8 +1150,15 @@ GraphicManager.prototype.selectInflow = function (station) {
         return;
     }
     this.lastInflow = station.id;
+<<<<<<< HEAD
+    this.showLegend();
+    this.legend.draw("stations_inflow", 0, 5);
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "red");
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
+=======
     d3.select("#station_inflow_rect").style("stroke", "red");
     d3.select("#station_outflow_rect").style("stroke", "none");
+>>>>>>> 5a5d47831ee8ec3849f71e1199cc689f83d76c20
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
 };
 
@@ -1167,8 +1174,15 @@ GraphicManager.prototype.selectOutflow = function (station) {
         return;
     }
     this.lastOutflow = station.id;
+<<<<<<< HEAD
+    this.showLegend();
+    this.legend.draw("stations_outflow", 0, 5);
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "lightgreen");
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
+=======
     d3.select("#station_outflow_rect").style("stroke", "lightgreen");
     d3.select("#station_inflow_rect").style("stroke", "none");
+>>>>>>> 5a5d47831ee8ec3849f71e1199cc689f83d76c20
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -1658,7 +1672,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsGender != null) {
-                this.tripsGender.setData([+d.male, +d.female, +d.unknown], ["Male", "Female", "Unknown"],
+                this.tripsGender.setData([+d.male, +d.female, +d.female], ["Male", "Female", "Unknown"],
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
@@ -1667,7 +1681,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsCustomerType != null) {
-                this.tripsCustomerType.setData([+d.customer, +d.subscriber], ["Customer", "Subscriber"],
+                this.tripsCustomerType.setData([+d.male, +d.female], ["Customer", "Subscriber"],
                     "demographic",
                     "Customer");
                 this.tripsCustomerType.setTitle("Customer type");
@@ -1808,6 +1822,8 @@ GraphicManager.prototype.updateGraphs = function () {
                     inflow: (+d.customer) + (+d.subscriber),
                     outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
                 };
+<<<<<<< HEAD
+=======
                 if(temp.inflow > temp.outflow) {
                     temp.inflow -= temp.outflow;
                     temp.outflow = 0;
@@ -1817,6 +1833,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     temp.inflow = 0;
                 }
 
+>>>>>>> 5a5d47831ee8ec3849f71e1199cc689f83d76c20
                 return temp;
             });
             this.imbalance.setData(imbalanceData, "imbalance");

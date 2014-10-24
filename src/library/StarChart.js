@@ -47,6 +47,7 @@ StarChart.prototype.setProperty = function(propertyTheta, propertyR){
 
 StarChart.prototype.draw = function(){
 	var _this = this;
+	this.svg.selectAll("path").remove();
 	this.svg.selectAll("." + _this.chartName).remove();
 	this.arc = d3.svg.arc()
 	    .outerRadius(this.radius+5)
@@ -104,7 +105,7 @@ StarChart.prototype.draw = function(){
 	var graph = this.svg.append("path")
   		.attr("class",this.newName)
   		.attr("d", line(this.data))
-  		.style("fill", "rgba(230,200,230,0.3)");
+  		.style("fill", "rgba(180,170,180,0.7)");
 
 	/*Set title for graph */
 	if(this.title!== null){

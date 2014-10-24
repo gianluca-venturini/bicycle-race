@@ -15,7 +15,7 @@ function NormalChart (svg){
 		top2: 20, 
 		bottom2: 75
 	};
-	this.svg.attr("viewBox","-100 0 300 100");
+	this.svg.attr("viewBox","-100 0 300 90");
 }
 
 

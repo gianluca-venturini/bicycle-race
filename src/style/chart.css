@@ -1,37 +1,41 @@
 .axis path,
 .axis line {
   fill: none;
-  stroke: #FFF;
- }
+  stroke: rgba(230,230,230,1.0);
+}
 
 .axis text{
 	font-family: sans-serif;
 	fill: #FFF;
 	font-size: 0.4rem;
+	fill:rgba(230,230,230,1.0);
 }
 
 #legendLabel,
 .legend text{
 	font-family: sans-serif;
 	font-size: 0.4rem;
-	fill: #FFF;
+	dy:-.2em;
+	fill:rgba(230,230,230,1.0);
+
 }
 .title{
 	font-family: sans-serif;
 	font-size: 0.7rem;
 	font-weight: 600;
-	fill: #FFF;
+	fill:rgba(230,230,230,1.0);
 }
 
 .box line,
 .box rect{
-	stroke:rgba(30,30,30,1.0);
+	stroke:rgba(230,230,230,1.0);
 	fill:none;
 }
 
 .box text{
 	font-family: sans-serif;
 	font-size: 0.5rem;
+	fill:rgba(230,230,230,1.0);
 	text-anchor:end;
 	fill: #FFF;
 }
