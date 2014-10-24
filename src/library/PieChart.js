@@ -37,8 +37,7 @@ PieChart.prototype.setData = function(valuesLst, nameLst, className, legendLabel
 	this.legendLabel = legendLabel;
 	this.radius = (this.border.bottom - this.border.top)/2.5 -2.0; 
 	this.center = {x:(this.border.right+this.border.left)*0.5,y:(this.border.bottom + this.border.top)*0.55};
-	this.color = d3.scale.category20()
-		.domain(this.legendNames);
+	this.color = d3.scale.category20().range();
 
 	this.arc = d3.svg.arc()
 	    .outerRadius(this.radius)
@@ -50,6 +49,11 @@ PieChart.prototype.setData = function(valuesLst, nameLst, className, legendLabel
 
 
 }
+
+PieChart.prototype.setColor = function(colorLst){
+	this.color = colorLst;
+}
+
 
 PieChart.prototype.draw = function(){
 	var _this = this;
@@ -69,7 +73,7 @@ PieChart.prototype.draw = function(){
 
 		arcGrp.append("path")
 	      	.attr("d", _this.arc)
-	      	.style("fill", function(d,i) { return _this.color(_this.legendNames[i]); })
+	      	.style("fill", function(d,i) { return _this.color[(_this.legendNames[i]).hashCode() % _this.color.length]; })
 			      	
 
 	  	arcGrp.append("text")
@@ -125,7 +129,7 @@ PieChart.prototype.addLegend  =  function(){
 	    .attr("y", legendSize)
 	    //.style("stroke", "black")
 	    .style("fill", function(d){
-	    	return _this.color(d);
+	    	return _this.color[d.hashCode() % _this.color.length]; 
 	    });
 
 	legendGrp.append("text")
@@ -149,3 +153,14 @@ PieChart.prototype.removeLegend = function(){
 	this.svg.select("#legendLabel").remove();
 	this.svg.selectAll(".legend").remove();
 }
+
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr, len;
+  if (this.length == 0) return hash;
+  for (i = 0, len = this.length; i < len; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};

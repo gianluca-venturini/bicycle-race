@@ -33,6 +33,10 @@ ImbalanceChart.prototype.setData = function(json, className) {
 
 }
 
+ImbalanceChart.prototype.setColor = function(colorLst){
+	this.color = colorLst;
+}
+
 ImbalanceChart.prototype.setAxes = function(propertyX, labelX, propertyY1, labelY1, propertyY2, labelY2){
 	this.axisX = propertyX;
 	this.axisY1 = propertyY1;
@@ -70,37 +74,9 @@ ImbalanceChart.prototype.setAxes = function(propertyX, labelX, propertyY1, label
 ImbalanceChart.prototype.draw = function(){
 	
 	var _this = this;
-	bars = this.svg.selectAll("." + this.chartName)
+	this.svg.selectAll("." + this.chartName).remove();
+	bars = this.svg.selectAll("." + this.newName)
 		.data(this.data);
-
-	bars.attr("class",this.newName).selectAll("." + this.newName + "up")
-		.attr("x", function(d,i){
-			return _this.xScale(d[_this.axisX]);
-		})
-		.attr("y", function(d,i){
-			return _this.yScale1(d[_this.axisY1]);
-		})
-		.attr("width", _this.xScale.rangeBand())
-		.attr("fill", function(d){
-			return _this.color[(d[_this.axisX]+"").hashCode() % 20];
-		})
-		.attr("height", function(d){
-			return _this.border.midY - _this.yScale1(d[_this.axisY1]);
-		});
-
-	bars.attr("class",this.newName).selectAll("." + this.newName + "down")
-		.attr("x", function(d,i){
-			return _this.xScale(d[_this.axisX]);
-		})
-		.attr("y", _this.border.midY)
-		.attr("width", _this.xScale.rangeBand())
-		.attr("fill", function(d){
-			return _this.color[(d[_this.axisX]+"").hashCode() % 20];
-		})
-		.attr("height", function(d){
-			return _this.yScale2(d[_this.axisY2]) - _this.border.midY;
-		});
-
 
 	barGrp = bars.enter()
 		.append("g")
@@ -116,7 +92,7 @@ ImbalanceChart.prototype.draw = function(){
 		})
 		.attr("width", _this.xScale.rangeBand())
 		.attr("fill", function(d){
-			return _this.color[(d[_this.axisX]+"").hashCode() % 20];
+			return _this.color[(d[_this.axisX]+"").hashCode() % _this.color.length];
 		})
 		.attr("height", function(d){
 			return _this.border.midY - _this.yScale1(d[_this.axisY1]);
@@ -129,13 +105,11 @@ ImbalanceChart.prototype.draw = function(){
 		.attr("y", _this.border.midY)
 		.attr("width", _this.xScale.rangeBand())
 		.attr("fill", function(d){
-			return _this.color[(d[_this.axisX]+"").hashCode() % 20];
+			return _this.color[(d[_this.axisX]+"").hashCode() % _this.color.length];
 		})
 		.attr("height", function(d){
 			return _this.yScale2(d[_this.axisY2]) - _this.border.midY;
-		});
-	bars.exit().remove();
-	
+		});	
 
 	this.svg.selectAll(".axis").remove();
 	/*this.svg.append("line")

@@ -47,6 +47,7 @@ StarChart.prototype.setProperty = function(propertyTheta, propertyR){
 
 StarChart.prototype.draw = function(){
 	var _this = this;
+	this.svg.selectAll("path").remove();
 	this.svg.selectAll("." + _this.chartName).remove();
 	this.arc = d3.svg.arc()
 	    .outerRadius(this.radius+5)

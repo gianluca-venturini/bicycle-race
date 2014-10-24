@@ -8,7 +8,6 @@ function LineChart (svg){
 	this.chartName=null;
 	this.newName = null;
 	this.title = null;
-	this.colorTable = [];
 	this.xHasTime = false;
 	this.border = {
 		left: -75, 

@@ -1722,31 +1722,20 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
-            var days = [];
-
-            for (var i in data) {
-                if (days.indexOf(data[i].day) == -1)
-                    days.push(data[i].day);
-            }
-
-            // Sum up all the day of the year
-            var d = [];
-            var k = 0;
-            for (var i in days) {
-                var day = days[i];
-                var line = {};
-                line.day = day;
-                line.count = 0;
-                while (k < data.length && data[k].day == day) {
-                    line.count += data[k].count;
-                    k += 1;
-                }
-                d.push(line);
-            }
-
-            var dy = 1000 * 60 * 60 * 24; // in a day
-
-            this.bikesDayYearComparison.setData(d, "dayOfYearMany");
+            
+            var lst = d3.nest().key(function(d){return d.day;}).entries(data);
+            lst = lst.sort(function (a, b) {
+                return new Date(a.key) - new Date(b.key);
+            });
+            var sumOfValues = lst.map(function(d){ 
+                var count = 0;
+                d.values.forEach(function(el, idx, arr){
+                    count = count + el.count;
+                });
+                return {day:d.key, count: count};
+            });
+           
+            this.bikesDayYearComparison.setData(sumOfValues, "dayOfYearCumulative");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
             this.bikesDayYearComparison.setTitle("Rides")
@@ -1813,8 +1802,19 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if (this.momentDay != null) {
         this.dm.getBikesHourDay(function (data) {
+            var lst = d3.nest().key(function(d){return d.hour;}).entries(data);
+            lst = lst.sort(function (a, b) {
+                return a.key - b.key;
+            });
+            var sumOfValues = lst.map(function(d){ 
+                var count = 0;
+                d.values.forEach(function(el, idx, arr){
+                    count = count + el.count;
+                });
+                return {hour:d.key, count: count};
+            });
             this.momentDay.setTitle("Rides");
-            this.momentDay.setData(data, "star"); //(data,className)
+            this.momentDay.setData(sumOfValues, "star"); //(data,className)
             this.momentDay.setProperty("hour", "count"); //(propertyTheta, propertyR)
             this.momentDay.draw();
             $(window).trigger('resize');
