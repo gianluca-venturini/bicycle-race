@@ -137,7 +137,7 @@ LineChart.prototype.draw = function(){
 	if (this.groupOnProperty !== undefined && this.groupOnProperty !== null){
 		var lst = d3.nest().key(function(d){return d[_this.groupOnProperty];}).entries(_this.data);
 		
-		var tooMany = (lst.length > 10)? true:false;
+		var tooMany = (lst.length > 8)? true:false;
 
 		/*Join new data*/
 		var graph = this.svg.selectAll("." + this.chartName)

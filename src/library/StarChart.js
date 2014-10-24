@@ -31,10 +31,10 @@ StarChart.prototype.setData = function(json,className) {
 	this.radius = (this.border.bottom - this.border.top)/3.0 -2.0; 
 	this.center = {x:(this.border.right+this.border.left)*0.5,y:(this.border.bottom + this.border.top)*0.55};
 	this.hourPie = "111111111111111111111111".split("");
-	this.color = ["rgba(50,50,60,1.0)","rgba(50,50,60,1.0)","rgba(50,50,60,1.0)","rgba(50,50,60,1.0)","rgba(50,50,60,1.0)","rgba(50,50,60,1.0)",
-					"rgba(140,140,120,1.0)","rgba(140,140,120,1.0)","rgba(140,140,120,1.0)","rgba(140,140,120,1.0)","rgba(140,140,120,1.0)","rgba(140,140,120,1.0)",
-					"rgba(140,140,30,1.0)","rgba(140,140,30,1.0)","rgba(140,140,30,1.0)","rgba(140,140,30,1.0)","rgba(140,140,30,1.0)","rgba(140,140,30,1.0)",
-					"rgba(90,70,70,1.0)","rgba(90,70,70,1.0)","rgba(90,70,70,1.0)","rgba(90,70,70,1.0)","rgba(90,70,70,1.0)","rgba(90,70,70,1.0)"];
+	this.color = ["rgba(150,150,150,1.0)","rgba(150,150,150,1.0)","rgba(150,150,150,1.0)","rgba(150,150,150,1.0)","rgba(150,150,150,1.0)","rgba(150,150,150,1.0)",
+					"rgba(180,180,150,1.0)","rgba(180,180,150,1.0)","rgba(180,180,150,1.0)","rgba(180,180,150,1.0)","rgba(180,180,150,1.0)","rgba(180,180,150,1.0)",
+					"rgba(180,180,100,1.0)","rgba(180,180,100,1.0)","rgba(180,180,100,1.0)","rgba(180,180,100,1.0)","rgba(180,180,100,1.0)","rgba(180,180,100,1.0)",
+					"rgba(180,150,150,1.0)","rgba(180,150,150,1.0)","rgba(180,150,150,1.0)","rgba(180,150,150,1.0)","rgba(180,150,150,1.0)","rgba(180,150,150,1.0)"];
 }
 
 StarChart.prototype.setProperty = function(propertyTheta, propertyR){
@@ -105,7 +105,7 @@ StarChart.prototype.draw = function(){
 	var graph = this.svg.append("path")
   		.attr("class",this.newName)
   		.attr("d", line(this.data))
-  		.style("fill", "rgba(180,170,180,0.7)");
+  		.style("fill", "rgba(30,30,80,0.8)");
 
 	/*Set title for graph */
 	if(this.title!== null){
