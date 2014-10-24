@@ -94,8 +94,9 @@ GraphicManager.prototype.addLayer = function (type) {
     switch (type) {
     case "normal":
         this.mapLayer =  L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-                            minZoom: 0,
+                            minZoom: 10,
                             maxZoom: 18,
+                            zoom: 15,
                             attribution: ''
                         }).addTo(this.map);
         break;
@@ -104,7 +105,7 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16,
+            maxZoom: 18,
             zoom: 15,
             subdomains: '1234'
         }).addTo(this.map);
@@ -114,7 +115,7 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16,
+            maxZoom: 18,
             zoom: 15
         }).addTo(this.map);
         break;
@@ -127,7 +128,7 @@ GraphicManager.prototype.addLayer = function (type) {
                             mapID: 'newest',
                             attribution: '',
                             minZoom: 10,
-                            maxZoom: 16,
+                            maxZoom: 18,
                             base: 'base',
                             zoom: 15,
                             app_id: 'HiPxzx18KN1X6KxvmwNG',
@@ -137,7 +138,7 @@ GraphicManager.prototype.addLayer = function (type) {
 
     default:
         this.mapLayer = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-                            minZoom: 0,
+                            minZoom: 10,
                             maxZoom: 18,
                             zoom: 15,
                             attribution: ''
@@ -150,7 +151,7 @@ GraphicManager.prototype.addLayer = function (type) {
         maxZoom: 18
     });
 
-    this.map.setZoom(11);
+    this.map.setZoom(13);
 };
 
 GraphicManager.prototype.removeLayer = function () {
@@ -544,13 +545,13 @@ GraphicManager.prototype.refreshMarkers = function () {
     var zoom = this.map.getZoom();
     var scale;
     if (zoom < 13) {
-        scale = 50;
-    } else if (zoom >= 11 && zoom < 13) {
-        scale = 34;
-    } else if (zoom >= 13 && zoom < 15) {
-        scale = 24;
-    } else if (zoom >= 15) {
-        scale = 18;
+        scale = 100;
+    } else if (zoom >= 11 && zoom < 14) {
+        scale = 60;
+    } else if (zoom >= 14 && zoom < 16) {
+        scale = 40;
+    } else if (zoom >= 16) {
+        scale = 20;
     }
 
     this.iconWidth = this.mapHeight / scale;
@@ -602,13 +603,13 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
     var zoom = this.map.getZoom();
     var scale;
     if (zoom < 13) {
-        scale = 50;
+        scale = 800;
     } else if (zoom >= 11 && zoom < 13) {
-        scale = 34;
+        scale = 200;
     } else if (zoom >= 13 && zoom < 15) {
-        scale = 24;
+        scale = 60;
     } else if (zoom >= 15) {
-        scale = 18;
+        scale = 20;
     }
 
     this.iconWidth = this.mapHeight / scale;
@@ -1471,8 +1472,8 @@ GraphicManager.prototype.drawBikes = function () {
         var line = L.polyline([from, to], {
             color: 'black',
             fillColor: 'black',
-            fillOpacity: 0.5,
-            weight: 1
+            fillOpacity: 0.6,
+            weight: 15
         }).addTo(this.map);
 
         this.linesBetweenStations.push(line);
@@ -1487,10 +1488,10 @@ GraphicManager.prototype.drawBikes = function () {
 
         // Draw line
         var line = L.polyline([from, to], {
-            color: '#3DB5E7',
-            fillColor: '#3DB5E7',
-            fillOpacity: 0.5,
-            weight: 3
+            color: 'red',
+            fillColor: 'red',
+            fillOpacity: 0.6,
+            weight: 20
         }).addTo(this.map);
 
         this.linesBetweenStations.push(line);
@@ -1501,10 +1502,12 @@ GraphicManager.prototype.drawBikes = function () {
         var coordinate = this.bikesCoordinate[b];
 
         // Draw circle
-        var circle = L.circle([coordinate[0], coordinate[1]], 20, {
-            color: '#3DB5E7',
-            fillColor: '#3DB5E7',
-            fillOpacity: 0.5
+        var circle = L.circle([coordinate[0], coordinate[1]], 40, {
+            color: 'red',
+            fillColor: 'red',
+            //color: '#3DB5E7',
+            //fillColor: '#3DB5E7',
+            fillOpacity: 0.8
         }).addTo(this.map);
 
         this.bikes.push(circle);
