@@ -1788,24 +1788,36 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if (this.imbalance != null) {
         this.dm.getInOutFlow(function (inflow, outflow) {
+
             var imbalanceData = inflow.map(function (d, i) {
+                var matchId = d.id;
+                function equal(el){
+                    return matchId === el.id;
+                }
+                var outflowObj = outflow.filter(equal)[0]; //Array.find is unavailable, hence using filter.
                 var temp = {
                     id: d.id,
                     inflow: (+d.customer) + (+d.subscriber),
-                    outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
+                    outflow: (+outflowObj.customer) + (+outflowObj.subscriber), //i works as a subscript only if the ordering is same in both files!!
+                    magnitude:0
                 };
                 if(temp.inflow > temp.outflow) {
                     temp.inflow -= temp.outflow;
+                    temp.magnitude = temp.inflow;
                     temp.outflow = 0;
                 }
                 else {
                     temp.outflow -= temp.inflow;
+                    temp.magnitude = temp.outflow;
                     temp.inflow = 0;
                 }
 
                 return temp;
             });
-            this.imbalance.setData(imbalanceData, "imbalance");
+            imbalanceData.sort(function(a,b){ //Descending order
+                return b.magnitude - a.magnitude;
+            });
+            this.imbalance.setData(imbalanceData.slice(0,10), "imbalance");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
             $(window).trigger('resize');
