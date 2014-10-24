@@ -13,6 +13,7 @@ function ImbalanceChart (svg){
 		
 	};
 	this.svg.attr("viewBox","-100 0 300 100");
+	this.callback = null;
 	
 }
 
@@ -83,7 +84,7 @@ ImbalanceChart.prototype.draw = function(){
 		.attr("class", this.newName);
 
 	barGrp.append("rect")
-		.attr("class",this.newName + "up")
+		.attr("class",this.newName + "up"+" bar_stroke")
 		.attr("x", function(d,i){
 			return _this.xScale(d[_this.axisX]);
 		})
@@ -96,9 +97,17 @@ ImbalanceChart.prototype.draw = function(){
 		})
 		.attr("height", function(d){
 			return _this.border.midY - _this.yScale1(d[_this.axisY1]);
-		});
+		})
+		.on("mouseover", function(d) {
+			if(this.callback != null)
+				this.callback(d.id);
+		}.bind(this))
+		.on("mouseout", function(d) {
+			if(this.callback != null)
+				this.callback(d.id);
+		}.bind(this));
 	barGrp.append("rect")
-		.attr("class",this.newName + "down")
+		.attr("class",this.newName + "down"+" bar_stroke")
 		.attr("x", function(d,i){
 			return _this.xScale(d[_this.axisX]);
 		})
@@ -109,7 +118,15 @@ ImbalanceChart.prototype.draw = function(){
 		})
 		.attr("height", function(d){
 			return _this.yScale2(d[_this.axisY2]) - _this.border.midY;
-		});	
+		})
+		.on("mouseover", function(d) {
+			if(this.callback != null)
+				this.callback(d.id);
+		}.bind(this))
+		.on("mouseout", function(d) {
+			if(this.callback != null)
+				this.callback(d.id);
+		}.bind(this));
 
 	this.svg.selectAll(".axis").remove();
 	/*this.svg.append("line")
