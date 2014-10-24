@@ -40,6 +40,8 @@ NormalChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
 	var _this = this;
 	this.axisX = propertyX;
 	this.axisY = propertyY;
+	this.labelX = labelX;
+	this.labelY = labelY;
 	if (labelX === "" || labelX === undefined || labelX === null)
 		this.hasValuesOnX = false;
 	else
