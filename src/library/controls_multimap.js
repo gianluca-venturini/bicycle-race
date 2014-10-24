@@ -56,7 +56,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
                             document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
 
                             self.tagCalendar(self.id);
-                            svg = d3.select("#calendar" + self.id);
+                            var svg = d3.select("#calendar" + self.id);
 
                             svg.attr("_height", 0.24)
                                 .attr("_width", 0.07)
@@ -90,6 +90,9 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
 
                             self.svgs.push(svg);
 
+                            var zoomControl = new ZoomControl(self.id);
+                            zoomControl.setCallbackZoomIn(self.zoomIn.bind(self));
+                            zoomControl.setCallbackZoomOut(self.zoomOut.bind(self));
                             zoomControl.draw();
 
                             ////////////////////////////////////
@@ -108,6 +111,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
 
                             self.svgs.push(svg);
 
+                            var stationControl = new StationControl(self.id);
                             self.stationControl = stationControl;
                             stationControl.setCallbackCompareAll(self.selectCompareAll.bind(self));
                             stationControl.setCallbackCompareTwo(self.selectCompareTwo.bind(self));
@@ -132,6 +136,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
 
                             self.svgs.push(svg);
 
+                            var dayControl = new DayControl(id);
                             self.dayControl = dayControl;
                             dayControl.setCallbackDayClose(self.callbackDayClose.bind(self));
 

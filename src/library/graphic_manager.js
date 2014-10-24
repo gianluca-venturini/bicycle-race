@@ -1663,7 +1663,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
-                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0"]);
+                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0", "#343434"]);
                 this.tripsGender.draw();
             }
 
@@ -1717,7 +1717,6 @@ GraphicManager.prototype.updateGraphs = function () {
             $(window).trigger('resize');
         }.bind(this));
 
-    /*
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
@@ -1737,9 +1736,8 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.draw();
             $(window).trigger('resize');
         }.bind(this));
-    */
 
-    if (this.bikesDayYearComparison != null)
+    if (this.bikesDayYear != null)
         this.dm.getBikesDayYear(function (data) {
 
             var lst = d3.nest().key(function (d) {
@@ -1759,11 +1757,11 @@ GraphicManager.prototype.updateGraphs = function () {
                 };
             });
 
-            this.bikesDayYearComparison.setData(sumOfValues, "dayOfYearCumulative");
-            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
-            this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYearComparison.setTitle("Rides")
-            this.bikesDayYearComparison.draw();
+            this.bikesDayYear.setData(sumOfValues, "dayOfYearCumulative");
+            this.bikesDayYear.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYear.setTimeDataInX("month", 1, "MMM DD");
+            this.bikesDayYear.setTitle("Rides")
+            this.bikesDayYear.draw();
             $(window).trigger('resize');
         }.bind(this));
 
@@ -1791,7 +1789,6 @@ GraphicManager.prototype.updateGraphs = function () {
         }.bind(this));
 
     if (this.tripsDistanceDistribution != null) {
-        /*
         this.dm.getRideDistribution(function (data) {
             var dist = data.sort(function (a, b) {
                 return (+a.meters) - (+b.meters);
@@ -1802,7 +1799,6 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
         }.bind(this));
-        */
 
     }
 
@@ -1910,11 +1906,25 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
 
 GraphicManager.prototype.showMaps = function () {
 
-    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar", 1);
-    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal", 2);
+    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar", "1");
+    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal", "2");
 
-    this.gm1.dm = this.dm;
-    this.gm2.dm = this.dm;
+    this.gm1.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
+        "http://data.divvybikeschicago.com/station.php",
+        "http://data.divvybikeschicago.com/weather.php",
+        "http://data.divvybikeschicago.com/time.php",
+        "http://data.divvybikeschicago.com/distance.php",
+        "http://data.divvybikeschicago.com/station_age.php",
+        "http://data.divvybikeschicago.com/flow.php",
+        "http://data.divvybikeschicago.com/ride.php");
+    this.gm2.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
+        "http://data.divvybikeschicago.com/station.php",
+        "http://data.divvybikeschicago.com/weather.php",
+        "http://data.divvybikeschicago.com/time.php",
+        "http://data.divvybikeschicago.com/distance.php",
+        "http://data.divvybikeschicago.com/station_age.php",
+        "http://data.divvybikeschicago.com/flow.php",
+        "http://data.divvybikeschicago.com/ride.php");
 
     this.gm1.drawMarkers("popularity");
     this.gm2.drawMarkers("popularity");
@@ -1926,6 +1936,7 @@ GraphicManager.prototype.showMaps = function () {
     this.gm1.addExternalSVGs1(this.gm1.updateWindow.bind(this.gm1));
 
     this.gm2.drawSubcontrols();
+    this.gm2.addExternalSVGs1(this.gm2.updateWindow.bind(this.gm2));
 
     //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
     //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});

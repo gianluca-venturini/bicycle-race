@@ -6,17 +6,17 @@
 body {
     font-family: 'Roboto', "Helvetica Neue", Helvetica, sans-serif;
 }
-.month_selected {
+.month_selected0 {
     fill: black;
     font-weight: 700;
     font-size: 0.9em;
 }
-.month_selected_1 {
+.month_selected1 {
     fill: black;
     font-weight: 700;
     font-size: 0.9em;
 }
-.month_selected_2 {
+.month_selected2 {
     fill: black;
     font-weight: 700;
     font-size: 0.9em;

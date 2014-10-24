@@ -23,10 +23,10 @@ GraphicManager.prototype.tagZoom = function (id) {
 
 GraphicManager.prototype.tagStationControl = function (id) {
     d3.select('#stationControl').attr("id", 'stationControl' + id);
-    d3.selectAll('.station_compareAll').classed('station_compareAll' + id, true);
-    d3.selectAll('.station_compare2').classed('station_compare2' + id, true);
-    d3.selectAll('.station_inflow').classed('station_inflow' + id, true);
-    d3.selectAll('.station_outflow').classed('station_outflow' + id, true);
+    d3.selectAll('.station_compareAll').classed('station_compareAll' + id, true).classed('station_compareAll', false);
+    d3.selectAll('.station_compare2').classed('station_compare2' + id, true).classed('station_compare2', false);
+    d3.selectAll('.station_inflow').classed('station_inflow' + id, true).classed('station_inflow', false);
+    d3.selectAll('.station_outflow').classed('station_outflow' + id, true).classed('station_outflow', false);
 
     d3.select('#station_inflow_rect').attr("id", 'station_inflow_rect' + id);
     d3.select('#station_outflow_rect').attr("id", 'station_outflow_rect' + id);
@@ -41,7 +41,7 @@ GraphicManager.prototype.tagStationControl = function (id) {
 
 GraphicManager.prototype.tagDayControl = function (id) {
     d3.select('#dayControl').attr("id", 'dayControl' + id);
-    d3.selectAll('.day_box').classed('day_box' + id, true);
+    d3.selectAll('.day_box').classed('day_box' + id, true).classed('day_box', false);
     d3.select('#day_close').attr("id", 'day_close' + id);
 
     d3.select('#day_sunrise').attr("id", 'day_sunrise' + id);

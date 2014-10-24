@@ -130,8 +130,8 @@ DataManager.prototype.getBikesWeek = function(callback) {
 	url += this.filters();
 
 	if(this.selectionMode == "DOUBLE" && this.selectedStations.length > 1) {
-		url += "&to_station=" + this.selectedStations[1];
-		url += "&stations=" + this.selectedStations[0];
+		url += "&to_station=" + this.selectedStations[1].id;
+		url += "&stations=" + this.selectedStations[0].id;
 	}
 	else {
 		if(this.selectedStations.length > 0)
