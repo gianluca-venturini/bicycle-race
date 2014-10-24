@@ -25,6 +25,9 @@
     <script src="./library/ImbalanceChart.js"></script>
     <script src="./library/legend.js"></script>
     <script src="./library/suncalc.js"></script>
+    <script src="./library/tag_manager.js"></script>
+    <script src="./library/controls_multimap.js"></script>
+
     <style>
         /* Import roboto font from Google */
         @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
@@ -141,7 +144,8 @@
     </div>
 
     <script>
-        var gm = new GraphicManager("map");
+        var id = "0";
+        var gm = new GraphicManager("map", id);
         gm.createMap("grey");
 
          // Background of the charts
@@ -160,12 +164,12 @@
         gm.updateWindow();
 
          // Allocate javascript objects that will manage this SVGS
-        var layerControl = new LayerControl(svgLayerControl);
+        var layerControl = new LayerControl(svgLayerControl, id);
         var selectionControl = new SelectionControl(svgSelectionControl);
-        var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
-        var zoomControl = new ZoomControl();
-        var stationControl = new StationControl();
-        var dayControl = new DayControl();
+        var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl, id);
+        var zoomControl = new ZoomControl(id);
+        var stationControl = new StationControl(id);
+        var dayControl = new DayControl(id);
         var staticChartsControl = new StaticChartsControl(svgStaticChartsControl);
         var hideChartsControl = new HideChartsControl(svgHideChartsControl);
 
@@ -185,8 +189,8 @@
         hideChartsControl.draw();
 
          // Set interactions
-        layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
-        layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
+        layerControl.setCallback("text_layer_1" + id, gm.changeLayer.bind(gm, "normal"));
+        layerControl.setCallback("text_layer_2" + id, gm.changeLayer.bind(gm, "grey"));
 
         gm.addExternalSVGs(gm.updateWindow.bind(gm));
         gm.addExternalSVGsCharts(gm.updateWindow.bind(gm));
@@ -210,10 +214,12 @@
         lineChart2.callback = gm.selectedStationFromChart.bind(gm);
         gm.bikesHourDayComparison = lineChart2;
 
+        /*
         var line3 = gm.addSvgChart(0.585, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18); // Day of the year, multiple stations
         var lineChart3 = new LineChart(line3);
         lineChart3.callback = gm.selectedStationFromChart.bind(gm);
         gm.bikesDayYearComparison = lineChart3;
+        */
 
         var pie1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
         var pie2 = gm.addSvgChart(0.585 + (0.20 - 0.01) / 3 + 0.2 + 0.01, 0.05 + 0.18 * 3 + 0.02 * 4, (0.20 - 0.01) / 3, 0.18);
@@ -226,6 +232,41 @@
         gm.tripsAge = pieChart2;
         gm.tripsCustomerType = pieChart3;
 
+        var imbalance1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.02, 0.20 - 0.01, 0.18);
+        var imbalance = new ImbalanceChart(imbalance1);
+        gm.imbalance = imbalance;
+
+        var line3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
+        var lineChart3 = new LineChart(line3);
+        lineChart3.callback = gm.selectedStationFromChart.bind(gm);
+        gm.bikesDayYear = lineChart3;
+
+        var line4 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18); // Day of the year, single
+        var lineChart4 = new LineChart(line4);
+        lineChart4.callback = gm.selectedStationFromChart.bind(gm);
+        gm.bikesDayYearComparison = lineChart4;
+
+        var momentDay1 = gm.addSvgChart(0.585, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18); // Moment of the day
+        var momentDay = new StarChart(momentDay1);
+        gm.momentDay = momentDay;
+
+        // Static charts
+        var chartBack = gm.addSvg(0.3, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.58);
+        chartBack.attr("class", "chart").style("background-color", "rgba(10, 10, 10, 0.8)");
+
+        var norm1 = gm.addSvg(0.3, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
+        var normalChart1 = new NormalChart(norm1);
+        gm.timeDistribution = normalChart1;
+
+        var norm2 = gm.addSvg(0.3, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
+        var normalChart2 = new NormalChart(norm2);
+        gm.distanceDistribution = normalChart2;
+
+        var norm3 = gm.addSvg(0.3, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18);
+        var normalChart3 = new NormalChart(norm3);
+        gm.tripsDistanceDistribution = normalChart3;
+
+        /*
         var norm1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.02, 0.20 - 0.01, 0.18);
         var normalChart1 = new NormalChart(norm1);
         gm.timeDistribution = normalChart1;
@@ -237,7 +278,9 @@
         var norm3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
         var normalChart3 = new NormalChart(norm3);
         gm.tripsDistanceDistribution = normalChart3;
+        */
 
+        /*
         var imbalance1 = gm.addSvg(0.3, 0.5, 0.20 - 0.01, 0.18);
         var imbalance = new ImbalanceChart(imbalance1);
         gm.imbalance = imbalance;
@@ -245,6 +288,7 @@
         var momentDay1 = gm.addSvg(0.3, 0.7, 0.20 - 0.01, 0.18);
         var momentDay = new StarChart(momentDay1);
         gm.momentDay = momentDay;
+        */
 
         var legend = gm.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
         gm.addLegend(legend);

@@ -4,7 +4,8 @@
 */
 ///////////////////////
 
-function LayerControl(svg) {
+function LayerControl(svg, id) {
+    this.id = id;
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
@@ -14,7 +15,7 @@ function LayerControl(svg) {
 LayerControl.prototype.draw = function () {
 
     this.text1 = this.svg.append("text")
-        .attr('id', 'text_layer_1')
+        .attr('id', 'text_layer_1' + this.id)
         .attr('class', 'text_control pointer')
         .attr("text-anchor", "middle")
         .attr('x', 50)
@@ -23,7 +24,7 @@ LayerControl.prototype.draw = function () {
         .text("Map 1");
 
     this.text2 = this.svg.append("text")
-        .attr('id', 'text_layer_2')
+        .attr('id', 'text_layer_2' + this.id)
         .attr('class', 'text_control pointer')
         .attr("text-anchor", "middle")
         .attr('x', 50)
@@ -158,7 +159,8 @@ SelectionControl.prototype.setCallbackDeselectAll = function (callback) {
 
 ///////////////////////
 
-function EnableCalendarControl(svg) {
+function EnableCalendarControl(svg, id) {
+    this.id = id;
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
@@ -169,6 +171,7 @@ function EnableCalendarControl(svg) {
 
 EnableCalendarControl.prototype.draw = function () {
     var self = this;
+    var id = this.id;
 
     this.text1 = this.svg.append("text")
         .attr('class', 'text_control pointer')
@@ -182,14 +185,14 @@ EnableCalendarControl.prototype.draw = function () {
 
         // Make control visible and active
         if (!self.calendarOn) {
-            d3.select("#calendar")
+            d3.select("#calendar" + id)
                 .transition()
                 .style("opacity", "1")
                 .style("pointer-events", "all");
             self.calendarOn = true;
             self.text1.text("Hide Calendar");
         } else {
-            d3.select("#calendar")
+            d3.select("#calendar" + id)
                 .transition()
                 .style("opacity", "0")
                 .style("pointer-events", "none");
@@ -214,7 +217,8 @@ EnableCalendarControl.prototype.setCallback = function (element, callback) {
 
 ///////////////////////
 
-function CalendarControl() {
+function CalendarControl(id) {
+    this.id = id;
     this.month = 7;
     this.dayCounter = 1;
     this.callbackSetDate = null;
@@ -222,77 +226,77 @@ function CalendarControl() {
 
 CalendarControl.prototype.draw = function () {
     var self = this;
+    var id = this.id;
 
     // Hide calendar at the beginning
-    d3.select("#calendar")
+    d3.select("#calendar" + id)
         .style("opacity", "0")
         .style("pointer-events", "none");
 
     // Set the callbacks
-    //TODO add timer
-    d3.select('#cal_plus').on("mousedown", function () {
+    d3.select('#cal_plus' + id).on("click", function () {
         self.addDay();
         d3.event.stopPropagation();
     })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_minus').on("mousedown", function () {
+    d3.select('#cal_minus' + id).on("click", function () {
         self.subDay();
         d3.event.stopPropagation();
     })
         .style('-webkit-user-select', 'none');
 
-    d3.select('#cal_7')
+    d3.select('#cal_7' + id)
         .on("click", function () {
             self.month = 7;
-            d3.selectAll('.month_selected')
-                .classed('month_selected', false);
-            d3.select('#cal_7').select("tspan")
-                .classed('month_selected', true);
+            d3.selectAll('.month_selected' + id)
+                .classed('month_selected' + id, false);
+            d3.select('#cal_7' + id).select("tspan")
+                .classed('month_selected' + id, true);
         })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_8').on("click", function () {
+    d3.select('#cal_8' + id).on("click", function () {
         self.month = 8;
-        d3.selectAll('.month_selected')
-            .classed('month_selected', false);
-        d3.select('#cal_8').select("tspan")
-            .classed('month_selected', true);
+        d3.selectAll('.month_selected' + id)
+            .classed('month_selected' + id, false);
+        d3.select('#cal_8' + id).select("tspan")
+            .classed('month_selected' + id, true);
     })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_9').on("click", function () {
+    d3.select('#cal_9' + id).on("click", function () {
         self.month = 9;
-        d3.selectAll('.month_selected')
-            .classed('month_selected', false);
-        d3.select('#cal_9').select("tspan")
-            .classed('month_selected', true);
+        d3.selectAll('.month_selected' + id)
+            .classed('month_selected' + id, false);
+        d3.select('#cal_9' + id).select("tspan")
+            .classed('month_selected' + id, true);
     })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_10').on("click", function () {
+    d3.select('#cal_10' + id).on("click", function () {
         self.month = 10;
-        d3.selectAll('.month_selected')
-            .classed('month_selected', false);
-        d3.select('#cal_10').select("tspan")
-            .classed('month_selected', true);
+        d3.selectAll('.month_selected' + id)
+            .classed('month_selected' + id, false);
+        d3.select('#cal_10' + id).select("tspan")
+            .classed('month_selected' + id, true);
     })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_11').on("click", function () {
+    d3.select('#cal_11' + id).on("click", function () {
         self.month = 11;
-        d3.selectAll('.month_selected')
-            .classed('month_selected', false);
-        d3.select('#cal_11').select("tspan")
-            .classed('month_selected', true);
+        d3.selectAll('.month_selected' + id)
+            .classed('month_selected' + id, false);
+        d3.select('#cal_11' + id).select("tspan")
+            .classed('month_selected' + id, true);
     })
         .style('-webkit-user-select', 'none');
-    d3.select('#cal_12').on("click", function () {
+    d3.select('#cal_12' + id).on("click", function () {
         self.month = 12;
-        d3.selectAll('.month_selected')
-            .classed('month_selected', false);
-        d3.select('#cal_12').select("tspan")
-            .classed('month_selected', true);
+        d3.selectAll('.month_selected' + id)
+            .classed('month_selected' + id, false);
+        d3.select('#cal_12' + id).select("tspan")
+            .classed('month_selected' + id, true);
     })
         .style('-webkit-user-select', 'none');
 
     // Set the callback
-    d3.select("#cal_select").on("click", function () {
+    d3.select("#cal_select" + id).on("click", function () {
         if (this.callbackSetDate !== null)
             this.callbackSetDate();
         d3.event.stopPropagation();
@@ -306,7 +310,7 @@ CalendarControl.prototype.addDay = function () {
     this.dayCounter++;
     var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
     this.day = this.dayCounter;
-    d3.select('#cal_day').text(text);
+    d3.select('#cal_day' + this.id).text(text);
 
 };
 
@@ -318,7 +322,7 @@ CalendarControl.prototype.subDay = function () {
             this.dayCounter = 32;
     this.dayCounter--;
     var text = (this.dayCounter > 0 && this.dayCounter < 10) ? "0" + this.dayCounter : this.dayCounter;
-    d3.select('#cal_day').text(text);
+    d3.select('#cal_day' + this.id).text(text);
 
 };
 
@@ -329,8 +333,8 @@ CalendarControl.prototype.setCallbackSetDate = function (callback) {
 
 ///////////////////////
 
-function DayControl(svg) {
-    this.svg = svg;
+function DayControl(gmId) {
+    this.id = gmId;
     this.hour = null;
     this.enabled = false;
 
@@ -344,12 +348,12 @@ DayControl.prototype.draw = function () {
     var self = this;
 
     // Hide day at the beginning
-    d3.selectAll(".day_box")
+    d3.selectAll(".day_box" + this.id)
         .style("opacity", "0")
         .style("pointer-events", "none");
 
     // Set the callbacks
-    d3.select("#day_close").on("click", function () {
+    d3.select("#day_close" + this.id).on("click", function () {
         self.callbackDayClose();
         d3.event.stopPropagation();
     });
@@ -362,7 +366,8 @@ DayControl.prototype.setCallbackDayClose = function (callback) {
 
 ///////////////////////
 
-function StationControl() {
+function StationControl(gmId) {
+    this.id = gmId;
     this.callbackCompareAll = null;
     this.selectedStation = null;
     this.callbackCompareTwo = null;
@@ -372,28 +377,28 @@ function StationControl() {
 
 StationControl.prototype.draw = function () {
 
-    d3.select('#stationControl').style('opacity', 0); //TODO change to remove
+    d3.select('#stationControl').style('opacity', 0);
 
     var self = this;
-    d3.selectAll('.station_compareAll').on("click", function () {
+    d3.selectAll('.station_compareAll' + this.id).on("click", function () {
         self.callbackCompareAll(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
 
-    d3.selectAll('.station_compare2').on("click", function () {
+    d3.selectAll('.station_compare2' + this.id).on("click", function () {
         self.callbackCompareTwo(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
 
-    d3.selectAll('.station_inflow').on("click", function () {
+    d3.selectAll('.station_inflow' + this.id).on("click", function () {
         self.callbackInflow(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
 
-    d3.selectAll('.station_outflow').on("click", function () {
+    d3.selectAll('.station_outflow' + this.id).on("click", function () {
         self.callbackOutflow(this.selectedStation);
         d3.event.stopPropagation();
     }.bind(self))
@@ -419,8 +424,9 @@ StationControl.prototype.setCallbackInflow = function (callback) {
 
 ///////////////////////
 
-function ZoomControl() {
+function ZoomControl(gmId) {
 
+    this.id = gmId;
     this.callbackZoonIn = null;
     this.callbackZoonOut = null;
 }
@@ -428,14 +434,14 @@ function ZoomControl() {
 ZoomControl.prototype.draw = function () {
     var self = this;
 
-    d3.select('#zoom_plus').on("mousedown", function () {
+    d3.select('#zoom_plus' + this.id).on("mousedown", function () {
         self.callbackZoonIn();
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
 
 
-    d3.select('#zoom_minus').on("mousedown", function () {
+    d3.select('#zoom_minus' + this.id).on("mousedown", function () {
         self.callbackZoonOut();
         d3.event.stopPropagation();
     }.bind(self))

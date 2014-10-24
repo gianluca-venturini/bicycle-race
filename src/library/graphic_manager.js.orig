@@ -655,7 +655,6 @@ GraphicManager.prototype.highlightStationByMarker = function (marker) {
 
     // Disable active flows when highlighting new station
     this.markerType = "popularity";
-    this.hideLegend();
     d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
     d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
     this.drawSelectedMarkers();
@@ -1151,8 +1150,15 @@ GraphicManager.prototype.selectInflow = function (station) {
         return;
     }
     this.lastInflow = station.id;
+<<<<<<< HEAD
+    this.showLegend();
+    this.legend.draw("stations_inflow", 0, 5);
     d3.select("#station_inflow_rect" + this.id).style("stroke", "red");
     d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
+=======
+    d3.select("#station_inflow_rect").style("stroke", "red");
+    d3.select("#station_outflow_rect").style("stroke", "none");
+>>>>>>> 5a5d47831ee8ec3849f71e1199cc689f83d76c20
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
 };
 
@@ -1168,8 +1174,15 @@ GraphicManager.prototype.selectOutflow = function (station) {
         return;
     }
     this.lastOutflow = station.id;
+<<<<<<< HEAD
+    this.showLegend();
+    this.legend.draw("stations_outflow", 0, 5);
     d3.select("#station_outflow_rect" + this.id).style("stroke", "lightgreen");
     d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
+=======
+    d3.select("#station_outflow_rect").style("stroke", "lightgreen");
+    d3.select("#station_inflow_rect").style("stroke", "none");
+>>>>>>> 5a5d47831ee8ec3849f71e1199cc689f83d76c20
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -1659,16 +1672,16 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsGender != null) {
-                this.tripsGender.setData([+d.male, +d.female, +d.unknown], ["Male", "Female", "Unknown"],
+                this.tripsGender.setData([+d.male, +d.female, +d.female], ["Male", "Female", "Unknown"],
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
-                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0", "#343434"]);
+                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0"]);
                 this.tripsGender.draw();
             }
 
             if (this.tripsCustomerType != null) {
-                this.tripsCustomerType.setData([+d.customer, +d.subscriber], ["Customer", "Subscriber"],
+                this.tripsCustomerType.setData([+d.male, +d.female], ["Customer", "Subscriber"],
                     "demographic",
                     "Customer");
                 this.tripsCustomerType.setTitle("Customer type");
@@ -1717,6 +1730,7 @@ GraphicManager.prototype.updateGraphs = function () {
             $(window).trigger('resize');
         }.bind(this));
 
+    /*
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
             // Multiple line chart
@@ -1736,32 +1750,28 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.draw();
             $(window).trigger('resize');
         }.bind(this));
+    */
 
-    if (this.bikesDayYear != null)
+    if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
-
-            var lst = d3.nest().key(function (d) {
-                return d.day;
-            }).entries(data);
+            
+            var lst = d3.nest().key(function(d){return d.day;}).entries(data);
             lst = lst.sort(function (a, b) {
                 return new Date(a.key) - new Date(b.key);
             });
-            var sumOfValues = lst.map(function (d) {
+            var sumOfValues = lst.map(function(d){ 
                 var count = 0;
-                d.values.forEach(function (el, idx, arr) {
+                d.values.forEach(function(el, idx, arr){
                     count = count + el.count;
                 });
-                return {
-                    day: d.key,
-                    count: count
-                };
+                return {day:d.key, count: count};
             });
-
-            this.bikesDayYear.setData(sumOfValues, "dayOfYearCumulative");
-            this.bikesDayYear.setAxes("day", "Day", "count", "Rides");
-            this.bikesDayYear.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYear.setTitle("Rides")
-            this.bikesDayYear.draw();
+           
+            this.bikesDayYearComparison.setData(sumOfValues, "dayOfYearCumulative");
+            this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
+            this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
+            this.bikesDayYearComparison.setTitle("Rides")
+            this.bikesDayYearComparison.draw();
             $(window).trigger('resize');
         }.bind(this));
 
@@ -1789,6 +1799,7 @@ GraphicManager.prototype.updateGraphs = function () {
         }.bind(this));
 
     if (this.tripsDistanceDistribution != null) {
+        /*
         this.dm.getRideDistribution(function (data) {
             var dist = data.sort(function (a, b) {
                 return (+a.meters) - (+b.meters);
@@ -1799,40 +1810,33 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
         }.bind(this));
+        */
 
     }
 
     if (this.imbalance != null) {
         this.dm.getInOutFlow(function (inflow, outflow) {
-
             var imbalanceData = inflow.map(function (d, i) {
-                var matchId = d.id;
-                function equal(el){
-                    return matchId === el.id;
-                }
-                var outflowObj = outflow.filter(equal)[0]; //Array.find is unavailable, hence using filter.
                 var temp = {
                     id: d.id,
                     inflow: (+d.customer) + (+d.subscriber),
-                    outflow: (+outflowObj.customer) + (+outflowObj.subscriber), //i works as a subscript only if the ordering is same in both files!!
-                    magnitude:0
+                    outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
                 };
-                if (temp.inflow > temp.outflow) {
+<<<<<<< HEAD
+=======
+                if(temp.inflow > temp.outflow) {
                     temp.inflow -= temp.outflow;
-                    temp.magnitude = temp.inflow;
                     temp.outflow = 0;
-                } else {
+                }
+                else {
                     temp.outflow -= temp.inflow;
-                    temp.magnitude = temp.outflow;
                     temp.inflow = 0;
                 }
 
+>>>>>>> 5a5d47831ee8ec3849f71e1199cc689f83d76c20
                 return temp;
             });
-            imbalanceData.sort(function(a,b){ //Descending order
-                return b.magnitude - a.magnitude;
-            });
-            this.imbalance.setData(imbalanceData.slice(0,10), "imbalance");
+            this.imbalance.setData(imbalanceData, "imbalance");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
             $(window).trigger('resize');
@@ -1842,21 +1846,16 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if (this.momentDay != null) {
         this.dm.getBikesHourDay(function (data) {
-            var lst = d3.nest().key(function (d) {
-                return d.hour;
-            }).entries(data);
+            var lst = d3.nest().key(function(d){return d.hour;}).entries(data);
             lst = lst.sort(function (a, b) {
                 return a.key - b.key;
             });
-            var sumOfValues = lst.map(function (d) {
+            var sumOfValues = lst.map(function(d){ 
                 var count = 0;
-                d.values.forEach(function (el, idx, arr) {
+                d.values.forEach(function(el, idx, arr){
                     count = count + el.count;
                 });
-                return {
-                    hour: d.key,
-                    count: count
-                };
+                return {hour:d.key, count: count};
             });
             this.momentDay.setTitle("Rides");
             this.momentDay.setData(sumOfValues, "star"); //(data,className)
@@ -1918,25 +1917,11 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
 
 GraphicManager.prototype.showMaps = function () {
 
-    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar", "1");
-    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal", "2");
+    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar", 1);
+    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal", 2);
 
-    this.gm1.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-        "http://data.divvybikeschicago.com/station.php",
-        "http://data.divvybikeschicago.com/weather.php",
-        "http://data.divvybikeschicago.com/time.php",
-        "http://data.divvybikeschicago.com/distance.php",
-        "http://data.divvybikeschicago.com/station_age.php",
-        "http://data.divvybikeschicago.com/flow.php",
-        "http://data.divvybikeschicago.com/ride.php");
-    this.gm2.dm = new DataManager("http://data.divvybikeschicago.com/trip.php",
-        "http://data.divvybikeschicago.com/station.php",
-        "http://data.divvybikeschicago.com/weather.php",
-        "http://data.divvybikeschicago.com/time.php",
-        "http://data.divvybikeschicago.com/distance.php",
-        "http://data.divvybikeschicago.com/station_age.php",
-        "http://data.divvybikeschicago.com/flow.php",
-        "http://data.divvybikeschicago.com/ride.php");
+    this.gm1.dm = this.dm;
+    this.gm2.dm = this.dm;
 
     this.gm1.drawMarkers("popularity");
     this.gm2.drawMarkers("popularity");
@@ -1948,7 +1933,6 @@ GraphicManager.prototype.showMaps = function () {
     this.gm1.addExternalSVGs1(this.gm1.updateWindow.bind(this.gm1));
 
     this.gm2.drawSubcontrols();
-    this.gm2.addExternalSVGs1(this.gm2.updateWindow.bind(this.gm2));
 
     //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
     //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
