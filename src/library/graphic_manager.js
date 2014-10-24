@@ -655,6 +655,7 @@ GraphicManager.prototype.highlightStationByMarker = function (marker) {
 
     // Disable active flows when highlighting new station
     this.markerType = "popularity";
+    this.hideLegend();
     d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
     d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
     this.drawSelectedMarkers();
@@ -1150,8 +1151,8 @@ GraphicManager.prototype.selectInflow = function (station) {
         return;
     }
     this.lastInflow = station.id;
-    d3.select("#station_inflow_rect").style("stroke", "red");
-    d3.select("#station_outflow_rect").style("stroke", "none");
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "red");
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
 };
 
@@ -1167,8 +1168,8 @@ GraphicManager.prototype.selectOutflow = function (station) {
         return;
     }
     this.lastOutflow = station.id;
-    d3.select("#station_outflow_rect").style("stroke", "lightgreen");
-    d3.select("#station_inflow_rect").style("stroke", "none");
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "lightgreen");
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -1740,19 +1741,24 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if (this.bikesDayYearComparison != null)
         this.dm.getBikesDayYear(function (data) {
-            
-            var lst = d3.nest().key(function(d){return d.day;}).entries(data);
+
+            var lst = d3.nest().key(function (d) {
+                return d.day;
+            }).entries(data);
             lst = lst.sort(function (a, b) {
                 return new Date(a.key) - new Date(b.key);
             });
-            var sumOfValues = lst.map(function(d){ 
+            var sumOfValues = lst.map(function (d) {
                 var count = 0;
-                d.values.forEach(function(el, idx, arr){
+                d.values.forEach(function (el, idx, arr) {
                     count = count + el.count;
                 });
-                return {day:d.key, count: count};
+                return {
+                    day: d.key,
+                    count: count
+                };
             });
-           
+
             this.bikesDayYearComparison.setData(sumOfValues, "dayOfYearCumulative");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
@@ -1808,11 +1814,10 @@ GraphicManager.prototype.updateGraphs = function () {
                     inflow: (+d.customer) + (+d.subscriber),
                     outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
                 };
-                if(temp.inflow > temp.outflow) {
+                if (temp.inflow > temp.outflow) {
                     temp.inflow -= temp.outflow;
                     temp.outflow = 0;
-                }
-                else {
+                } else {
                     temp.outflow -= temp.inflow;
                     temp.inflow = 0;
                 }
@@ -1829,16 +1834,21 @@ GraphicManager.prototype.updateGraphs = function () {
 
     if (this.momentDay != null) {
         this.dm.getBikesHourDay(function (data) {
-            var lst = d3.nest().key(function(d){return d.hour;}).entries(data);
+            var lst = d3.nest().key(function (d) {
+                return d.hour;
+            }).entries(data);
             lst = lst.sort(function (a, b) {
                 return a.key - b.key;
             });
-            var sumOfValues = lst.map(function(d){ 
+            var sumOfValues = lst.map(function (d) {
                 var count = 0;
-                d.values.forEach(function(el, idx, arr){
+                d.values.forEach(function (el, idx, arr) {
                     count = count + el.count;
                 });
-                return {hour:d.key, count: count};
+                return {
+                    hour: d.key,
+                    count: count
+                };
             });
             this.momentDay.setTitle("Rides");
             this.momentDay.setData(sumOfValues, "star"); //(data,className)
