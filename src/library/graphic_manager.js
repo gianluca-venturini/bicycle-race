@@ -93,20 +93,21 @@ GraphicManager.prototype.createMap = function (type) {
 GraphicManager.prototype.addLayer = function (type) {
     switch (type) {
     case "normal":
-        this.mapLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
-            attribution: '',
-            minZoom: 10,
-            maxZoom: 16,
-            zoom: 15
-        }).addTo(this.map);
+        this.mapLayer =  L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+                            minZoom: 10,
+                            maxZoom: 18,
+                            zoom: 15,
+                            attribution: ''
+                        }).addTo(this.map);
         break;
 
     case "satellitar":
-        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        this.mapLayer = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16,
-            zoom: 15
+            maxZoom: 18,
+            zoom: 15,
+            subdomains: '1234'
         }).addTo(this.map);
         break;
 
@@ -114,18 +115,34 @@ GraphicManager.prototype.addLayer = function (type) {
         this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
-            maxZoom: 16,
+            maxZoom: 18,
             zoom: 15
         }).addTo(this.map);
         break;
 
+
+    case "dark":
+        this.mapLayer =  L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.night/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
+                            attribution: '',
+                            subdomains: '1234',
+                            mapID: 'newest',
+                            attribution: '',
+                            minZoom: 10,
+                            maxZoom: 18,
+                            base: 'base',
+                            zoom: 15,
+                            app_id: 'HiPxzx18KN1X6KxvmwNG',
+                            app_code: 'NDR26MYEb9CVPMvD7BTGaw',
+                        }).addTo(this.map);
+        break;
+
     default:
-        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '',
-            minZoom: 10,
-            maxZoom: 16,
-            zoom: 15
-        }).addTo(this.map);
+        this.mapLayer = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+                            minZoom: 10,
+                            maxZoom: 18,
+                            zoom: 15,
+                            attribution: ''
+                        }).addTo(this.map);
     }
     var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
         attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
@@ -133,14 +150,8 @@ GraphicManager.prototype.addLayer = function (type) {
         minZoom: 2,
         maxZoom: 18
     });
-    /*
-    var topPane = this.map._createPane('leaflet-top-pane', this.map.getPanes().mapPane);
-    var topLayer = Acetate_roads.addTo(this.map);
-    topPane.appendChild(topLayer.getContainer());
-    topLayer.setZIndex(4);
-    */
 
-    this.map.setZoom(11);
+    this.map.setZoom(13);
 };
 
 GraphicManager.prototype.removeLayer = function () {
@@ -386,17 +397,10 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                             self.svgs.push(svg);
 
-                            d3.select('#multimap' + self.id).on("click", function () {
-                                self.showMaps();
-                                d3.event.stopPropagation();
-                            }.bind(self))
-                                .style('-webkit-user-select', 'none');
-
-                            //var multimapControl = new MultimapControl();
-
-                            //multimapControl.setCallbackSetDate(self.callbackSetDate.bind(self));
-
-                            //multimapControl.draw();
+                            var multimapControl = new MultimapControl(self.id);
+                            multimapControl.setCallbackMultimap(self.showMaps.bind(self));
+                            multimapControl.draw();
+                            self.multimapControl = multimapControl;
 
                             callback();
                         });
@@ -541,13 +545,13 @@ GraphicManager.prototype.refreshMarkers = function () {
     var zoom = this.map.getZoom();
     var scale;
     if (zoom < 13) {
-        scale = 50;
-    } else if (zoom >= 11 && zoom < 13) {
-        scale = 34;
-    } else if (zoom >= 13 && zoom < 15) {
-        scale = 24;
-    } else if (zoom >= 15) {
-        scale = 18;
+        scale = 100;
+    } else if (zoom >= 11 && zoom < 14) {
+        scale = 60;
+    } else if (zoom >= 14 && zoom < 16) {
+        scale = 40;
+    } else if (zoom >= 16) {
+        scale = 20;
     }
 
     this.iconWidth = this.mapHeight / scale;
@@ -599,13 +603,13 @@ GraphicManager.prototype.drawMarkersCallback = function (stations) {
     var zoom = this.map.getZoom();
     var scale;
     if (zoom < 13) {
-        scale = 50;
+        scale = 800;
     } else if (zoom >= 11 && zoom < 13) {
-        scale = 34;
+        scale = 200;
     } else if (zoom >= 13 && zoom < 15) {
-        scale = 24;
+        scale = 60;
     } else if (zoom >= 15) {
-        scale = 18;
+        scale = 20;
     }
 
     this.iconWidth = this.mapHeight / scale;
@@ -1117,6 +1121,7 @@ GraphicManager.prototype.callbackDayClose = function () {
 
     this.removeBikes();
     this.updateGraphs();
+
 };
 
 GraphicManager.prototype.callbackSetHour = function () {
@@ -1467,8 +1472,8 @@ GraphicManager.prototype.drawBikes = function () {
         var line = L.polyline([from, to], {
             color: 'black',
             fillColor: 'black',
-            fillOpacity: 0.5,
-            weight: 1
+            fillOpacity: 0.6,
+            weight: 15
         }).addTo(this.map);
 
         this.linesBetweenStations.push(line);
@@ -1483,10 +1488,10 @@ GraphicManager.prototype.drawBikes = function () {
 
         // Draw line
         var line = L.polyline([from, to], {
-            color: '#3DB5E7',
-            fillColor: '#3DB5E7',
-            fillOpacity: 0.5,
-            weight: 3
+            color: 'red',
+            fillColor: 'red',
+            fillOpacity: 0.6,
+            weight: 20
         }).addTo(this.map);
 
         this.linesBetweenStations.push(line);
@@ -1497,10 +1502,12 @@ GraphicManager.prototype.drawBikes = function () {
         var coordinate = this.bikesCoordinate[b];
 
         // Draw circle
-        var circle = L.circle([coordinate[0], coordinate[1]], 20, {
-            color: '#3DB5E7',
-            fillColor: '#3DB5E7',
-            fillOpacity: 0.5
+        var circle = L.circle([coordinate[0], coordinate[1]], 40, {
+            color: 'red',
+            fillColor: 'red',
+            //color: '#3DB5E7',
+            //fillColor: '#3DB5E7',
+            fillOpacity: 0.8
         }).addTo(this.map);
 
         this.bikes.push(circle);
@@ -1793,8 +1800,8 @@ GraphicManager.prototype.updateGraphs = function () {
             var dist = data.sort(function (a, b) {
                 return (+a.meters) - (+b.meters);
             });
-            this.tripsDistanceDistribution.setData(dist,"trips_distance_distribution");
-            this.tripsDistanceDistribution.setAxes("meters","Distance", "# of bikes");
+            this.tripsDistanceDistribution.setData(dist, "trips_distance_distribution");
+            this.tripsDistanceDistribution.setAxes("meters", "Distance", "# of bikes");
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
@@ -1807,7 +1814,8 @@ GraphicManager.prototype.updateGraphs = function () {
 
             var imbalanceData = inflow.map(function (d, i) {
                 var matchId = d.id;
-                function equal(el){
+
+                function equal(el) {
                     return matchId === el.id;
                 }
                 var outflowObj = outflow.filter(equal)[0]; //Array.find is unavailable, hence using filter.
@@ -1829,10 +1837,10 @@ GraphicManager.prototype.updateGraphs = function () {
 
                 return temp;
             });
-            imbalanceData.sort(function(a,b){ //Descending order
+            imbalanceData.sort(function (a, b) { //Descending order
                 return b.magnitude - a.magnitude;
             });
-            this.imbalance.setData(imbalanceData.slice(0,10), "imbalance");
+            this.imbalance.setData(imbalanceData.slice(0, 10), "imbalance");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
             $(window).trigger('resize');
@@ -1915,6 +1923,7 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
     }
     this.highlightStationByMarker(marker);
 }
+///////////// MULTIMAPS /////////////////
 
 GraphicManager.prototype.showMaps = function () {
 
@@ -1955,8 +1964,7 @@ GraphicManager.prototype.showMaps = function () {
 }
 
 GraphicManager.prototype.hideMaps = function () {
-    this.gm1.map.remove();
-    this.gm2.map.remove();
+    this.map.remove();
 
     d3.select("#map2").remove();
     d3.select("#map3").remove();
@@ -1965,7 +1973,7 @@ GraphicManager.prototype.hideMaps = function () {
 }
 
 GraphicManager.prototype.addLegend = function (legend) {
-    this.legend = new Legend(legend);
+    this.legend = new Legend(legend, this.id);
 }
 
 GraphicManager.prototype.showLegend = function () {

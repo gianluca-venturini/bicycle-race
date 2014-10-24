@@ -8,7 +8,7 @@ function Slider(svg, gmId) {
         left: 5
     };
 
-    this.rootSvg = svg.attr("class", "day_box");
+    this.rootSvg = svg.attr("class", "day_box" + this.id);
     this.svg = svg.append("g")
         .attr("transform", "translate(" + this.margin.left + ",0)")
         .attr('id', 'gslider');
@@ -70,7 +70,7 @@ Slider.prototype.draw = function () {
         .remove();
 
     slider.select(".background")
-        .attr("class", "day_box")
+        .attr("class", "day_box" + this.id)
         .attr("height", this.height)
         .attr("width", this.width)
         .style('cursor', 'pointer');
@@ -120,7 +120,7 @@ Slider.prototype.draw = function () {
         var displayedHour = self.toAmericanHour(h, m);
 
         // Update hour label
-        d3.select("#day_hour" + this.id).text(displayedHour);
+        d3.select("#day_hour" + self.id).text(displayedHour);
 
         self.callbackSetHour();
 

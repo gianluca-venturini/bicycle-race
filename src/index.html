@@ -49,7 +49,7 @@
             fill: none;
             stroke-width: 2px;
         }
-        .dayOfYearCumulative{
+        .dayOfYearCumulative {
             stroke: rgba(200, 100, 90, 0.9);
             fill: none;
         }
@@ -94,21 +94,31 @@
         .line_stroke:hover {
             stroke-width: 7px;
         }
+        .bar_stroke:hover {
+            stroke-width: 10px;
+            stroke: rgb(255, 251, 0);
+        }
         /* Legend */
-        img.icon_legend {
+        img.icon_legend0,
+        img.icon_legend1,
+        img.icon_legend2 {
             height: 90%;
             margin: auto;
             display: inline-block;
             float: left;
             margin-left: 30%;
         }
-        div.icon_legend {
+        div.icon_legend0,
+        div.icon_legend1,
+        div.icon_legend2 {
             height: 16.6%;
             margin: auto;
             display: block;
             width: 50%;
         }
-        div.icon_legend div {
+        div.icon_legend0 div,
+        div.icon_legend1 div,
+        div.icon_legend2 div {
             /* Icon legend text */
             margin-left: 1%;
             display: inline-block;
@@ -146,7 +156,7 @@
     <script>
         var id = "0";
         var gm = new GraphicManager("map", id);
-        gm.createMap("grey");
+        gm.createMap("normal");
 
          // Background of the charts
         var chartBack = gm.addSvg(0.585, 0.05, 0.4, 0.82);
@@ -185,8 +195,6 @@
         layerControl.draw();
         selectionControl.draw();
         enableCalendarControl.draw();
-        staticChartsControl.draw();
-        hideChartsControl.draw();
 
          // Set interactions
         layerControl.setCallback("text_layer_1" + id, gm.changeLayer.bind(gm, "normal"));
@@ -234,6 +242,7 @@
 
         var imbalance1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.02, 0.20 - 0.01, 0.18);
         var imbalance = new ImbalanceChart(imbalance1);
+        imbalance.callback = gm.selectedStationFromChart.bind(gm);
         gm.imbalance = imbalance;
 
         var line3 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
@@ -250,21 +259,27 @@
         var momentDay = new StarChart(momentDay1);
         gm.momentDay = momentDay;
 
-        // Static charts
-        var chartBack = gm.addSvg(0.3, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.58);
-        chartBack.attr("class", "chart").style("background-color", "rgba(10, 10, 10, 0.8)");
+         // Static charts
+        var chartBack = gm.addSvgChart(0.3, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.58);
+        chartBack.attr("class", "static_chart").style("background-color", "rgba(10, 10, 10, 0.8)");
 
-        var norm1 = gm.addSvg(0.3, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
+        var norm1 = gm.addSvgChart(0.3, 0.05 + 0.18 + 0.02 * 2, 0.20 - 0.01, 0.18);
+        norm1.attr("class", "static_chart");
         var normalChart1 = new NormalChart(norm1);
         gm.timeDistribution = normalChart1;
 
-        var norm2 = gm.addSvg(0.3, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
+        var norm2 = gm.addSvgChart(0.3, 0.05 + 0.18 * 2 + 0.02 * 3, 0.20 - 0.01, 0.18);
+        norm2.attr("class", "static_chart");
         var normalChart2 = new NormalChart(norm2);
         gm.distanceDistribution = normalChart2;
 
-        var norm3 = gm.addSvg(0.3, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18);
+        var norm3 = gm.addSvgChart(0.3, 0.05 + 0.18 * 3 + 0.02 * 4, 0.20 - 0.01, 0.18);
+        norm3.attr("class", "static_chart");
         var normalChart3 = new NormalChart(norm3);
         gm.tripsDistanceDistribution = normalChart3;
+
+        staticChartsControl.draw();
+        hideChartsControl.draw();
 
         /*
         var norm1 = gm.addSvgChart(0.585 + 0.2 + 0.01, 0.05 + 0.02, 0.20 - 0.01, 0.18);
