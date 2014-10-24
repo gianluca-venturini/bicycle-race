@@ -98,24 +98,10 @@ GraphicManager.prototype.addLayer = function (type) {
                             maxZoom: 18,
                             attribution: ''
                         }).addTo(this.map);
-            /*L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
-            attribution: '',
-            minZoom: 10,
-            maxZoom: 16,
-            zoom: 15
-        }).addTo(this.map);
-        */
         break;
 
     case "satellitar":
-        this.mapLayer =/* L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '',
-            minZoom: 10,
-            maxZoom: 16,
-            zoom: 15
-        }).addTo(this.map);
-        */
-        L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+        this.mapLayer = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
@@ -133,19 +119,29 @@ GraphicManager.prototype.addLayer = function (type) {
         }).addTo(this.map);
         break;
 
+
+    case "dark":
+        this.mapLayer =  L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.night/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
+                            attribution: '',
+                            subdomains: '1234',
+                            mapID: 'newest',
+                            attribution: '',
+                            minZoom: 10,
+                            maxZoom: 16,
+                            base: 'base',
+                            zoom: 15,
+                            app_id: 'HiPxzx18KN1X6KxvmwNG',
+                            app_code: 'NDR26MYEb9CVPMvD7BTGaw',
+                        }).addTo(this.map);
+        break;
+
     default:
         this.mapLayer = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
                             minZoom: 0,
                             maxZoom: 18,
+                            zoom: 15,
                             attribution: ''
                         }).addTo(this.map);
-            /*L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '',
-            minZoom: 10,
-            maxZoom: 16,
-            zoom: 15
-        }).addTo(this.map);
-        */
     }
     var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
         attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
