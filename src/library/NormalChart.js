@@ -11,11 +11,11 @@ function NormalChart (svg){
 		top: 10, 
 		bottom: 85, 
 		left2: 150,
-		right2: 250,
+		right2: 300,
 		top2: 20, 
 		bottom2: 75
 	};
-	this.svg.attr("viewBox","-100 0 300 90");
+	this.svg.attr("viewBox","-100 0 400 110");
 }
 
 
@@ -35,13 +35,42 @@ NormalChart.prototype.setData = function(json,className){
 	
 }
 
-NormalChart.prototype.setAxes = function(propertyX, labelX, labelY){
+NormalChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
 	var _this = this;
+	this.axisX = propertyX;
+	this.axisY = propertyY;
 	if (labelX === "" || labelX === undefined || labelX === null)
 		this.hasValuesOnX = false;
 	else
 		this.hasValuesOnX = true;
-	var array = this.data.map(function(d){ return +d[propertyX];});
+
+	
+	
+	var maxX = d3.max(this.data,function(d){
+		return +d[propertyX];
+	});
+	this.xScale = d3.scale.linear()
+		.domain([0,maxX])
+		.range([this.border.left, this.border.right]);
+	var maxY = d3.max(this.data,function(d){
+		return +d[propertyY];
+	});
+	this.yScale = d3.scale.linear()
+		.domain([0,maxY])
+		.range([this.border.bottom, this.border.top+5]);
+
+
+	this.xAxis = d3.svg.axis()
+    	.scale(this.xScale)
+    	.ticks(10)
+    	.tickSize(2)
+      	.orient("bottom");
+    this.yAxis = d3.svg.axis()
+    	.scale(this.yScale)
+      	.orient("left");
+
+    this.getQuartiles();
+	/*var array = this.data.map(function(d){ return +d[propertyX];});
 	var msv = meanSdVar(array);
 	this.msv = msv;
 	this.quartiles = getQuartiles(array);
@@ -78,7 +107,7 @@ NormalChart.prototype.setAxes = function(propertyX, labelX, labelY){
       	.orient("bottom");
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
-      	.orient("left");
+      	.orient("left");*/
 } 
 
 
@@ -94,12 +123,12 @@ NormalChart.prototype.draw = function(){
 	bars.enter().append("rect")
 		.attr("class",this.newName)
 		.attr("transform", function(d){
-			return "translate(" + (_this.xScale(d.x)) +","+ (_this.yScale(d.y)) + ")";
+			return "translate(" + (_this.xScale(+d[_this.axisX])) +","+ (_this.yScale(+d[_this.axisY])) + ")";
 		})
-		.attr("x", 1)
-		.attr("width", _this.xScale(_this.data[1].x) - _this.xScale(_this.data[0].x) -2)
+		.attr("x", -(_this.xScale(+_this.data[1][_this.axisX]) - _this.xScale(+_this.data[0][_this.axisX])))
+		.attr("width", _this.xScale(+_this.data[1][_this.axisX]) - _this.xScale(+_this.data[0][_this.axisX])-1)
 		.attr("height", function(d){
-			return _this.border.bottom - _this.yScale(d.y);
+			return _this.border.bottom - _this.yScale(+d[_this.axisY]);
 		});
 
 
@@ -147,21 +176,21 @@ NormalChart.prototype.draw = function(){
 	legend = this.svg.append("g")
 		.attr("class", "legend");
 		//.attr("transform", "translate(" + (_this.border.right)+ "," + (_this.border.top) + ")");
-	var lineX = (_this.hasValuesOnX === true)? _this.msv.mean : 0;
+	
 	legend.append("text")
 		.attr("transform", "rotate(-90)")
-		.attr("y", _this.xScale(lineX)-2)
+		.attr("y", _this.xScale(_this.mean)-2)
 		.attr("x",-(_this.border.bottom-10))
 	    //.style("text-anchor","end")
-	    .text("Mean : " + format(parseInt(_this.msv.mean)));
+	    .text("Mean : " + format(parseInt(_this.mean)));
 	
 	
 
 	this.svg.append("line")
 		.attr("class", _this.newName)
 		.style("stroke", "rgba(190,190,230,1.0)")
-		.attr("x1", _this.xScale(lineX))
-		.attr("x2", _this.xScale(lineX))
+		.attr("x1", _this.xScale(_this.mean))
+		.attr("x2",_this.xScale(_this.mean))
 		.attr("y1", _this.border.bottom)
 		.attr("y2", _this.border.top);
 
@@ -230,12 +259,15 @@ NormalChart.prototype.drawBox = function(){
 
 
 function mean(array){
-	var sum = array.reduce(function(previousValue, currentValue, index, array) {
-  		return previousValue + currentValue;
-	});
+	if (array.length>0){
+		var sum = array.reduce(function(previousValue, currentValue, index, array) {
+	  		return previousValue + currentValue;
+		});
 
-	var mn = sum/array.length;
-	return mn;
+		var mn = sum/array.length;
+		return mn;
+	}
+	return 0;
 }
 
 function meanSdVar(array){
@@ -251,7 +283,7 @@ function meanSdVar(array){
 	return msv;
 }
 
-function getQuartiles(array){
+/*function getQuartiles(array){
 	var sArray = array.sort(function(a,b){ return a - b;});
 	var temp = [];
 	temp.push(sArray[0]);
@@ -260,6 +292,47 @@ function getQuartiles(array){
 	temp.push(pickMid(sArray.slice(parseInt(sArray.length/2)+1, sArray.length)));
 	temp.push(sArray[sArray.length - 1]);
 	return temp;
+}*/
+
+NormalChart.prototype.getQuartiles = function(){
+	var _this = this;
+	var totalCount = 0;
+	var summation = 0
+	this.data.forEach(function(d){ 
+		totalCount = totalCount + +d[_this.axisY] ;
+		summation = summation + (+d[_this.axisX] * +d[_this.axisY]);
+	});
+	this.mean = summation/totalCount;
+	
+	var quartile1 = totalCount/4;
+	var valFor1 = 0;
+	var median = totalCount/2;
+	var valFor2 = 0;
+	var quartile3 = totalCount*0.75;
+	var valFor3 = 0;
+	var valFor4 = 0;
+	var tempTot = 0;
+	this.data.forEach(function(d){ 
+		tempTot = tempTot + +d[_this.axisY] ;
+		if (tempTot < quartile1)
+			valFor1 = +d[_this.axisX];
+		if (tempTot < median)
+			valFor2 = +d[_this.axisX];
+		if (tempTot < quartile3)
+			valFor3 = +d[_this.axisX];
+		if (+d[_this.axisY] !== 0)
+			valFor4 = +d[_this.axisX];
+	});
+	
+	
+	var temp = [];
+
+	temp.push(0);
+	temp.push(valFor1);
+	temp.push(valFor2);
+	temp.push(valFor3);
+	temp.push(valFor4);
+	this.quartiles = temp;
 }
 
 function pickMid(array){

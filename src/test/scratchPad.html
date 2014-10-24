@@ -109,10 +109,11 @@
         .defer(d3.json, "data3.json")
         .defer(d3.json, "inflow.json")
         .defer(d3.json, "outflow.json")
+        .defer(d3.json, "data4.json")
         .await(process);
 
 
-        function process(error,json, json2, json3, json4, json5){ 
+        function process(error,json, json2, json3, json4, json5, json6){ 
             var multiJson = json.array.sort(function(a,b){
                 return (+a.hour) - (+b.hour);
             });
@@ -122,8 +123,8 @@
             var multiJson2 = json2.array.sort(function(a,b){
                 return (+a.hour) - (+b.hour);
             });
-            var dist = json3.array.sort(function(a,b){
-                return (+a.totaldistance) - (+b.totaldistance);
+            var dist = json6.array.sort(function(a,b){
+                return (+a.to_meters) - (+b.to_meters);
             });
             var lineChart1 = new LineChart(line1);
             var lineChart2 = new LineChart(line2);
@@ -142,7 +143,7 @@
             starChart1.setProperty("hour","count"); //(propertyTheta, propertyR)
             starChart1.draw();
             normal.setData(dist,"distance");
-            normal.setAxes("totaldistance");
+            normal.setAxes("to_meters","Distance", "count", "Count");
             normal.setTitle("Distribution of bikes by total distance");
             normal.draw();
 

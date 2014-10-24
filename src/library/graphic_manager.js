@@ -1814,7 +1814,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 var temp = {
                     id: d.id,
                     inflow: (+d.customer) + (+d.subscriber),
-                    outflow: (+outflowObj.customer) + (+outflowObj.subscriber), //i works as a subscript only if the ordering is same in both files!!
+                    outflow: (+outflowObj.customer) + (+outflowObj.subscriber), 
                     magnitude:0
                 };
                 if (temp.inflow > temp.outflow) {
