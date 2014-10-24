@@ -200,7 +200,7 @@ EnableCalendarControl.prototype.draw = function () {
             self.text1.text("Show Calendar");
         }
 
-    })
+    });
 
 
 };
@@ -461,7 +461,6 @@ ZoomControl.prototype.setCallbackZoomOut = function (callback) {
 /*  CHARTS CONTROLS   */
 ////////////////////////
 
-
 function StaticChartsControl(svg) {
     this.svg = svg;
     this.width = +svg.attr("width").replace("px", "");
@@ -470,6 +469,7 @@ function StaticChartsControl(svg) {
 }
 
 StaticChartsControl.prototype.draw = function () {
+    var self = this;
 
     this.text = this.svg.append("text")
         .attr('id', 'text_statics_charts')
@@ -480,6 +480,26 @@ StaticChartsControl.prototype.draw = function () {
         .attr("dominant-baseline", "central")
         .style('font-size', '0.9em')
         .text("Show static charts");
+
+    d3.selectAll(".static_chart")
+        .style("opacity", "0")
+        .style("pointer-events", "none");
+
+    d3.select('#text_statics_charts').on("click", function () {
+        if (+d3.selectAll(".static_chart").style("opacity") === 0) {
+            d3.selectAll(".static_chart")
+                .style("opacity", "1")
+                .style("pointer-events", "all");
+            d3.select("#text_statics_charts").text("Hide static charts");
+        } else {
+            d3.selectAll(".static_chart")
+                .style("opacity", "0")
+                .style("pointer-events", "none");
+            d3.select("#text_statics_charts").text("Show static charts");
+        }
+        d3.event.stopPropagation();
+    }.bind(self))
+        .style('-webkit-user-select', 'none');
 
 };
 
@@ -502,10 +522,11 @@ function HideChartsControl(svg) {
     this.width = +svg.attr("width").replace("px", "");
     this.height = +svg.attr("height").replace("px", "");
     svg.attr("viewBox", "0 0 100 50");
-    this.hide = true;
+    this.hide = false;
 }
 
 HideChartsControl.prototype.draw = function () {
+    var self = this;
 
     this.text = this.svg.append("text")
         .attr('id', 'text_hide_charts')
@@ -518,12 +539,17 @@ HideChartsControl.prototype.draw = function () {
         .text("Hide charts");
 
     d3.select('#text_hide_charts').on("click", function () {
-        this.hide = !this.hide;
-        if (this.hide) {
-            d3.selectAll(".chart")
+        self.hide = !self.hide;
+        if (self.hide) {
+            d3.selectAll(".chart, .static_chart")
                 .style("opacity", "0")
                 .style("pointer-events", "none");
             d3.select("#text_hide_charts").text("Show charts");
+
+            if (+d3.selectAll(".static_chart").style("opacity") === 0) {
+                d3.select("#text_statics_charts").text("Show static charts");
+            }
+
         } else {
             d3.selectAll(".chart")
                 .style("opacity", "1")
@@ -534,7 +560,6 @@ HideChartsControl.prototype.draw = function () {
         d3.event.stopPropagation();
     }.bind(self))
         .style('-webkit-user-select', 'none');
-
 
 };
 

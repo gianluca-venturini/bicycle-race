@@ -93,12 +93,12 @@ GraphicManager.prototype.createMap = function (type) {
 GraphicManager.prototype.addLayer = function (type) {
     switch (type) {
     case "normal":
-        this.mapLayer =  L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-                            minZoom: 0,
-                            maxZoom: 18,
-                            attribution: ''
-                        }).addTo(this.map);
-            /*L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
+        this.mapLayer = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+            minZoom: 0,
+            maxZoom: 18,
+            attribution: ''
+        }).addTo(this.map);
+        /*L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
@@ -108,7 +108,8 @@ GraphicManager.prototype.addLayer = function (type) {
         break;
 
     case "satellitar":
-        this.mapLayer =/* L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        this.mapLayer =
+        /* L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
@@ -135,11 +136,11 @@ GraphicManager.prototype.addLayer = function (type) {
 
     default:
         this.mapLayer = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-                            minZoom: 0,
-                            maxZoom: 18,
-                            attribution: ''
-                        }).addTo(this.map);
-            /*L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+            minZoom: 0,
+            maxZoom: 18,
+            attribution: ''
+        }).addTo(this.map);
+        /*L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
@@ -1974,7 +1975,7 @@ GraphicManager.prototype.hideMaps = function () {
 }
 
 GraphicManager.prototype.addLegend = function (legend) {
-    this.legend = new Legend(legend);
+    this.legend = new Legend(legend, this.id);
 }
 
 GraphicManager.prototype.showLegend = function () {
