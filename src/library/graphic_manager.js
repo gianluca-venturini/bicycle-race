@@ -1,4 +1,6 @@
-function GraphicManager(htmlId) {
+function GraphicManager(htmlId, gmId) {
+
+    this.id = gmId;
     /*this.lat = 41.8749077;
     this.lon = -87.6368363;*/
     this.lat = 41.8741372;
@@ -261,7 +263,9 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                         d3.xml("./icon/multiMap.svg", "image/svg+xml", function (xmlMultimap) {
 
                             document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
-                            var svg = d3.select("#calendar");
+
+                            self.tagCalendar(self.id);
+                            svg = d3.select("#calendar" + self.id);
 
                             svg.attr("_height", 0.24)
                                 .attr("_width", 0.07)
@@ -272,7 +276,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                             self.svgs.push(svg);
 
-                            var calendarControl = new CalendarControl();
+                            var calendarControl = new CalendarControl(self.id);
 
                             self.calendarControl = calendarControl;
                             calendarControl.setCallbackSetDate(self.callbackSetDate.bind(self));
@@ -282,7 +286,9 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                             ////////////////////////////////////
 
                             document.getElementById(self.mapId).appendChild(xmlZoom.documentElement);
-                            svg = d3.select("#zoom");
+
+                            self.tagZoom(self.id);
+                            svg = d3.select("#zoom" + self.id);
 
                             svg.attr("_height", 0.12)
                                 .attr("_width", 0.07)
@@ -298,7 +304,9 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                             ////////////////////////////////////
 
                             document.getElementById(self.mapId).appendChild(xmlStation.documentElement);
-                            svg = d3.select("#stationControl");
+
+                            self.tagStationControl(self.id);
+                            svg = d3.select("#stationControl" + self.id);
 
                             svg.attr("_height", 0.45)
                                 .attr("_width", 0.1)
@@ -320,7 +328,9 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                             ////////////////////////////////////
 
                             document.getElementById(self.mapId).appendChild(xmlDay.documentElement);
-                            svg = d3.select("#dayControl");
+
+                            self.tagDayControl(self.id);
+                            svg = d3.select("#dayControl" + self.id);
 
                             svg.attr("_height", 0.24 + 0.005)
                                 .attr("_width", 0.1)
@@ -339,14 +349,16 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                             var svgSlider = self.addSvg.call(self, 0.072, 0.24 + 0.005 - 0.06, 0.1, 0.06);
                             callback();
-                            self.slider = new Slider(svgSlider);
+                            self.slider = new Slider(svgSlider, self.id);
                             self.slider.draw();
                             self.slider.setCallbackSetHour(self.callbackSetHour.bind(self));
 
                             ////////////////////////////////////
 
                             document.getElementById(self.mapId).appendChild(xmlTitle.documentElement);
-                            var svg = d3.select("#title");
+
+                            self.tagTitle(self.id);
+                            svg = d3.select("#title" + self.id);
 
                             svg.attr("_height", 0.12)
                                 .attr("_width", 0.07)
@@ -360,7 +372,9 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
                             ////////////////////////////////////
 
                             document.getElementById(self.mapId).appendChild(xmlMultimap.documentElement);
-                            var svg = d3.select("#multimap");
+
+                            self.tagMultimap(self.id);
+                            svg = d3.select("#multimap" + self.id);
 
                             svg.attr("_height", 0.17)
                                 .attr("_width", 0.07)
@@ -371,7 +385,7 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                             self.svgs.push(svg);
 
-                            d3.select('#multimap').on("click", function () {
+                            d3.select('#multimap' + self.id).on("click", function () {
                                 self.showMaps();
                                 d3.event.stopPropagation();
                             }.bind(self))
@@ -468,7 +482,7 @@ GraphicManager.prototype.addExternalSVGsCharts = function (callback) {
 };
 
 
-GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type) {
+GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type, submapId) {
     var div = d3.select("#" + this.mapId).append("div");
     div.attr("_height", height)
         .attr("_width", width)
@@ -478,7 +492,7 @@ GraphicManager.prototype.addSubMap = function (x, y, width, height, mapId, type)
         .attr("id", mapId)
         .attr("class", "submap");
 
-    var gm = new GraphicManager(mapId);
+    var gm = new GraphicManager(mapId, submapId);
 
     this.divs.push(div);
     this.positionDIVs();
@@ -640,8 +654,8 @@ GraphicManager.prototype.highlightStationByMarker = function (marker) {
 
     // Disable active flows when highlighting new station
     this.markerType = "popularity";
-    d3.select("#station_inflow_rect").style("stroke", "none");
-    d3.select("#station_outflow_rect").style("stroke", "none");
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
     this.drawSelectedMarkers();
 
     try {
@@ -760,12 +774,12 @@ GraphicManager.prototype.selectedStation = function (station) {
 
     var marker = station.marker;
     if (marker.selected) {
-        d3.select('#stationControl').style('opacity', '1')
+        d3.select('#stationControl' + this.id).style('opacity', '1')
             .style("pointer-events", "all");
         marker.options.icon.options.iconUrl = selectedUrl;
         marker.setIcon(marker.options.icon);
     } else {
-        d3.select('#stationControl').style('opacity', '0')
+        d3.select('#stationControl' + this.id).style('opacity', '0')
             .style("pointer-events", "none");
         this.drawSelectedMarkers();
     }
@@ -778,7 +792,7 @@ GraphicManager.prototype.selectedStation = function (station) {
 GraphicManager.prototype.selectCompareAll = function (station) {
 
     // Highlight click
-    d3.select("#station_compareAll_rect").style("stroke", "red").transition().delay(400).style("stroke", "none");
+    d3.select("#station_compareAll_rect" + this.id).style("stroke", "red").transition().delay(400).style("stroke", "none");
 
     // Set mode
     if (this.dm.selectionMode === null) {
@@ -817,7 +831,7 @@ GraphicManager.prototype.selectCompareAll = function (station) {
 GraphicManager.prototype.selectCompareTwo = function (station) {
 
     // Highlight click
-    d3.select("#station_compare2_rect").style("stroke", "lightgreen").transition().delay(400).style("stroke", "none");
+    d3.select("#station_compare2_rect" + this.id).style("stroke", "lightgreen").transition().delay(400).style("stroke", "none");
 
     // Set mode
     if (this.dm.selectionMode === null) {
@@ -876,9 +890,9 @@ GraphicManager.prototype.selectCompareTwo = function (station) {
 };
 
 GraphicManager.prototype.updateStationControl = function (station) {
-    d3.select('#station_name').text(station.name);
-    d3.select('#station_id').text(station.id);
-    d3.select('#station_pop').text(d3.format('%')(station.popularity));
+    d3.select('#station_name' + this.id).text(station.name);
+    d3.select('#station_id' + this.id).text(station.id);
+    d3.select('#station_pop' + this.id).text(d3.format('%')(station.popularity));
 
 };
 
@@ -907,7 +921,7 @@ GraphicManager.prototype.callbackSetDate = function () {
 
     // Make control visible and active
     if (!this.dayControl.enabled) {
-        d3.selectAll(".day_box")
+        d3.selectAll(".day_box" + this.id)
             .style("opacity", "1")
             .style("pointer-events", "all");
         this.dayControl.enabled = true;
@@ -917,7 +931,7 @@ GraphicManager.prototype.callbackSetDate = function () {
     var month = cal.month < 10 ? "0" + cal.month : cal.month;
     var day = cal.dayCounter < 10 ? "0" + cal.dayCounter : cal.dayCounter;
     var textDate = month + "/" + day + "/2013";
-    d3.select('#day_name').text(textDate);
+    d3.select('#day_name' + this.id).text(textDate);
 
     // Show weather
     this.dm.getWeather(this.weatherCallback.bind(this));
@@ -933,8 +947,8 @@ GraphicManager.prototype.callbackSetDate = function () {
     m = times.sunset.getMinutes();
     var sunset = this.toAmericanHour(h, m);
 
-    d3.select("#day_sunrise").text(sunrise);
-    d3.select("#day_sunset").text(sunset);
+    d3.select("#day_sunrise" + this.id).text(sunrise);
+    d3.select("#day_sunset" + this.id).text(sunset);
 
     this.updateGraphs();
 };
@@ -970,8 +984,8 @@ GraphicManager.prototype.weatherCallback = function (weather) {
     var max = Math.max.apply(null, vals);
     var weather_day = nested_data[vals.indexOf(max)].key;
 
-    d3.select('#day_image').attr('xlink:href', this.getWeatherIcon(weather_day));
-    d3.select('#day_weather').text(weather_day);
+    d3.select('#day_image' + this.id).attr('xlink:href', this.getWeatherIcon(weather_day));
+    d3.select('#day_weather' + this.id).text(weather_day);
 
 };
 
@@ -1079,18 +1093,18 @@ GraphicManager.prototype.getWeatherByHour = function () {
         }
     }
 
-    d3.select('#day_image').attr("xlink:href", this.getWeatherIcon(weather_user));
-    d3.select('#day_weather').text(weather_user);
+    d3.select('#day_image' + this.id).attr("xlink:href", this.getWeatherIcon(weather_user));
+    d3.select('#day_weather' + this.id).text(weather_user);
     if (temperature_user === null)
-        d3.select('#day_temperature').text("");
+        d3.select('#day_temperature' + this.id).text("");
     else
-        d3.select('#day_temperature').text(temperature_user + "°");
+        d3.select('#day_temperature' + this.id).text(temperature_user + "°");
 
 };
 
 GraphicManager.prototype.callbackDayClose = function () {
 
-    d3.selectAll(".day_box")
+    d3.selectAll(".day_box" + this.id)
         .style("opacity", "0")
         .style("pointer-events", "none");
 
@@ -1126,7 +1140,7 @@ GraphicManager.prototype.selectInflow = function (station) {
     // Invert the behavior
     if (this.markerType === "inflow" && this.lastInflow === station.id) {
         // Disable flow view and legend
-        d3.select("#station_inflow_rect").style("stroke", "none");
+        d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
         this.hideLegend();
         this.lastInflow = station.id;
         this.markerType = "popularity";
@@ -1137,15 +1151,15 @@ GraphicManager.prototype.selectInflow = function (station) {
     this.lastInflow = station.id;
     this.showLegend();
     this.legend.draw("stations_inflow", 0, 5);
-    d3.select("#station_inflow_rect").style("stroke", "red");
-    d3.select("#station_outflow_rect").style("stroke", "none");
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "red");
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
     this.dm.getFlow(this.selectInflowCallback.bind(this), station.id, "IN");
 };
 
 GraphicManager.prototype.selectOutflow = function (station) {
     // Invert the behavior
     if (this.markerType === "outflow" && this.lastOutflow === station.id) {
-        d3.select("#station_outflow_rect").style("stroke", "none");
+        d3.select("#station_outflow_rect" + this.id).style("stroke", "none");
         this.hideLegend();
         this.lastOutflow = station.id;
         this.markerType = "popularity";
@@ -1156,8 +1170,8 @@ GraphicManager.prototype.selectOutflow = function (station) {
     this.lastOutflow = station.id;
     this.showLegend();
     this.legend.draw("stations_outflow", 0, 5);
-    d3.select("#station_outflow_rect").style("stroke", "lightgreen");
-    d3.select("#station_inflow_rect").style("stroke", "none");
+    d3.select("#station_outflow_rect" + this.id).style("stroke", "lightgreen");
+    d3.select("#station_inflow_rect" + this.id).style("stroke", "none");
     this.dm.getFlow(this.selectOutflowCallback.bind(this), station.id, "OUT");
 };
 
@@ -1641,7 +1655,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsGender != null) {
-                this.tripsGender.setData([+d.male, +d.female, +d.unknown], ["Male", "Female", "Unknown"],
+                this.tripsGender.setData([+d.male, +d.female, +d.female], ["Male", "Female", "Unknown"],
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
@@ -1649,7 +1663,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }
 
             if (this.tripsCustomerType != null) {
-                this.tripsCustomerType.setData([+d.customer, +d.subscriber], ["Customer", "Subscriber"],
+                this.tripsCustomerType.setData([+d.male, +d.female], ["Customer", "Subscriber"],
                     "demographic",
                     "Customer");
                 this.tripsCustomerType.setTitle("Customer type");
@@ -1801,11 +1815,6 @@ GraphicManager.prototype.updateGraphs = function () {
                     inflow: (+d.customer) + (+d.subscriber),
                     outflow: (+outflow[i].customer) + (+outflow[i].subscriber), //i works as a subscript only if the ordering is same in both files!!
                 };
-                if(temp.inflow > temp.outflow)
-                    temp.inflow -= temp.outflow;
-                else
-                    temp.outflow -= temp.inflow;
-
                 return temp;
             });
             this.imbalance.setData(imbalanceData, "imbalance");
@@ -1878,8 +1887,8 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
 
 GraphicManager.prototype.showMaps = function () {
 
-    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar");
-    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal");
+    this.gm1 = gm.addSubMap(0.0, 0.0, 0.5, 1.0, "map2", "satellitar", 1);
+    this.gm2 = gm.addSubMap(0.5, 0.0, 0.5, 1.0, "map3", "normal", 2);
 
     this.gm1.dm = this.dm;
     this.gm2.dm = this.dm;
@@ -1889,6 +1898,11 @@ GraphicManager.prototype.showMaps = function () {
 
     this.gm1.updateWindow();
     this.gm2.updateWindow();
+
+    this.gm1.drawSubcontrols();
+    this.gm1.addExternalSVGs1(this.gm1.updateWindow.bind(this.gm1));
+
+    this.gm2.drawSubcontrols();
 
     //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
     //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});

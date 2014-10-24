@@ -11,6 +11,16 @@ body {
     font-weight: 700;
     font-size: 0.9em;
 }
+.month_selected_1 {
+    fill: black;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+.month_selected_2 {
+    fill: black;
+    font-weight: 700;
+    font-size: 0.9em;
+}
 .text_control {
     font-family: 'Roboto';
     font-weight: 100;

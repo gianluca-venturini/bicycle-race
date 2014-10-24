@@ -25,6 +25,9 @@
     <script src="./library/ImbalanceChart.js"></script>
     <script src="./library/legend.js"></script>
     <script src="./library/suncalc.js"></script>
+    <script src="./library/tag_manager.js"></script>
+    <script src="./library/controls_multimap.js"></script>
+
     <style>
         /* Import roboto font from Google */
         @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
@@ -135,7 +138,8 @@
     </div>
 
     <script>
-        var gm = new GraphicManager("map");
+        var id = "";
+        var gm = new GraphicManager("map", id);
         gm.createMap("grey");
 
          // Background of the charts
@@ -154,12 +158,12 @@
         gm.updateWindow();
 
          // Allocate javascript objects that will manage this SVGS
-        var layerControl = new LayerControl(svgLayerControl);
+        var layerControl = new LayerControl(svgLayerControl, id);
         var selectionControl = new SelectionControl(svgSelectionControl);
-        var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl);
-        var zoomControl = new ZoomControl();
-        var stationControl = new StationControl();
-        var dayControl = new DayControl();
+        var enableCalendarControl = new EnableCalendarControl(svgEnableCalendarControl, id);
+        var zoomControl = new ZoomControl(id);
+        var stationControl = new StationControl(id);
+        var dayControl = new DayControl(id);
         var staticChartsControl = new StaticChartsControl(svgStaticChartsControl);
         var hideChartsControl = new HideChartsControl(svgHideChartsControl);
 
@@ -179,8 +183,8 @@
         hideChartsControl.draw();
 
          // Set interactions
-        layerControl.setCallback("text_layer_1", gm.changeLayer.bind(gm, "normal"));
-        layerControl.setCallback("text_layer_2", gm.changeLayer.bind(gm, "grey"));
+        layerControl.setCallback("text_layer_1" + id, gm.changeLayer.bind(gm, "normal"));
+        layerControl.setCallback("text_layer_2" + id, gm.changeLayer.bind(gm, "grey"));
 
         gm.addExternalSVGs(gm.updateWindow.bind(gm));
         gm.addExternalSVGsCharts(gm.updateWindow.bind(gm));
