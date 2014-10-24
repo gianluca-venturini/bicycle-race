@@ -1,4 +1,5 @@
-function Legend(legend) {
+function Legend(legend, gmId) {
+    this.id = gmId;
     this.legend = legend;
     this.hide();
 }
@@ -9,21 +10,21 @@ Legend.prototype.draw = function (type, min, max) {
         .data(data)
         .enter()
         .append("div")
-        .attr("class", "icon_legend");
+        .attr("class", "icon_legend" + this.id);
     divs.append("img")
-        /*.attr("src", function (d) {
+    /*.attr("src", function (d) {
             return "./icon/" + type + "/station_" + d + ".png";
         })*/
-        .attr("class", "icon_legend");
+    .attr("class", "icon_legend" + this.id);
 
     divs.append("div");
 
-    this.legend.selectAll(".icon_legend div")
+    this.legend.selectAll(".icon_legend" + this.id + " div")
         .text(function (d) {
             return "" + Math.round((max - min) / 6 * d);
         });
 
-    this.legend.selectAll("img.icon_legend")
+    this.legend.selectAll("img.icon_legend" + this.id)
         .data(data)
         .attr("src", function (d) {
             return "./icon/" + type + "/station_" + d + ".png";

@@ -51,7 +51,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
             d3.xml("./icon/stationControl.svg", "image/svg+xml", function (xmlStation) {
                 d3.xml("./icon/day.svg", "image/svg+xml", function (xmlDay) {
                     d3.xml("./icon/title.svg", "image/svg+xml", function (xmlTitle) {
-                        d3.xml("./icon/multiMap.svg", "image/svg+xml", function (xmlMultimap) {
+                        d3.xml("./icon/singleMap.svg", "image/svg+xml", function (xmlSinglemap) {
 
                             document.getElementById(self.mapId).appendChild(xmlCalendar.documentElement);
 
@@ -136,7 +136,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
 
                             self.svgs.push(svg);
 
-                            var dayControl = new DayControl(id);
+                            var dayControl = new DayControl(self.id);
                             self.dayControl = dayControl;
                             dayControl.setCallbackDayClose(self.callbackDayClose.bind(self));
 
@@ -167,7 +167,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
 
                             ////////////////////////////////////
 
-                            document.getElementById(self.mapId).appendChild(xmlMultimap.documentElement);
+                            document.getElementById(self.mapId).appendChild(xmlSinglemap.documentElement);
 
                             self.tagMultimap(self.id);
                             svg = d3.select("#multimap" + self.id);
@@ -187,11 +187,12 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
                             }.bind(self))
                                 .style('-webkit-user-select', 'none');
 
-                            //var multimapControl = new MultimapControl();
+                            self.svgs.push(svg);
 
-                            //multimapControl.setCallbackSetDate(self.callbackSetDate.bind(self));
-
-                            //multimapControl.draw();
+                            var multimapControl = new MultimapControl(self.id);
+                            multimapControl.setCallbackMultimap(self.hideMaps.bind(self));
+                            multimapControl.draw();
+                            self.multimapControl = multimapControl;
 
                             callback();
                         });

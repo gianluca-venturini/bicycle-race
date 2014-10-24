@@ -1,4 +1,5 @@
 function NormalChart (svg){
+    svg.attr("class","static_chart");
 	this.svg = svg;
 	this.chartName=null;
 	this.newName = null;
