@@ -1798,10 +1798,10 @@ GraphicManager.prototype.updateGraphs = function () {
     if (this.tripsDistanceDistribution != null) {
         this.dm.getRideDistribution(function (data) {
             var dist = data.sort(function (a, b) {
-                return (+a.meters) - (+b.meters);
+                return (+a.to_meters) - (+b.to_meters);
             });
-            this.tripsDistanceDistribution.setData(dist, "trips_distance_distribution");
-            this.tripsDistanceDistribution.setAxes("meters", "Distance", "# of bikes");
+            this.tripsDistanceDistribution.setData(dist,"trips_distance_distribution");
+            this.tripsDistanceDistribution.setAxes("to_meters","Distance", "count", "Count");
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
