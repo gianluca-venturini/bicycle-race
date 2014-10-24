@@ -93,20 +93,34 @@ GraphicManager.prototype.createMap = function (type) {
 GraphicManager.prototype.addLayer = function (type) {
     switch (type) {
     case "normal":
-        this.mapLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
+        this.mapLayer =  L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+                            minZoom: 0,
+                            maxZoom: 18,
+                            attribution: ''
+                        }).addTo(this.map);
+            /*L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
             zoom: 15
         }).addTo(this.map);
+        */
         break;
 
     case "satellitar":
-        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        this.mapLayer =/* L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
             zoom: 15
+        }).addTo(this.map);
+        */
+        L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+            attribution: '',
+            minZoom: 10,
+            maxZoom: 16,
+            zoom: 15,
+            subdomains: '1234'
         }).addTo(this.map);
         break;
 
@@ -120,12 +134,18 @@ GraphicManager.prototype.addLayer = function (type) {
         break;
 
     default:
-        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+        this.mapLayer = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+                            minZoom: 0,
+                            maxZoom: 18,
+                            attribution: ''
+                        }).addTo(this.map);
+            /*L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
             attribution: '',
             minZoom: 10,
             maxZoom: 16,
             zoom: 15
         }).addTo(this.map);
+        */
     }
     var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
         attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
@@ -133,12 +153,6 @@ GraphicManager.prototype.addLayer = function (type) {
         minZoom: 2,
         maxZoom: 18
     });
-    /*
-    var topPane = this.map._createPane('leaflet-top-pane', this.map.getPanes().mapPane);
-    var topLayer = Acetate_roads.addTo(this.map);
-    topPane.appendChild(topLayer.getContainer());
-    topLayer.setZIndex(4);
-    */
 
     this.map.setZoom(11);
 };
