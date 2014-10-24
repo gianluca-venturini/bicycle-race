@@ -102,7 +102,9 @@ DataManager.prototype.getTrips = function(callback) {
 
 			this.trips = json;
 
-			callback(json);
+			var data = this.filterDataModality(json);
+
+			callback(data);
 		}.bind(this));
 }
 
@@ -123,8 +125,17 @@ DataManager.prototype.getBikesWeek = function(callback) {
 		url += "to="+this.date;
 	}
 
-	if(this.selectedStations.length > 0)
-		url +="&stations=";
+
+
+	url += this.filters();
+
+	if(this.selectionMode == "DOUBLE" && this.selectedStations.length > 1) {
+		url += "&to_station=" + this.selectedStations[1];
+		url += "&stations=" + this.selectedStations[0];
+	}
+	else {
+		if(this.selectedStations.length > 0)
+			url +="&stations=";
 		for(var s in this.selectedStations) {
 			var station = this.selectedStations[s].id;
 			if(s == 0)
@@ -132,8 +143,7 @@ DataManager.prototype.getBikesWeek = function(callback) {
 			else
 				url+=","+station;
 		}
-
-	url += this.filters();
+	}
 
 	/* NO CACHE FOR NOW
 	if(this.bikeWeeks != null)
@@ -143,9 +153,7 @@ DataManager.prototype.getBikesWeek = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		data = this.filterDataModality(json);
-
-		this.bikeWeeks = data;
+		this.bikeWeeks = json;
 
 		callback(json);
 	}.bind(this));
@@ -184,7 +192,7 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		data = this.filterDataModality(json);
+		var data = this.filterDataModality(json);
 
 		this.bikeHours = data;
 
@@ -218,7 +226,9 @@ DataManager.prototype.getBikesDayYear = function(callback) {
 		if(error)
 			console.log("can't download file " + this.tripUrl);
 
-		callback(json);
+		var data = this.filterDataModality(json);
+
+		callback(data);
 	}.bind(this));
 }
 
@@ -302,6 +312,7 @@ DataManager.prototype.getStationsDemographic = function(callback) {
 		if(error)
 			console.log("can't download file " + this.stationUrl);
 
+
 		callback(json);
 	}.bind(this));
 }
@@ -341,6 +352,7 @@ DataManager.prototype.getStationsAge = function(callback) {
 	d3.json(url, function(error, json) {
 		if(error)
 			console.log("can't download file " + this.stationUrl);
+
 
 		callback(json);
 	}.bind(this));
@@ -486,54 +498,19 @@ DataManager.prototype.getInOutFlow = function(callback) {
 /*
 	Get the ride distribution
 */
-DataManager.prototype.getRideDistribution = function(callback) {
+DataManager.prototype.getRideDistribution = function(callback, categories) {
 
 	var url = this.rideUrl;
 
 	url += "?"+this.filters();
 
-	/*
-	if(this.tripDistanceDistribution != null)
-		callback(this.tripDistanceDistribution);
-	else
-	*/
-	queue()
-	.defer(d3.json, url+"?limit=100000&start=0")
-	.defer(d3.json, url+"?limit=100000&start=100000")
-	.defer(d3.json, url+"?limit=100000&start=200000")
-	.defer(d3.json, url+"?limit=100000&start=300000")
-	.defer(d3.json, url+"?limit=100000&start=400000")
-	.defer(d3.json, url+"?limit=100000&start=500000")
-	.defer(d3.json, url+"?limit=100000&start=600000")
-	.defer(d3.json, url+"?limit=100000&start=700000")
-	.defer(d3.json, url+"?limit=100000&start=800000")
-	.defer(d3.json, url+"?limit=100000&start=900000")
-	.await(function(error,
-					json0,
-					json1,
-					json2,
-					json3,
-					json4,
-					json5,
-					json6,
-					json7,
-					json8,
-					json9) {
-		var data = json0.concat(json1);
-		var data = data.concat(json2);
-		var data = data.concat(json3);
-		var data = data.concat(json4);
-		var data = data.concat(json5);
-		var data = data.concat(json6);
-		var data = data.concat(json7);
-		var data = data.concat(json8);
-		var data = data.concat(json9);
+	url += "&categories=" + categories;
+
+	d3.json(url, function(error, json) {
 		if(error)
-			console.log("can't download file " + this.rideUrl);
+			console.log("can't download file " + url);
 
-		this.tripDistanceDistribution = data;
-
-		callback(data);
+		callback(json);
 	}.bind(this));
 }
 

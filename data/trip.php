@@ -40,6 +40,10 @@ if($ids == NULL) {
 else
 	$idDisabled = 0;
 
+$toStationId = htmlentities($_GET['to_station']);
+if($toStationId == NULL) {
+	$toStationId = "%";
+}
 
 $from = htmlentities($_GET['from']);
 if($from == NULL)
@@ -77,6 +81,7 @@ switch($aggregate) {
 							SELECT COUNT(*) as count, DATE_FORMAT(startdate,'%a') as day, from_station_id
 							FROM TRIP 
 						 	WHERE (from_station_id IN ($ids) OR '$idDisabled'='1')
+						 		AND to_station_id LIKE '$toStationId'
 								AND (startdate >= '$from 00:00' AND startdate <= '$to 23:59')
 								AND gender LIKE '$gender'
 								AND usertype LIKE '$costumerType'
