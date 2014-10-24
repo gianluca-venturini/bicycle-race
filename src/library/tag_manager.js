@@ -49,8 +49,8 @@ GraphicManager.prototype.tagDayControl = function (id) {
     d3.select('#day_image').attr("id", 'day_image' + id);
     d3.select('#day_weather').attr("id", 'day_weather' + id);
     d3.select('#day_temperature').attr("id", 'day_temperature' + id);
-
-
+    d3.select('#day_name').attr("id", 'day_name' + id);
+    d3.select('#day_hour').attr("id", 'day_hour' + id);
 
 };
 

@@ -136,7 +136,7 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
 
                             self.svgs.push(svg);
 
-                            var dayControl = new DayControl(id);
+                            var dayControl = new DayControl(self.id);
                             self.dayControl = dayControl;
                             dayControl.setCallbackDayClose(self.callbackDayClose.bind(self));
 
@@ -187,11 +187,12 @@ GraphicManager.prototype.addExternalSVGs1 = function (callback) {
                             }.bind(self))
                                 .style('-webkit-user-select', 'none');
 
-                            //var multimapControl = new MultimapControl();
+                            self.svgs.push(svg);
 
-                            //multimapControl.setCallbackSetDate(self.callbackSetDate.bind(self));
-
-                            //multimapControl.draw();
+                            var multimapControl = new MultimapControl(self.id);
+                            multimapControl.setCallbackMultimap(self.hideMaps.bind(self));
+                            multimapControl.draw();
+                            self.multimapControl = multimapControl;
 
                             callback();
                         });

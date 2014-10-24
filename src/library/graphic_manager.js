@@ -386,17 +386,10 @@ GraphicManager.prototype.addExternalSVGs = function (callback) {
 
                             self.svgs.push(svg);
 
-                            d3.select('#multimap' + self.id).on("click", function () {
-                                self.showMaps();
-                                d3.event.stopPropagation();
-                            }.bind(self))
-                                .style('-webkit-user-select', 'none');
-
-                            //var multimapControl = new MultimapControl();
-
-                            //multimapControl.setCallbackSetDate(self.callbackSetDate.bind(self));
-
-                            //multimapControl.draw();
+                            var multimapControl = new MultimapControl(self.id);
+                            multimapControl.setCallbackMultimap(self.showMaps.bind(self));
+                            multimapControl.draw();
+                            self.multimapControl = multimapControl;
 
                             callback();
                         });
@@ -1117,6 +1110,7 @@ GraphicManager.prototype.callbackDayClose = function () {
 
     this.removeBikes();
     this.updateGraphs();
+
 };
 
 GraphicManager.prototype.callbackSetHour = function () {
@@ -1793,8 +1787,8 @@ GraphicManager.prototype.updateGraphs = function () {
             var dist = data.sort(function (a, b) {
                 return (+a.meters) - (+b.meters);
             });
-            this.tripsDistanceDistribution.setData(dist,"trips_distance_distribution");
-            this.tripsDistanceDistribution.setAxes("meters","Distance", "# of bikes");
+            this.tripsDistanceDistribution.setData(dist, "trips_distance_distribution");
+            this.tripsDistanceDistribution.setAxes("meters", "Distance", "# of bikes");
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
@@ -1807,7 +1801,8 @@ GraphicManager.prototype.updateGraphs = function () {
 
             var imbalanceData = inflow.map(function (d, i) {
                 var matchId = d.id;
-                function equal(el){
+
+                function equal(el) {
                     return matchId === el.id;
                 }
                 var outflowObj = outflow.filter(equal)[0]; //Array.find is unavailable, hence using filter.
@@ -1815,7 +1810,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     id: d.id,
                     inflow: (+d.customer) + (+d.subscriber),
                     outflow: (+outflowObj.customer) + (+outflowObj.subscriber), //i works as a subscript only if the ordering is same in both files!!
-                    magnitude:0
+                    magnitude: 0
                 };
                 if (temp.inflow > temp.outflow) {
                     temp.inflow -= temp.outflow;
@@ -1829,10 +1824,10 @@ GraphicManager.prototype.updateGraphs = function () {
 
                 return temp;
             });
-            imbalanceData.sort(function(a,b){ //Descending order
+            imbalanceData.sort(function (a, b) { //Descending order
                 return b.magnitude - a.magnitude;
             });
-            this.imbalance.setData(imbalanceData.slice(0,10), "imbalance");
+            this.imbalance.setData(imbalanceData.slice(0, 10), "imbalance");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
             $(window).trigger('resize');
@@ -1915,6 +1910,7 @@ GraphicManager.prototype.selectedStationFromChart = function (stationId) {
     }
     this.highlightStationByMarker(marker);
 }
+///////////// MULTIMAPS /////////////////
 
 GraphicManager.prototype.showMaps = function () {
 
@@ -1955,8 +1951,7 @@ GraphicManager.prototype.showMaps = function () {
 }
 
 GraphicManager.prototype.hideMaps = function () {
-    this.gm1.map.remove();
-    this.gm2.map.remove();
+    this.map.remove();
 
     d3.select("#map2").remove();
     d3.select("#map3").remove();

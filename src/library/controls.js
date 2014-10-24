@@ -377,7 +377,7 @@ function StationControl(gmId) {
 
 StationControl.prototype.draw = function () {
 
-    d3.select('#stationControl').style('opacity', 0);
+    d3.select('#stationControl' + this.id).style('opacity', 0);
 
     var self = this;
     d3.selectAll('.station_compareAll' + this.id).on("click", function () {
@@ -610,4 +610,25 @@ FilterUserControl.prototype.setCallbackSetCustomer = function (callback) {
 
 FilterUserControl.prototype.setCallbackSetSubscriber = function (callback) {
     this.callbackSetSubscriber = callback;
+};
+
+//////////////////////////
+
+function MultimapControl(gmId) {
+    this.id = gmId;
+    this.callbackMultimap = null;
+    this.on = false;
+}
+
+MultimapControl.prototype.draw = function () {
+
+    d3.select('#multimap' + this.id).on("click", function () {
+        this.callbackMultimap();
+        d3.event.stopPropagation();
+    }.bind(this))
+        .style('-webkit-user-select', 'none');
+};
+
+MultimapControl.prototype.setCallbackMultimap = function (callback) {
+    this.callbackMultimap = callback;
 };
