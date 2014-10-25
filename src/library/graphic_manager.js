@@ -102,12 +102,17 @@ GraphicManager.prototype.addLayer = function (type) {
         break;
 
     case "satellitar":
+        /*
         this.mapLayer = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: '',
             minZoom: 10,
             maxZoom: 18,
             zoom: 15,
             subdomains: '1234'
+        }).addTo(this.map);
+        */
+        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: ''
         }).addTo(this.map);
         break;
 
