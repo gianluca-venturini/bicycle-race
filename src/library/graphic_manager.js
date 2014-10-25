@@ -102,12 +102,17 @@ GraphicManager.prototype.addLayer = function (type) {
         break;
 
     case "satellitar":
+        /*
         this.mapLayer = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: '',
             minZoom: 10,
             maxZoom: 18,
             zoom: 15,
             subdomains: '1234'
+        }).addTo(this.map);
+        */
+        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: ''
         }).addTo(this.map);
         break;
 
@@ -1629,7 +1634,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDay.setTimeDataInX("hour", 3, "12hr");
             //this.bikesHourDay.setColor(["#FFAABB","#AABBCC"]);
             this.bikesHourDay.draw();
 
@@ -1642,7 +1647,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDayComparison.setTimeDataInX("hour", 3, "12hr");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
@@ -1808,7 +1813,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
-        }.bind(this));
+        }.bind(this), 10);
 
     }
 

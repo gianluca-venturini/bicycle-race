@@ -49,6 +49,7 @@ BarChart.prototype.setAxes = function(propertyX, labelX, propertyY, labelY){
       	.orient("bottom");
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
+    	.ticks(5)
       	.orient("left");
 
 }

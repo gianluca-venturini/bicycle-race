@@ -101,6 +101,7 @@ LineChart.prototype.draw = function(){
 	this.svg.selectAll(".axis").remove();
     this.yAxis = d3.svg.axis()
     	.scale(this.yScale)
+    	.ticks(5)
       	.orient("left");
 	this.xScale = null;
 	var line = null;
