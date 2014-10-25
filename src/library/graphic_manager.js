@@ -1626,7 +1626,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDay.setTimeDataInX("hour", 3, "12hr");
             //this.bikesHourDay.setColor(["#FFAABB","#AABBCC"]);
             this.bikesHourDay.draw();
 
@@ -1639,7 +1639,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
-            this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDayComparison.setTimeDataInX("hour", 3, "12hr");
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
