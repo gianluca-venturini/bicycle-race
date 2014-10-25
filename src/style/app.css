@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
+@import url(http://fonts.googleapis.com/css?family=Roboto:900,400,300,100);
  .control_rect {
     margin-left: 1em;
     margin-top: 1em;
@@ -23,7 +23,7 @@ body {
 }
 .text_control {
     font-family: 'Roboto';
-    font-weight: 100;
+    font-weight: 0.5vw;
     fill: white;
 }
 /*////////////////////////////*/
