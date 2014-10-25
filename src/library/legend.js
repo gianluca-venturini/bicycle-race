@@ -12,14 +12,12 @@ Legend.prototype.draw = function (type, min, max) {
         .append("div")
         .attr("class", "icon_legend" + this.id);
     divs.append("img")
-    /*.attr("src", function (d) {
-            return "./icon/" + type + "/station_" + d + ".png";
-        })*/
-    .attr("class", "icon_legend" + this.id);
+        .attr("class", "icon_legend" + this.id);
 
     divs.append("div");
 
     this.legend.selectAll(".icon_legend" + this.id + " div")
+        .data(data)
         .text(function (d) {
             return "" + Math.round((max - min) / 6 * d);
         });

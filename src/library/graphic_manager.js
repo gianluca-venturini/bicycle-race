@@ -1962,6 +1962,12 @@ GraphicManager.prototype.showMaps = function () {
     this.gm2.drawSubcontrols();
     this.gm2.addExternalSVGs1(this.gm2.updateWindow.bind(this.gm2));
 
+    var legend = this.gm1.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
+    this.gm1.addLegend(legend);
+
+    var legend = this.gm2.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
+    this.gm2.addLegend(legend);
+
     //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
     //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
 }

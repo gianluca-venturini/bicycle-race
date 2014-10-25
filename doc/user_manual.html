@@ -12,6 +12,11 @@
 
 		<link href="bootstrap.min.css" rel="stylesheet">
 		<link href="grid.css" rel="stylesheet">
+		<style type="text/css">
+			.center {
+				margin: auto;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -22,12 +27,54 @@
 				<p class="lead">How to use this powerful tool</p>
 			</div>
 
-			<h3>Map centered application</h3>
+			<h3>Map</h3>
 			<p>
-				The aim of the project is displaying geographical data regarging <strong>Divvy bikes</strong> in the time period that goes from July to December 2013. For that reason evey data is geolocalized on the map that cover the entire surface of the application. An overlay layer of semi-transparent controls is present to let the user iteract with the application. Every control is present only when the user need it. In every moment the user can move the map, zoom in for a more detailed view or zoom out for see more general patterns. 
+				The aim of the project is displaying geographical data regarging <strong>Divvy bikes</strong> in the time period that goes from July to December 2013. For that reason it is map centered: evey data is geolocalized on the map that cover the entire surface of the application. An overlay layer of semi-transparent controls is present to let the user iteract with the application. Every control is present only when the user need it. In every moment the user can move the map, zoom in for a more detailed view or zoom out for see more general patterns. 
 			</p>
 
-			<br>
+			<h4>Stations representation</h4>
+			<p>
+				In order to represent Divvy bikes stations there are markers on the location. This markers represent the actual location of every single station, and has a color according to the visualization mode selected by the user.
+				There are three different station visualization modality:
+				<ul>
+					<li>
+						<strong>Popularity visualization:</strong> every station has its own popularity, computed as the number of travels over the period of time and normalized over the maximum (of the stations in city). If the popularity is near 100% the marker will be completely blue, if the popularity is near 0% it will be white. This visualization modality is active by default and doesn't require any use interaction.
+					</li>
+					<li>
+						<strong>Inflow visualization:</strong> the user has previously activated the inflow using the <strng>inflow</strong> button on <atrong>station control</strong>. In this modality every station has a marker with colors that goes from white (no flow from current station to the selected one) to red (every bikes that goes in the selected station comes from the current one).
+					</li>
+					<li>
+						<strong>Outflow visualization:</strong> it is exactly the same as <strong>inflow visualization</strong> but with the flow of bikes that leave the selected station.
+					</li>
+				</ul> 
+			</p>
+			<div class="col-sm-6 col-md-2">
+          		<img src="image/pop0.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Popularity 0%</p>
+      		</div>
+      		<div class="col-sm-6 col-md-2">
+          		<img src="image/pop1.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Popularity 20%</p>
+      		</div>
+      		<div class="col-sm-6 col-md-2">
+          		<img src="image/pop2.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Popularity 40%</p>
+      		</div>
+      		<div class="col-sm-6 col-md-2">
+          		<img src="image/pop3.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Popularity 60%</p>
+      		</div>
+      		<div class="col-sm-6 col-md-2">
+          		<img src="image/pop4.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Popularity 80%</p>
+      		</div>
+      		<div class="col-sm-6 col-md-2">
+          		<img src="image/pop5.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Popularity 100%</p>
+      		</div>
+      		<div class="clearfix"></div>
+
+			<hr>
 
 			<h3>Controls</h3>
 			<p>
@@ -50,11 +97,45 @@
 					<li><strong>Street map: visualize a cartographic reconstruction on Chicago.</strong></li>
 				</ui>
 			</p>
+			<div class="col-sm-6 col-sm-offset-3 col-md-2 col-md-offset-5">
+          		<img src="image/map_selection.png" class="img-responsive center" alt="Map selection image"/>
+          		<p>Map selection</p>
+      		</div>
+      		<div class="clearfix"></div>
 
-			<h4>Selection control</h4>
+			<h4>Stations selection control</h4>
 			<p>
 				This controller contains the buttons that enable the selection and deselection of all the stations in Chicago. There is also a button that enable/disable the visualization of the community areas present in city.
 			</p>
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          		<img src="image/selection.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Stations selection</p>
+      		</div>
+      		<div class="clearfix"></div>
+
+			<h4>Station control</h4>
+			<p>
+				This is the most important control in the entire application. It is visible only when a user select a station clicking on markers on the map.
+			</p>
+			<p>
+				This control displays information about the selected station:
+				<ul>
+					<li>Name of the station</li>
+					<li>Id of the station</li>
+					<li>Popularity of the station</li>
+				</ul>
+			</p>
+			<p>
+				It contains two buttons that enables the <strong>inflow</strong> and <strong>outflow visualization</strong>.
+			</p>
+			<p>
+				It contains also two buttons that insert the station in one of the two compare sets: <strong>compare all</strong> and <strong>compare two</strong>. When a station is inserted in a compare set that comparison will be automatically enabled and all the graphs redrawn.
+			</p>
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          		<img src="image/station.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Station control</p>
+      		</div>
+      		<div class="clearfix"></div>
 
 			<h4>Calendar control</h4>
 			<p>
@@ -63,6 +144,11 @@
 			<p>
 				In order to display and hide the calendar the user can press on the <strong>enable calendar control</strong>
 			</p>
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          		<img src="image/calendar.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>calendar control</p>
+      		</div>
+      		<div class="clearfix"></div>
 
 			<h4>Day control</h4>
 			<p>
@@ -78,10 +164,21 @@
 
 			<p>This controller contains also a button that hides it from the map. When the <strong>day controller</strong> is hidden also the bikes visualization will be hidden.</p>
 
-			<h4>Zoom controller</h4>
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          		<img src="image/station.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Station control</p>
+      		</div>
+      		<div class="clearfix"></div>
+
+			<h4>Zoom control</h4>
 			<p>
-				This controller enable the user to zoom in and zoom out on the map. In order to provide the best possible user experience there are a minimum and a maximum level of zoom that let the user focus on the Chicago map instead of let him explore the entire world.
+				This control enable the user to zoom in and zoom out on the map. In order to provide the best possible user experience there are a minimum and a maximum level of zoom that let the user focus on the Chicago map instead of let him explore the entire world.
 			</p>
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          		<img src="image/zoom.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Zoom control</p>
+      		</div>
+      		<div class="clearfix"></div>
 
 			<h4>Multi-map button</h4>
 			<p>
@@ -93,7 +190,7 @@
 				This are two buttons that let the user choose which category of graph visualize.
 			</p>
 
-			<h4>Filters controlles</h4>
+			<h4>Filter control</h4>
 			<p>
 				This controller let the user choose how to filters data displayed on the graphs. When the application starts all filters are disabled.
 			</p>
@@ -116,6 +213,15 @@
 			<br>
 
 			<h3>Charts</h3>
+			<p>
+				Charts display information about the selected stations. Since there are two different comparison modalities they will adapt to the selected one:
+				<ul>
+					<li>
+						<strong>Compare all:</strong> the user can select unbounded number of stations and it can compare all of them in the same time. Every trip is intended from and to the selected stations. See the explanation of every graph (that you can find below) for details on how the informations are displayed.
+						<strong>Compare two:</strong> the user can select up to two stations and all graphs will display only trips between this two stations. This modality enable the possibility for the user to pick every couple of stations and see fluw from one to the other. 
+					</li>
+				</ul>
+			</p>
 			<p>
 			There are two category of charts:
 				<ul>
