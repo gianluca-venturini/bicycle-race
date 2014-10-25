@@ -1635,7 +1635,6 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Bikes out");
             this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
-            //this.bikesHourDay.setColor(["#FFAABB","#AABBCC"]);
             this.bikesHourDay.draw();
 
             // Multiple line chart
@@ -1648,6 +1647,7 @@ GraphicManager.prototype.updateGraphs = function () {
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Bikes out");
             this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDayComparison.setColor(["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]);
             this.bikesHourDayComparison.draw();
 
             document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
@@ -1678,7 +1678,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     "demographic",
                     "Gender");
                 this.tripsGender.setTitle("Demographic");
-                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0", "#343434"]);
+                //this.tripsGender.setColor(["#52B5CC", "#FFC3C0", "#AAAAAA"]);
                 this.tripsGender.draw();
             }
 
@@ -1747,7 +1747,8 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYearComparison.setTitle("Trips per day of the year")
+            this.bikesDayYearComparison.setTitle("Trips per day of the year");
+            this.bikesDayYearComparison.setColor(["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]);
             this.bikesDayYearComparison.draw();
             $(window).trigger('resize');
         }.bind(this));
@@ -1851,6 +1852,8 @@ GraphicManager.prototype.updateGraphs = function () {
             this.imbalance.setData(imbalanceData.slice(0, 10), "imbalance");
             this.imbalance.setTitle("Imbalance chart");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
+            this.imbalance.setColor(["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]);
+
             this.imbalance.draw();
             $(window).trigger('resize');
         });
