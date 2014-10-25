@@ -1633,7 +1633,7 @@ GraphicManager.prototype.updateGraphs = function () {
 
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
-            this.bikesHourDay.setAxes("hour", "Hour", "count", "Rides");
+            this.bikesHourDay.setAxes("hour", "Hour", "count", "Bikes out");
             this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
             //this.bikesHourDay.setColor(["#FFAABB","#AABBCC"]);
             this.bikesHourDay.draw();
@@ -1646,7 +1646,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDayComparison.setData(d.sort(function (a, b) {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
-            this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Rides");
+            this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Bikes out");
             this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
             this.bikesHourDayComparison.draw();
 
@@ -1849,6 +1849,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return b.magnitude - a.magnitude;
             });
             this.imbalance.setData(imbalanceData.slice(0, 10), "imbalance");
+            this.imbalance.setTitle("Imbalance chart");
             this.imbalance.setAxes("id", "Station", "inflow", "In Flow", "outflow", "Out Flow"); // (x,x-label, upper-y, u-y-label, lower-y, l-y-label)
             this.imbalance.draw();
             $(window).trigger('resize');
