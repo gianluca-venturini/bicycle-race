@@ -228,7 +228,8 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
             console.log("mouseup " + d3.mouse(this));
             this.mouse = undefined;
             d3.event.stopPropagation();
-        })
+        });
+        /*
         .on("mouseenter", function () {
             this.mouse = undefined;
             d3.event.stopPropagation();
@@ -246,6 +247,7 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
 
 
 
+
                 //svg.attr("_x", +parseFloat(svg.attr("_x"))+dx);
                 //svg.attr("_y", +parseFloat(svg.attr("_y"))+dy);
                 svg.style("margin-left", parseFloat(svg.style("margin-left")) + pdx + "px");
@@ -259,6 +261,7 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
                 this.mouse = mouseNow;
             }
         });
+         */
 
     this.svgs.push(svg);
 
@@ -1739,7 +1742,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYearComparison.setData(dd, "dayOfYearMany", "fromStation", "Station");
             this.bikesDayYearComparison.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYearComparison.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYearComparison.setTitle("Rides")
+            this.bikesDayYearComparison.setTitle("Trips per day of the year")
             this.bikesDayYearComparison.draw();
             $(window).trigger('resize');
         }.bind(this));
@@ -1767,7 +1770,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYear.setData(sumOfValues, "dayOfYearCumulative");
             this.bikesDayYear.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYear.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYear.setTitle("Rides")
+            this.bikesDayYear.setTitle("Sum of trips per day of the year")
             this.bikesDayYear.draw();
             $(window).trigger('resize');
         }.bind(this));
@@ -1866,7 +1869,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     count: count
                 };
             });
-            this.momentDay.setTitle("Rides");
+            this.momentDay.setTitle("Rides per moment of the day");
             this.momentDay.setData(sumOfValues, "star"); //(data,className)
             this.momentDay.setProperty("hour", "count"); //(propertyTheta, propertyR)
             this.momentDay.draw();

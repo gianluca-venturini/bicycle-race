@@ -42,6 +42,100 @@
 				</ul>
 			</p>
 
+			<h4>Map layer control</h4>
+			<p>
+				This control enable the user to choose a type of map that he/she want to visualize. There are two buttons:
+				<ui>
+					<li><strong>Satellitar map:</strong> visualize real photo taken from satellite.</li>
+					<li><strong>Street map: visualize a cartographic reconstruction on Chicago.</strong></li>
+				</ui>
+			</p>
+
+			<h4>Selection control</h4>
+			<p>
+				This controller contains the buttons that enable the selection and deselection of all the stations in Chicago. There is also a button that enable/disable the visualization of the community areas present in city.
+			</p>
+
+			<h4>Calendar control</h4>
+			<p>
+				This control displays a calendar, the user can select a month from it clicking on the number of the mount (on the left of the controller). After selecting the month in the right part the controller enable the user to choose the day of the month. Once the user select both mount and day a new controller will appear on the screen: <storng>day controller</strong>
+			</p>
+			<p>
+				In order to display and hide the calendar the user can press on the <strong>enable calendar control</strong>
+			</p>
+
+			<h4>Day control</h4>
+			<p>
+				This controller displays details regarding the selected day (previously selected by the user with the <strong>calendar control</strong>). The details are: 
+				<ul>
+					<li>Selected date</li>
+					<li>Weather of the day</li>
+					<li>Sunrise and sunset</li>
+					<li>Temprerature (in °F)</li>
+				</ul>
+				Additionally it contains also a slider that enables the user to select an hour of the day. If the user move the slider automatically the map will display trips that are active at that time and also the percentage of completion for every trip. The trip informations are displayed directly on the map, every bike is a red circle, and its path is marked with a black line. The portion of path already completed is in red. The path is calculated interpolating the initial station and the final station coordinates and estimate the position of the bike at that time. When that user select the hour automatically the weather and the temperature will be adjusted to the nearest measure.
+			</p>
+
+			<p>This controller contains also a button that hides it from the map. When the <strong>day controller</strong> is hidden also the bikes visualization will be hidden.</p>
+
+			<h4>Zoom controller</h4>
+			<p>
+				This controller enable the user to zoom in and zoom out on the map. In order to provide the best possible user experience there are a minimum and a maximum level of zoom that let the user focus on the Chicago map instead of let him explore the entire world.
+			</p>
+
+			<h4>Multi-map button</h4>
+			<p>
+				This is a button that enable the multimap visualization. During the multimap visualization in the same place will appear a <strong>Single-map button</strong> that disable multimap visualization.
+			</p>
+
+			<h4>Show and hide charts buttons</h4>
+			<p>
+				This are two buttons that let the user choose which category of graph visualize.
+			</p>
+
+			<h4>Filters controlles</h4>
+			<p>
+				This controller let the user choose how to filters data displayed on the graphs. When the application starts all filters are disabled.
+			</p>
+			<p>
+				There are three filters:
+				<ul>
+					<li>
+						<strong>Gender filer:</strong> is composed by two buttons (male/female)
+					</li>
+					<li>
+						<strong>Age filer:</strong> it is a double slider, one cursor permits to select the minimum age and the other the maximum. This GUI component is specifically designed for this application in order to provide the best user experience and improve usability. The user can move independently the two cursors of the slider, the application will automatically recognize the ages choosen.
+					</li>
+					<li>
+						<strong>Filter by user type:</strong> there are two type of Dyvvy bikes user: <strong>customer</strong>: the casual user and the <strong>subscriber</strong>: the user that buy a subscription.
+					</li>
+				</ul>
+				Since only subscribers give their personal data the user can't select customer filter and gender filter at the same time (unless he/she accept to see nothing on the graphs).
+			</p>
+
+			<br>
+
+			<h3>Charts</h3>
+			<p>
+			There are two category of charts:
+				<ul>
+					<li>
+						<strong>Static charts:</strong> displays information about general statistical information about bikes and trips. This informations are not dependent from the date, and for that reason are called static. The user can also apply filters on this graphs using the <strong>filters controller</strong>.
+					</li>
+					<li>
+						<strong>Dynamic charts:</strong> displays information about the trips in different formats simultaneusly. This graphs depends on the selected date (if there's one) and on the active filetrs.
+ 					</li>
+				</ul>
+			</p>
+
+			<h4>Bikes out per day of the week</h4>
+			<h4>Bikes out per hour of the day</h4>
+			<h4>Bikes out per hour of the day (summary of all stations)</h4>
+			<h4>Trips per hour of the day</h4>
+			<h4>Trips per hour of the day (summary of all stations)</h4>
+			<h4>Imbalance chart</h4>
+			<h4>Demographic pie charts</h4>
+
 		</div> <!-- /container -->
 	</body>
 </html>
