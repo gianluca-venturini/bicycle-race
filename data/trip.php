@@ -76,7 +76,7 @@ if($costumerType == NULL)
 
 $outStations = "";
 if($modality != NULL)
-	$outStations = "AND to_station_id IN ($ids)";
+	$outStations = "AND from_station_id IN ($ids) AND to_station_id IN ($ids)";
 
 $database = new DataBaseMySQL();
 
