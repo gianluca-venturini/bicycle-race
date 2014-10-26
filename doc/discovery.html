@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://getbootstrap.com/examples/grid/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+		<title>Discovery</title>
+
+		<link href="bootstrap.min.css" rel="stylesheet">
+		<link href="grid.css" rel="stylesheet">
+		<style type="text/css">
+			.center {
+				margin: auto;
+			}
+		</style>
+	</head>
+
+	<body style="padding-top: 70px;">
+
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	      <div class="container">
+	        <ul class="nav navbar-nav">
+	            <li><a href="index.html">Home</a></li>
+	            <li><a href="team.html">Team</a></li>
+	            <li><a href="user_manual.html">User manual</a></li>
+	            <li><a href="code.html">Download</a></li>
+	            <li><a href="installation.html">Installation</a></li>
+	            <li><a href="data.html">Data</a></li>
+	            <li><a href="progress.html">Progress</a></li>
+	            <li class="active"><a href="discovery.html">Discovery</a></li>
+	          </ul>
+	      </div>
+	    </nav>
+
+		<div class="container">
+
+			<div class="page-header">
+				<h1>Discovery</h1>
+				<p class="lead">What we discovered using this tool</p>
+			</div>
+
+			<h3>Map</h3>
+			<p>
+				The aim of the project is displaying geographical data regarging <strong>Divvy bikes</strong> in the time period that goes from July to December 2013. For that reason it is map centered: evey data is geolocalized on the map that cover the entire surface of the application. An overlay layer of semi-transparent controls is present to let the user iteract with the application. Every control is present only when the user need it. In every moment the user can move the map, zoom in for a more detailed view or zoom out for see more general patterns. 
+			</p>
+
+			<h4>Single map mode</h4>
+			<p>
+				In this mode the user can display all the graphs and compare the data using different charts (that are present at the same time). The user can choose:
+				<ul>
+					<li>A day of the year</li>
+					<li>An hour of the day</li>
+					<li>The gender: male, female</li>
+					<li>The user type: customer, subscriber</li>
+					<li>An age range</li>
+				</ul> 
+				All the filters are independent and the user can enable/disable them in any order (except for the hour that can be only choosen after the day).
+			</p>
+			<div class="col-sm-12 col-md-12">
+          		<img src="image/single_map.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Single map streets visualization</p>
+      		</div>
+      		<div class="col-sm-12 col-md-12">
+          		<img src="image/single_map_satellite.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Single map satellite visualization</p>
+      		</div>
+      		<div class="col-sm-12 col-md-12">
+          		<img src="image/single_map_graphs.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Single map visualization with charts</p>
+      		</div>
+      		<div class="clearfix"></div>
+
+		</div> <!-- /container -->
+	</body>
+</html>

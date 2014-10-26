@@ -17,17 +17,19 @@
   <body style="padding-top: 70px;">
 
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <ul class="nav navbar-nav">
-            <li><a href="index.htm">Home</a></li>
-            <li><a href="user_manual.htm">User Manual</a></li>
-            <li class="active"><a href="">Installation</a></li>
-            <li><a href="code.htm">Code</a></li>
-            <li><a href="data.htm">Data</a></li>
-            <li><a href="discovery.htm">Discovery</a></li>
-          </ul>
-      </div>
-    </nav>
+        <div class="container">
+          <ul class="nav navbar-nav">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="team.html">Team</a></li>
+              <li><a href="user_manual.html">User manual</a></li>
+              <li><a href="code.html">Download</a></li>
+              <li class="active"><a href="installation.html">Installation</a></li>
+              <li><a href="data.html">Data</a></li>
+              <li><a href="progress.html">Progress</a></li>
+              <li><a href="discovery.html">Discovery</a></li>
+            </ul>
+        </div>
+      </nav>
 
     <div class="container">
 
@@ -69,7 +71,18 @@
       <pre>/etc/init.d/mysql start</pre>
       </p>
       <p>
-        The first time that you start the server you need to create the database using the dump present into the repository. In order to create the DB and the user please refer to <a href="http://dev.mysql.com/doc/refman/5.0/en/create-database.html">the manual</a>. Now you need to download the dump from <a href="http://dump">this address</a>.
+        The first time that you start the server you need to create the database using the dump present into the repository. In order to create the DB and the user please refer to <a href="http://dev.mysql.com/doc/refman/5.0/en/create-database.html">the manual</a>. Now you need to download the dump from <a href="http://dump">this address</a>. There are different ways to insert the dump inside the database, this step depends on your environment:
+        <ul>
+          <li><strong>Windows:</strong> download <a href="http://www.heidisql.com/">Heidisql</a> and follow the manual on that site.</li>
+          <li><strong>Linux:</strong> using the MySQL client you can import the database dump with <pre>mysql -u username -p -h localhost DATA-BASE-NAME < data.sql</pre></li> 
+          <li><strong>Mac osx:</strong> download <a href="http://www.sequelpro.com/">Sequel Pro</a> and import the dump as described in the manual.</li>
+        </ul> 
+      </p>
+
+      <h3>Configuring the php files</h3>
+      <p>
+        In order to interact with the DB the PHP backend need to be configured. The application can be easily configured, you only need to open the file <em>data/private/mysqli.int</em> and insert your own <strong>database</strong>, <strong>username</strong> and <strong>password</strong>:
+        <pre>$DB_server = "localhost";<br>$DB_username = "username";<br>$DB_password = "password";<br>$DB_database = "db_name";</pre>
       </p>
 
       <h3>Start the web server</h3>

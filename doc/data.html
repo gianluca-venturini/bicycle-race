@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://getbootstrap.com/examples/grid/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>Data preparation</title>
+
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="grid.css" rel="stylesheet">
+    <style type="text/css">
+      .center {
+        margin: auto;
+      }
+    </style>
+  </head>
+
+  <body style="padding-top: 70px;">
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <ul class="nav navbar-nav">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="team.html">Team</a></li>
+              <li><a href="user_manual.html">User manual</a></li>
+              <li><a href="code.html">Download</a></li>
+              <li><a href="installation.html">Installation</a></li>
+              <li class="active"><a href="data.html">Data</a></li>
+              <li><a href="progress.html">Progress</a></li>
+              <li><a href="discovery.html">Discovery</a></li>
+            </ul>
+        </div>
+      </nav>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1>The Data</h1>
+        <p class="lead">The main part of a Data Driven Document</p>
+      </div>
+
+      <h3>Data selection</h3>
+      <p>The aim of this project is displaying on a big screen data that represent <strong>Divvy bikes</strong> trips taken between July and December 2013. Since there was a huge amount of data I selected the most important. I needed data about all the trips, at least when they started, ended, from where and to where. Sinche the data contains also the demographic data for registered users (without a user identification for provacy) I also extracted and incorporated it in my data representation. In order to represent th estations I needed the information about the location (latitude and longitude coordinates) and about the launch data (that was very useful for calculating the popularity). For representing data I used a MySQL database, and for that reason all data has a formal representation described using SQL language. Since I don't have demographic data for all trips <em>NULL</em> values are allowed.</p>
+      <p>
+
+      <hr>
+
+      <h3>Data structure</h3>
+      <p>
+        In order to insert the data inside the DB I needed a formal SQL structure. In order to give the maximum performance without sacrificing the data integrity I created three different tables linked with foreign keys: <strong>TRIP</strong>, <strong>STATION</strong> and <strong>WEATHER</strong>. Since the data where already in <strong>CSV</strong> format I only needed to import them using the <string>import</string> function of <a href="http://www.sequelpro.com">Sequel pro</a> and map every field on the correspondig MySQL table field.
+      </p>
+      <div class="col-sm-12 col-md-6 col-md-offset-3">
+        <img src="image/import_csv.png" class="img-responsive center" alt="Responsive image"/>
+        <p>Import procedure in sequel pro</p>
+      </div>
+      <div class="col-sm-12 col-md-6 col-md-offset-3">
+        <img src="image/sql_schema.png" class="img-responsive center" alt="Responsive image"/>
+        <p>ER representation of the database</p>
+      </div>
+      <div class="clearfix"></div>
+
+      <hr>
+
+      <h3>Data retrieval optimization</h3>
+      <p>
+        The application is developed in order to work on a chap Virtual Private Server instance, and for that reason all the query used to retreive data from the DB must be optimized for consuming the least resources as possible. In orer to do it I inserted different indexes in <strong>TRIP</strong> table to speed up information retrieval.
+      </p>
+      <div class="col-sm-12 col-md-6 col-md-offset-3">
+        <img src="image/sql_indexes.png" class="img-responsive center" alt="Responsive image"/>
+        <p>Indexes inserted on TRIP table in order to speed up information retreival</p>
+      </div>
+      <div class="clearfix"></div>
+
+      <hr>
+
+
+    </div> <!-- /container -->
+
+  </body>
+</html>

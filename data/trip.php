@@ -53,6 +53,8 @@ $to = htmlentities($_GET['to']);
 if($to == NULL)
 	$to = "2100-12-31";
 
+$modality = htmlentities($_GET['modality']);
+
 $aggregate = htmlentities($_GET['aggregate']);
 $coordinates = htmlentities($_GET['coordinates']);
 
@@ -72,6 +74,10 @@ if($ageMax == NULL || $ageMax == NULL)
 if($costumerType == NULL)
 	$costumerType="%";
 
+$outStations = "";
+if($modality != NULL)
+	$outStations = "AND from_station_id IN ($ids) AND to_station_id IN ($ids)";
+
 $database = new DataBaseMySQL();
 
 switch($aggregate) {
@@ -86,6 +92,7 @@ switch($aggregate) {
 								AND gender LIKE '$gender'
 								AND usertype LIKE '$costumerType'
 								AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
+								$outStations
 						 	GROUP BY DATE_FORMAT(startdate,'%a'), from_station_id
 						");
 		breaK;
@@ -98,6 +105,7 @@ switch($aggregate) {
 						  	AND gender LIKE '$gender'
 							AND usertype LIKE '$costumerType'
 							AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
+							$outStations
 						  GROUP BY DATE_FORMAT(startdate,'%Y-%c-%e'), from_station_id
 						");
 		breaK;
@@ -110,6 +118,7 @@ switch($aggregate) {
 						  	AND gender LIKE '$gender'
 							AND usertype LIKE '$costumerType'
 							AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
+							$outStations
 						  GROUP BY DATE_FORMAT(startdate,'%k'), from_station_id
 						");
 		breaK;
@@ -133,6 +142,7 @@ switch($aggregate) {
 							  	AND gender LIKE '$gender'
 								AND usertype LIKE '$costumerType'
 								AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
+								$outStations
 							");
 		}
 		else
@@ -146,6 +156,7 @@ switch($aggregate) {
 							  	AND gender LIKE '$gender'
 								AND usertype LIKE '$costumerType'
 								AND ((age_in_2014 >= '$ageMin' AND age_in_2014 <= '$ageMax') OR '1'='$ageDisabled')
+								$outStations
 							");
 			
 }
