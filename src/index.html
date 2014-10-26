@@ -203,8 +203,8 @@
         enableCalendarControl.draw();
 
          // Set interactions
-        layerControl.setCallback("text_layer_1" + id, gm.changeLayer.bind(gm, "normal"));
-        layerControl.setCallback("text_layer_2" + id, gm.changeLayer.bind(gm, "grey"));
+        layerControl.setCallback("text_layer_1" + id, gm.changeLayer.bind(gm, "satellitar"));
+        layerControl.setCallback("text_layer_2" + id, gm.changeLayer.bind(gm, "normal"));
 
         gm.addExternalSVGs(gm.updateWindow.bind(gm));
         gm.addExternalSVGsCharts(gm.updateWindow.bind(gm));

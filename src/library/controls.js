@@ -21,7 +21,7 @@ LayerControl.prototype.draw = function () {
         .attr('x', 50)
         .attr('y', 16)
         .attr("dominant-baseline", "central")
-        .text("Map 1");
+        .text("Satellite map");
 
     this.text2 = this.svg.append("text")
         .attr('id', 'text_layer_2' + this.id)
@@ -30,7 +30,7 @@ LayerControl.prototype.draw = function () {
         .attr('x', 50)
         .attr('y', 33)
         .attr("dominant-baseline", "central")
-        .text("Map 2");
+        .text("Street map");
 
 };
 
