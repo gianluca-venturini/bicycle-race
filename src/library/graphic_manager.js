@@ -1807,7 +1807,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
 
-        }.bind(this), 10);
+        }.bind(this), 40);
     }
 
     if (this.imbalance != null) {
