@@ -78,7 +78,7 @@ Slider.prototype.draw = function () {
     var handle = slider.append("circle")
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
-        .attr("r", 7);
+        .attr("r", 9);
     this.handle = handle;
 
     var node = document.getElementById("gslider");
