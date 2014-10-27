@@ -76,14 +76,14 @@ SliderDouble.prototype.draw = function () {
     var handle1 = slider.append("circle")
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
-        .attr("r", 6);
+        .attr("r", 9);
     this.handle1 = handle1;
 
     var handle2 = slider.append("circle")
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
-        .attr("r", 6);
-    handle2.attr("cx", 120);
+        .attr("r", 9);
+    handle2.attr("cx", 370);
     this.handle2 = handle2;
 
     var node = document.getElementById("gsliderDouble");

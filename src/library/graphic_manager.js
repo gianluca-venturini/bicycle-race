@@ -1594,7 +1594,7 @@ GraphicManager.prototype.updateGraphs = function () {
 
             this.dayWeekBarGraph.setTitle("Bikes out per day of the week");
             this.dayWeekBarGraph.setData(d, "daysOfWeek");
-            this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
+            this.dayWeekBarGraph.setAxes("day", "Day", "count", "Bikes out");
             this.dayWeekBarGraph.draw();
 
             //document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
@@ -1626,7 +1626,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Bikes out");
-            this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDay.setTimeDataInX("hour", 3, "12hr");
             this.bikesHourDay.draw();
 
             // Multiple line chart
@@ -1638,7 +1638,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Bikes out");
-            this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDayComparison.setTimeDataInX("hour", 3, "12hr");
             this.bikesHourDayComparison.setColor(["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]);
             this.bikesHourDayComparison.draw();
 
@@ -1768,7 +1768,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYear.setData(sumOfValues, "dayOfYearCumulative");
             this.bikesDayYear.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYear.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYear.setTitle("Rides")
+            this.bikesDayYear.setTitle("Sum of trips per day of the year")
             this.bikesDayYear.draw();
             $(window).trigger('resize');
         }.bind(this));
@@ -1806,8 +1806,8 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
-        }.bind(this),30);
 
+        }.bind(this), 10);
     }
 
     if (this.imbalance != null) {
