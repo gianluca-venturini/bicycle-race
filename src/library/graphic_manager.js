@@ -1780,7 +1780,7 @@ GraphicManager.prototype.updateGraphs = function () {
             });
             this.timeDistribution.setData(time, "time_distribution");
             this.timeDistribution.setAxes("totaltime", "Time", "# of bikes") //(propertyOnX, labelX, labelY) if labelX and labelY are omitted, the graph shows
-            this.timeDistribution.setTitle("Distribution of bikes by total time"); // standard deviation and frequency along x and y axes respectively.
+            this.timeDistribution.setTitle("Distribution of bikes by total time (in seconds)"); // standard deviation and frequency along x and y axes respectively.
             this.timeDistribution.draw();
         }.bind(this));
 
