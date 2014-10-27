@@ -83,7 +83,7 @@ SliderDouble.prototype.draw = function () {
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
         .attr("r", 9);
-    handle2.attr("cx", 300);
+    handle2.attr("cx", 400);
     this.handle2 = handle2;
 
     var node = document.getElementById("gsliderDouble");
