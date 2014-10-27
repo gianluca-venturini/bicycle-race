@@ -1594,7 +1594,7 @@ GraphicManager.prototype.updateGraphs = function () {
 
             this.dayWeekBarGraph.setTitle("Bikes out per day of the week");
             this.dayWeekBarGraph.setData(d, "daysOfWeek");
-            this.dayWeekBarGraph.setAxes("day", "Day", "count", "Rides");
+            this.dayWeekBarGraph.setAxes("day", "Day", "count", "Bikes out");
             this.dayWeekBarGraph.draw();
 
             //document.getElementById(this.mapId).style.webkitTransform = 'scale(1)';
