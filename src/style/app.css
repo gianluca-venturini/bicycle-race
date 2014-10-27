@@ -27,6 +27,12 @@ body {
     font-weight: 300;
     fill: white;
 }
+.title_text_control {
+    font-family: 'Roboto';
+    /*font-weight: 0.5vw;*/
+    font-weight: 900;
+    fill: white;
+}
 /*////////////////////////////*/
 
 .slider_axis {
