@@ -39,8 +39,8 @@ GraphicManager.prototype.drawSubcontrols = function () {
     //hideChartsControl.draw();
 
     // Set interactions
-    layerControl.setCallback("text_layer_1" + id, this.changeLayer.bind(this, "normal"));
-    layerControl.setCallback("text_layer_2" + id, this.changeLayer.bind(this, "grey"));
+    layerControl.setCallback("text_layer_1" + id, this.changeLayer.bind(this, "satellitar"));
+    layerControl.setCallback("text_layer_2" + id, this.changeLayer.bind(this, "normal"));
 
 };
 

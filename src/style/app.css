@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100);
+@import url(http://fonts.googleapis.com/css?family=Roboto:900,700,500,400,300,100);
  .control_rect {
     margin-left: 1em;
     margin-top: 1em;
@@ -23,7 +23,8 @@ body {
 }
 .text_control {
     font-family: 'Roboto';
-    font-weight: 100;
+    /*font-weight: 0.5vw;*/
+    font-weight: 400;
     fill: white;
 }
 /*////////////////////////////*/
@@ -58,8 +59,9 @@ body {
     pointer-events: none;
 }
 /*////////////////////////////*/
+
 @font-face {
-	font-family: "GT Pressura Mono";
+    font-family: "GT Pressura Mono";
     font-weight: bold;
-	src: url("./GT-Pressura-Mono-Bold.otf") format("font/opentype");
+    src: url("./GT-Pressura-Mono-Bold.otf") format("font/opentype");
 }

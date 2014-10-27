@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://getbootstrap.com/examples/grid/ -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>Discovery</title>
+
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="grid.css" rel="stylesheet">
+    <style type="text/css">
+        .center {
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body style="padding-top: 70px;">
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a>
+                </li>
+                <li><a href="team.html">Team</a>
+                </li>
+                <li><a href="user_manual.html">User manual</a>
+                </li>
+                <li><a href="code.html">Download</a>
+                </li>
+                <li><a href="installation.html">Installation</a>
+                </li>
+                <li><a href="data.html">Data</a>
+                </li>
+                <li><a href="progress.html">Progress</a>
+                </li>
+                <li class="active"><a href="discovery.html">Discovery</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1>Discovery</h1>
+            <p class="lead">What we discovered using this tool</p>
+        </div>
+
+        <h3>UIC stations</h3>
+        <p>
+            In this section we focus on the 6 divvy bikes locations near the UIC campus.
+        </p>
+
+        <h4>Trips from/to Union Station</h4>
+
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery1.png" class="img-responsive center" alt="Responsive image" />
+            <p>Inflow to campus from station</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery2.png" class="img-responsive center" alt="Responsive image" />
+            <p>Outflow from campus to station</p>
+        </div>
+        <div class="clearfix"></div>
+
+        <p>
+            If we analyze the inflow and outflow of all the stations on campus, a recurrent pattern we can find is that the highest flows are from and to Chicago Union Station (corner West Jackson Boulevard - South Canal Street). This makes sense since bikes are a means to easily connect campus and station.
+        </p>
+
+        <h4>General patterns of the stations</h4>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery4.png" class="img-responsive center" alt="Responsive image" />
+            <p>Bikes out per hour of day</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery5.png" class="img-responsive center" alt="Responsive image" />
+            <p>Star chart of rides per moment of the day</p>
+        </div>
+        <div class="clearfix"></div>
+        </br>
+
+        <p>
+            In the above pictures we have added to the compareAll mode the 6 stations closest to the UIC campus.</br>
+            As we can see, a general trend is that the peak of nu,bers of bikes out is in the afternoon, between 4pm and 6pm. Therefore we can say that th bikes are mostly used by students to go home at the end of the day. The same information is nicely represented in the star plot, whose shape is bigger towards this time interval.
+
+        </p>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery6.png" class="img-responsive center" alt="Responsive image" />
+            <p>Bikes out per day of the week</p>
+        </div>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery7.png" class="img-responsive center" alt="Responsive image" />
+            <p>Trips per day of the year</p>
+        </div>
+        <div class="clearfix"></div>
+
+        <p>
+            The above charts reflect that the usage of these stations belongs mainly to college students: there's a significant decrease of bikes out during the weekend with respect to weekdays.</br>
+            Moreover, considering the year (or the few months available from our data), we can notice that the usage is low in the summer months, while it begins to increase in the second half of august, i.e. when the classes start. It then remains constant until december, when the visible decrease can be due both to the winter temperatures and/or holidays.
+
+        </p>
+
+        <h3>Events</h3>
+        <p>
+            In this section we focus on the patterns reflected by the occurrence of particular events in the city throughout the year.
+        </p>
+
+        <h4>Festa Italiana (Taylor Street, 22-25 Aug)</h4>
+
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery8.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+
+        <p>
+            The station in the street where the event takes place is added to compareAll (highlighted in red).</br>
+            We can notice that the date, 08/24/2013, corresponds, in the "trips per day of the year" chart, to the huge peak of rides. This shows how the presence of the event can significantly alter the average trend of the line chart.</br>
+            From the "bikes out per day of the week" chart we can know that it is a Saturday and from the star plot we can see that the peak of usage is around 7-8pm, which is the exact hour of the event.</br>
+            In addition, the imbalance chart shows that the station has been mostly used to leave the event (outflow).
+        </p>
+
+
+
+
+
+
+
+        <h3>Map</h3>
+        <p>
+            The aim of the project is displaying geographical data regarging <strong>Divvy bikes</strong> in the time period that goes from July to December 2013. For that reason it is map centered: evey data is geolocalized on the map that cover the entire surface of the application. An overlay layer of semi-transparent controls is present to let the user iteract with the application. Every control is present only when the user need it. In every moment the user can move the map, zoom in for a more detailed view or zoom out for see more general patterns.
+        </p>
+
+        <h4>Single map mode</h4>
+        <p>
+            In this mode the user can display all the graphs and compare the data using different charts (that are present at the same time). The user can choose:
+            <ul>
+                <li>A day of the year</li>
+                <li>An hour of the day</li>
+                <li>The gender: male, female</li>
+                <li>The user type: customer, subscriber</li>
+                <li>An age range</li>
+            </ul>
+            All the filters are independent and the user can enable/disable them in any order (except for the hour that can be only choosen after the day).
+        </p>
+        <div class="col-sm-12 col-md-12">
+            <img src="image/single_map.png" class="img-responsive center" alt="Responsive image" />
+            <p>Single map streets visualization</p>
+        </div>
+        <div class="col-sm-12 col-md-12">
+            <img src="image/single_map_satellite.png" class="img-responsive center" alt="Responsive image" />
+            <p>Single map satellite visualization</p>
+        </div>
+        <div class="col-sm-12 col-md-12">
+            <img src="image/single_map_graphs.png" class="img-responsive center" alt="Responsive image" />
+            <p>Single map visualization with charts</p>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+    <!-- /container -->
+</body>
+
+</html>

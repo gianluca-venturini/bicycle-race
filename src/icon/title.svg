@@ -5,10 +5,10 @@
     <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
         <g>
             <text transform="translate(2.9528205 1.5)" fill="white">
-                <tspan font-family="GT Pressura Mono" font-weight="bold" font-size="20" fill="white" x="7.5236217" y="21">BICYCLE</tspan>
+                <tspan class="text_control" font-size="20" font-weight="900" fill="white" x="7.5236217" y="21">BICYCLE</tspan>
             </text>
             <text transform="translate(5.787466 22.500032)" fill="white">
-                <tspan font-family="GT Pressura Mono" font-weight="bold" font-size="20" fill="white" x="22.606299" y="21">RACE</tspan>
+                <tspan class="text_control" font-size="20" font-weight="900" fill="white" x="22.606299" y="21">RACE</tspan>
             </text>
         </g>
     </g>

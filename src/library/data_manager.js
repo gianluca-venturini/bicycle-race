@@ -185,6 +185,9 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 			else
 				url+=","+station;
 		}
+	if(this.selectionMode == "DOUBLE" && this.selectedStations.length > 1) {
+		url += "&modality=double";
+	}
 
 	url += this.filters();
 
@@ -196,7 +199,7 @@ DataManager.prototype.getBikesHourDay = function(callback) {
 
 		this.bikeHours = data;
 
-		callback(json);
+		callback(data);
 	}.bind(this));
 }
 
@@ -515,15 +518,19 @@ DataManager.prototype.getRideDistribution = function(callback, categories) {
 }
 
 DataManager.prototype.filterDataModality = function(d) {
-	data = [];
+	var data = [];
 
 	if(this.selectionMode == "DOUBLE" && this.selectedStations.length >= 2) {
 		// Filter data
 		for(var i in d) {
-			if((d[i].from_station_id == this.selectedStations[0].id &&
-				d[i].to_station_id == this.selectedStations[1].id) ||
-			   (d[i].from_station_id == this.selectedStations[1].id &&
-				d[i].to_station_id == this.selectedStations[0].id))
+			if(d[i].toStation == null) {
+				data.push(d[i]);
+				continue;
+			}
+			if((d[i].fromStation == this.selectedStations[0].id &&
+				d[i].toStation == this.selectedStations[1].id) ||
+			   (d[i].fromStation == this.selectedStations[1].id &&
+				d[i].toStation == this.selectedStations[0].id))
 				data.push(d[i]);
 		}
 	}

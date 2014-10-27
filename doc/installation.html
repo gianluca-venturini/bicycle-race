@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://getbootstrap.com/examples/grid/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>Installation</title>
+
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="grid.css" rel="stylesheet">
+  </head>
+
+  <body style="padding-top: 70px;">
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <ul class="nav navbar-nav">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="team.html">Team</a></li>
+              <li><a href="user_manual.html">User manual</a></li>
+              <li><a href="code.html">Download</a></li>
+              <li class="active"><a href="installation.html">Installation</a></li>
+              <li><a href="data.html">Data</a></li>
+              <li><a href="progress.html">Progress</a></li>
+              <li><a href="discovery.html">Discovery</a></li>
+            </ul>
+        </div>
+      </nav>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1>Installation</h1>
+        <p class="lead">How to run the application</p>
+      </div>
+
+      <h3>Prerequisites</h3>
+      <p>In order to install and run the application you need a Browser compatible with CSS3 and <a href="http://d3js.org/">D3</a> javascript library, I suggest the last <a href="https://www.google.com/chrome/browser/">Chrome</a> version.</p>
+      <p>You also need to enable javascript in your browser, if you don't know how see <a href="http://www.activatejavascript.org/">this</a> guide.</p>
+      <p>You need a <a href="http://en.wikipedia.org/wiki/Web_server">web server</a>. If you don't have one don't worry, I'll explain how to use a basic <a href="https://www.python.org/">Python</a> web server.</p>
+      <p>
+        You need a Database server that support MySQL, you can download and setup it following one of the following tutorial:
+        <ul>
+          <li>
+            <strong>Windows:</strong> <a href="http://dev.mysql.com/downloads/windows/">http://dev.mysql.com</a>
+          </li>
+          <li>
+            <strong>Linux:</strong> <a href="http://www.yolinux.com/TUTORIALS/LinuxTutorialMySQL.html">http://www.yolinux.com</a>
+          </li>
+          <li>
+            <strong>Mac osx:</strong> <a href="http://dev.mysql.com/doc/refman/5.0/en/macosx-installation.html">http://dev.mysql.com</a>
+          </li>
+        </ul>
+      </p>
+
+      <hr>
+
+      <h3>Download the code</h3>
+      <p>In oreder to download the code you can clone the GitHub repository with the command</p>
+      <pre>git clone https://github.com/gianluca-venturini/bicycle-race.git</pre>
+      <p>If you don't want to use git you can download the <a href="https://github.com/gianluca-venturini/bicycle-race/archive/master.zip">bicycle-race.zip</a> and decompress it in a directory of your choice.
+
+      <hr>
+
+      <h3>Start the MySQL database server</h3>
+      <p>This step depends on your environment. I'll describe the procedure for starting the server under Linux environment since is the most common one. For Windows please go <a href="http://dev.mysql.com/downloads/windows/">here</a>, for Max OSX please go <a href="http://dev.mysql.com/doc/mysql-macosx-excerpt/5.5/en/macosx-installation-startupitem.html">here</a>. Linux command: <br>
+      <pre>/etc/init.d/mysql start</pre>
+      </p>
+      <p>
+        The first time that you start the server you need to create the database using the dump present into the repository. In order to create the DB and the user please refer to <a href="http://dev.mysql.com/doc/refman/5.0/en/create-database.html">the manual</a>. Now you need to download the dump from <a href="http://dump">this address</a>. There are different ways to insert the dump inside the database, this step depends on your environment:
+        <ul>
+          <li><strong>Windows:</strong> download <a href="http://www.heidisql.com/">Heidisql</a> and follow the manual on that site.</li>
+          <li><strong>Linux:</strong> using the MySQL client you can import the database dump with <pre>mysql -u username -p -h localhost DATA-BASE-NAME < data.sql</pre></li> 
+          <li><strong>Mac osx:</strong> download <a href="http://www.sequelpro.com/">Sequel Pro</a> and import the dump as described in the manual.</li>
+        </ul> 
+      </p>
+
+      <h3>Configuring the php files</h3>
+      <p>
+        In order to interact with the DB the PHP backend need to be configured. The application can be easily configured, you only need to open the file <em>data/private/mysqli.int</em> and insert your own <strong>database</strong>, <strong>username</strong> and <strong>password</strong>:
+        <pre>$DB_server = "localhost";<br>$DB_username = "username";<br>$DB_password = "password";<br>$DB_database = "db_name";</pre>
+      </p>
+
+      <h3>Start the web server</h3>
+      <p>In this section I explain how to start a basic Python based web server that allows you to see the project in local. If you want to use another webserver please refere to its manual for the setup.</p>
+      <p>In order to start the Python web server you need Python 2.7 or higher already installed in  your system. If you don't have it please refer to <a href="https://www.python.org/download">this</a> site.</p>
+      <p>In order to start the web server (in this example on port 8000) use this command:</p>
+      <pre>python -m SimpleHTTPServer</pre>
+      <p>If the server give you an output similar to that everything works fine:</p>
+      <pre>Serving HTTP on 0.0.0.0 port 8000 ...</pre>
+      <p>Now you can access the application through your browser at this URL: <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a>
+
+      <hr>
+
+
+
+    </div> <!-- /container -->
+
+  </body>
+</html>
