@@ -83,7 +83,7 @@ SliderDouble.prototype.draw = function () {
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
         .attr("r", 9);
-    handle2.attr("cx", 250);
+    handle2.attr("cx", 370);
     this.handle2 = handle2;
 
     var node = document.getElementById("gsliderDouble");
@@ -106,7 +106,6 @@ SliderDouble.prototype.draw = function () {
         if (Math.abs(handle1.attr("cx") - x(value)) < Math.abs(handle2.attr("cx") - x(value))) {
             handle1.attr("cx", x(value));
             self.age[0] = Math.floor(value);
-            if (self.age[0] === 99) console.log(x(value));
             d3.select("#age_from").text(self.age[0]);
         } else {
             handle2.attr("cx", x(value));
