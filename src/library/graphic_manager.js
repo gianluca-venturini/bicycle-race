@@ -1626,7 +1626,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesHourDay.setTitle("Sum of bikes out per hour of day");
             this.bikesHourDay.setData(d, "hourOfDay");
             this.bikesHourDay.setAxes("hour", "Hour", "count", "Bikes out");
-            this.bikesHourDay.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDay.setTimeDataInX("hour", 3, "12hr");
             this.bikesHourDay.draw();
 
             // Multiple line chart
