@@ -1768,7 +1768,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYear.setData(sumOfValues, "dayOfYearCumulative");
             this.bikesDayYear.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYear.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYear.setTitle("Rides")
+            this.bikesDayYear.setTitle("Sum of trips per day of the year")
             this.bikesDayYear.draw();
             $(window).trigger('resize');
         }.bind(this));
