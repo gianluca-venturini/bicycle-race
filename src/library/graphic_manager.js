@@ -102,17 +102,12 @@ GraphicManager.prototype.addLayer = function (type) {
         break;
 
     case "satellitar":
-        /*
         this.mapLayer = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: '',
             minZoom: 10,
             maxZoom: 18,
             zoom: 15,
             subdomains: '1234'
-        }).addTo(this.map);
-        */
-        this.mapLayer = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: ''
         }).addTo(this.map);
         break;
 
@@ -233,8 +228,7 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
             console.log("mouseup " + d3.mouse(this));
             this.mouse = undefined;
             d3.event.stopPropagation();
-        });
-        /*
+        })
         .on("mouseenter", function () {
             this.mouse = undefined;
             d3.event.stopPropagation();
@@ -252,7 +246,6 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
 
 
 
-
                 //svg.attr("_x", +parseFloat(svg.attr("_x"))+dx);
                 //svg.attr("_y", +parseFloat(svg.attr("_y"))+dy);
                 svg.style("margin-left", parseFloat(svg.style("margin-left")) + pdx + "px");
@@ -266,7 +259,6 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
                 this.mouse = mouseNow;
             }
         });
-         */
 
     this.svgs.push(svg);
 
@@ -1646,7 +1638,7 @@ GraphicManager.prototype.updateGraphs = function () {
                 return (+a.hour) - (+b.hour);
             }), "hourOfDayMany", "fromStation", "Station");
             this.bikesHourDayComparison.setAxes("hour", "Hour", "count", "Bikes out");
-            this.bikesHourDayComparison.setTimeDataInX("hour", 2, "12hr");
+            this.bikesHourDayComparison.setTimeDataInX("hour", 3, "12hr");
             this.bikesHourDayComparison.setColor(["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]);
             this.bikesHourDayComparison.draw();
 
@@ -1776,7 +1768,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.bikesDayYear.setData(sumOfValues, "dayOfYearCumulative");
             this.bikesDayYear.setAxes("day", "Day", "count", "Rides");
             this.bikesDayYear.setTimeDataInX("month", 1, "MMM DD");
-            this.bikesDayYear.setTitle("Sum of trips per day of the year")
+            this.bikesDayYear.setTitle("Rides")
             this.bikesDayYear.draw();
             $(window).trigger('resize');
         }.bind(this));
@@ -1878,7 +1870,7 @@ GraphicManager.prototype.updateGraphs = function () {
                     count: count
                 };
             });
-            this.momentDay.setTitle("Rides per moment of the day");
+            this.momentDay.setTitle("Rides");
             this.momentDay.setData(sumOfValues, "star"); //(data,className)
             this.momentDay.setProperty("hour", "count"); //(propertyTheta, propertyR)
             this.momentDay.draw();
@@ -1970,12 +1962,6 @@ GraphicManager.prototype.showMaps = function () {
 
     this.gm2.drawSubcontrols();
     this.gm2.addExternalSVGs1(this.gm2.updateWindow.bind(this.gm2));
-
-    var legend = this.gm1.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
-    this.gm1.addLegend(legend);
-
-    var legend = this.gm2.addDiv(0.072, 0.250 + 0.45 + 0.005, 0.1, 1 - (0.250 + 0.45 + 0.005));
-    this.gm2.addLegend(legend);
 
     //this.gm1.map.on("moveend", function(){$(window).trigger('resize');});
     //this.gm2.map.on("moveend", function(){$(window).trigger('resize');});
