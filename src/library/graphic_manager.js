@@ -1806,7 +1806,7 @@ GraphicManager.prototype.updateGraphs = function () {
             this.tripsDistanceDistribution.setTitle("Distribution of rides by distance (in meters)");
             this.tripsDistanceDistribution.draw();
             $(window).trigger('resize');
-        }.bind(this));
+        }.bind(this),30);
 
     }
 
