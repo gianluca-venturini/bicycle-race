@@ -106,6 +106,7 @@ SliderDouble.prototype.draw = function () {
         if (Math.abs(handle1.attr("cx") - x(value)) < Math.abs(handle2.attr("cx") - x(value))) {
             handle1.attr("cx", x(value));
             self.age[0] = Math.floor(value);
+            if (self.age[0] === 99) console.log(x(value));
             d3.select("#age_from").text(self.age[0]);
         } else {
             handle2.attr("cx", x(value));
