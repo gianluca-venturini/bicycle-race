@@ -76,7 +76,7 @@ SliderDouble.prototype.draw = function () {
     var handle1 = slider.append("circle")
         .attr("class", "handle")
         .attr("transform", "translate(0," + height / 2 + ")")
-        .attr("r", 6);
+        .attr("r", 9);
     this.handle1 = handle1;
 
     var handle2 = slider.append("circle")
