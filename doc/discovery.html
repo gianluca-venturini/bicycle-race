@@ -54,6 +54,33 @@
             <p class="lead">What we discovered using this tool</p>
         </div>
 
+        <h3>General findings</h3>
+        <p>
+            In this section we focus on the first, most evident findings we were able to discover playing with the application.
+        </p>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery14.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+        </br>
+
+        <ul>
+            <li>
+                <p>
+                    One of the first "weird" behaviors we noticed when looking at the "sum of trips per day of the year" chart is that there's a huge low peak around mid september: this is the most evident <b>outlier</b> of the chart.
+                    </br>Going into more detail, on September 15th there's indeed a big drop in the number of rides, which go from an average number of 6000 to 1500 on this day.</br>
+                    First we looked for particular events on this day but there's nothing so relevant to justify these data. A deeper analysis, however, can explain this phenomenon: if we look, through the day control and the slider, at the temperatures of this day wrt to the previous days of september, we can notice that this is the first day in which the temperatures drop from a previous average above 70° to an average of 60° exactly on Sept. 15.</br>
+                    For this reason a likely explanation of this pattern can be that people are less willing to use the bike when a big climate drop occurs, showing <b>how big a factor the weather can play</b> in this scenario.
+
+                </p>
+            </li>
+            <li>Let us consider the highest peak in the "sum of trips per day of the year" chart: this happens to be on September 28th, with a number of bikes which is over 10'000.</br>
+                Analyzing the data, we can see that, as happened before, the weather conditions and the temperature are fundmental: in this day we experience an average temperature of 80° which is higher than the trend for this period, so people are more willing to go out and use bikes. Moreover, if we look at the "bikes out per day of the week" chart we notice that this is a Saturday, so even more people should have the possibility and the time to ride a bike on this day.</li>
+            <li>In general, the points of the chart form a trend which makes sense: the slope is lower in the summer, with people mostly out of town or less willing to use the bike in hot days, then it increases during the Fall months and finally decreases again in the winter as the temperature and the weather conditions worsen.</li>
+        </ul>
+
+
         <h3>UIC stations</h3>
         <p>
             In this section we focus on the 6 divvy bikes locations near the UIC campus.
@@ -71,6 +98,7 @@
             <p>Outflow from campus to station</p>
         </div>
         <div class="clearfix"></div>
+        </br>
 
         <p>
             If we analyze the inflow and outflow of all the stations on campus, a recurrent pattern we can find is that the highest flows are from and to Chicago Union Station (corner West Jackson Boulevard - South Canal Street). This makes sense since bikes are a means to easily connect campus and station.
@@ -91,7 +119,7 @@
 
         <p>
             In the above pictures we have added to the compareAll mode the 6 stations closest to the UIC campus.</br>
-            As we can see, a general trend is that the peak of nu,bers of bikes out is in the afternoon, between 4pm and 6pm. Therefore we can say that th bikes are mostly used by students to go home at the end of the day. The same information is nicely represented in the star plot, whose shape is bigger towards this time interval.
+            As we can see, a general trend is that the peak of numbers of bikes out is in the afternoon, between 4pm and 6pm. Therefore we can say that th bikes are mostly used by students to go home at the end of the day. The same information is nicely represented in the star plot, whose shape is bigger towards this time interval.
 
         </p>
 
@@ -105,12 +133,35 @@
             <p>Trips per day of the year</p>
         </div>
         <div class="clearfix"></div>
+        </br>
 
         <p>
             The above charts reflect that the usage of these stations belongs mainly to college students: there's a significant decrease of bikes out during the weekend with respect to weekdays.</br>
             Moreover, considering the year (or the few months available from our data), we can notice that the usage is low in the summer months, while it begins to increase in the second half of august, i.e. when the classes start. It then remains constant until december, when the visible decrease can be due both to the winter temperatures and/or holidays.
 
         </p>
+
+        <p>
+            Now let's consider the type of user of these stations: as easily expected, if we look at the pie chart for the user type of the UIC stations and compare it to that of 2 touristic stations such as Millennium Park and Navy Pier, we can see that while in the university area the vast majority is represented by "subscribers", i.e. students with a lomg term subscription, in the mostly touristic stations the majority are customers, i.e. people who need only an occasional use of the bikes.
+        </p>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery16.png" class="img-responsive center" alt="Responsive image" />
+            <p>UIC stations</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery15.png" class="img-responsive center" alt="Responsive image" />
+            <p>City center "touristic" stations</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery17.png" class="img-responsive center" alt="Responsive image" />
+            <p>UIC stations - Pie chart detail</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery18.png" class="img-responsive center" alt="Responsive image" />
+            <p>City center "touristic" stations - Pie chart detail</p>
+        </div>
+        <div class="clearfix"></div>
 
         <h3>Events</h3>
         <p>
@@ -123,50 +174,128 @@
             <img src="image/discovery8.png" class="img-responsive center" alt="Responsive image" />
         </div>
         <div class="clearfix"></div>
+        </br>
 
         <p>
             The station in the street where the event takes place is added to compareAll (highlighted in red).</br>
             We can notice that the date, 08/24/2013, corresponds, in the "trips per day of the year" chart, to the huge peak of rides. This shows how the presence of the event can significantly alter the average trend of the line chart.</br>
             From the "bikes out per day of the week" chart we can know that it is a Saturday and from the star plot we can see that the peak of usage is around 7-8pm, which is the exact hour of the event.</br>
-            In addition, the imbalance chart shows that the station has been mostly used to leave the event (outflow).
+            In addition, the imbalance chart shows that the station has been mostly used to leave the event (outflow).</br>
+            If we compare the rides on these days to those on previous days when there was no event, we can clearly notice the difference in the amount of rides in this area (at the same hour of the day):
         </p>
 
-
-
-
-
-
-
-        <h3>Map</h3>
-        <p>
-            The aim of the project is displaying geographical data regarging <strong>Divvy bikes</strong> in the time period that goes from July to December 2013. For that reason it is map centered: evey data is geolocalized on the map that cover the entire surface of the application. An overlay layer of semi-transparent controls is present to let the user iteract with the application. Every control is present only when the user need it. In every moment the user can move the map, zoom in for a more detailed view or zoom out for see more general patterns.
-        </p>
-
-        <h4>Single map mode</h4>
-        <p>
-            In this mode the user can display all the graphs and compare the data using different charts (that are present at the same time). The user can choose:
-            <ul>
-                <li>A day of the year</li>
-                <li>An hour of the day</li>
-                <li>The gender: male, female</li>
-                <li>The user type: customer, subscriber</li>
-                <li>An age range</li>
-            </ul>
-            All the filters are independent and the user can enable/disable them in any order (except for the hour that can be only choosen after the day).
-        </p>
-        <div class="col-sm-12 col-md-12">
-            <img src="image/single_map.png" class="img-responsive center" alt="Responsive image" />
-            <p>Single map streets visualization</p>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery12.png" class="img-responsive center" alt="Responsive image" />
         </div>
-        <div class="col-sm-12 col-md-12">
-            <img src="image/single_map_satellite.png" class="img-responsive center" alt="Responsive image" />
-            <p>Single map satellite visualization</p>
-        </div>
-        <div class="col-sm-12 col-md-12">
-            <img src="image/single_map_graphs.png" class="img-responsive center" alt="Responsive image" />
-            <p>Single map visualization with charts</p>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery13.png" class="img-responsive center" alt="Responsive image" />
         </div>
         <div class="clearfix"></div>
+
+        <h4>Chicago Marathon (Oct 13)</h4>
+        </br>
+
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery9.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+        </br>
+
+        <p>
+            Here we selected, through the community area function, all the stations in the Loop, i.e. those more connected to people who come to see the starting or ending of the Marathon.</br>
+        </p>
+
+        <h4>Lollapalooza 2013 (Grant Park, Aug 2-4)</h4>
+
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery10.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+        </br>
+
+        <p>
+            Here we selected the 3 stations most closed to Grant Park, the place where this huge annual event takes place.</br>
+            There are several interesting things to notice: from the pie chart we know that around 70% of riders belong to the age interval 20-30, which makes sense given that most of the attendees of the event are young people.</br>
+            The most crowded time interval is the late afternoon and evening.
+        </p>
+
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery11.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+        </br>
+
+        <p>
+            Here we set the hour of the day at around 3pm, a time in which the event is starting. We can see that there's a good amount of bikes reaching mainly the Millenium Park station. Moreover, the bikes seem to converge to here arriving from different locations, even quite distant from here, to attend the event.
+        </p>
+
+        <h3>Weather patterns</h3>
+        <p>
+            In this section we focus on the patterns related to weather conditions.
+        </p>
+
+        <h4>When you need to run fast</h4>
+
+        <p>
+            In the following maps we can see a trip (the longest one), done in two different consecutive days of July, at the same hour.</br>
+            While on the 19th the weather is nice and the person takes around 40 minutes to complete the trip between the two stations, on the 18th there's a thunderstorm and the same trip (same person?) is completed in around 20 minutes. This let us say that the weather condition influenced the speed of the riders.
+        </p>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery22.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery23.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery24.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery25.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+
+        <h4>Weather, temperature and behaviors</h4>
+
+        <p>
+            One of the most interesting correlations to investigate is that between the behavior of riders according to weather conditions and temperature. Weather and temperature have the same impact on a rider's decision to use a bike? Are they correlated or are there more factors to be taken into account?
+        </p>
+
+        <p>
+            The maps below show the same situations of the previous example, extended to the selection of all the stations. We can see that the overall behavior shown both by the rides on the map and on the charts is not so different between the two situations even if the first one has good weather conditions while the second has thunderstorms. We can also notice that the temperature here, given it is July, is around 90° in both cases. We cannot say that given a high temperature, even if there's a thunderstorm, people have the same behavior as with clear weather, but we can say that even if there's bad weather, given that the temperature is good and we are in a summer month where the storms can possibly go away quickly, most people are not so likely to renounce to their rides.
+
+        </p>
+
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery20.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery21.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+        </br>
+
+        <p>
+            Now let's consider different weather in two consecutive fall/winter Sundays. In the maps below we can see that while on Nov 10th, with sunny
+            weather, 
+        </p>
+
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery28.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="col-sm-6 col-md-12">
+            <img src="image/discovery29.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+
+        <h3>Sunrise/sunset patterns</h3>
+        <p>
+            In this section we focus on looking for relations between rides and sunrise and sunset time.
+        </p>
+
+        <h4>Festa Italiana (Taylor Street, 22-25 Aug)</h4>
 
     </div>
     <!-- /container -->
