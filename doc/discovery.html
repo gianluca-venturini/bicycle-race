@@ -80,6 +80,14 @@
             <li>In general, the points of the chart form a trend which makes sense: the slope is lower in the summer, with people mostly out of town or less willing to use the bike in hot days, then it increases during the Fall months and finally decreases again in the winter as the temperature and the weather conditions worsen.</li>
         </ul>
 
+        If we consider the "bikes out per hour per day" chart, the most common and significant pattern is given by the shape of the line chart: it has always two main peaks, correspondent to early morning around 7-8 AM and evening around 6 PM: they are likely linked to people who go to work in the morning and come back home in the evening. The interesting thing is that this pattern can be found in whichever day of the year except for weekends: this supports our hypothesis. In addition, the pattern is present, with small variations, even with bad weather. The picture below shows an example of this:
+        </br>
+
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery0.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="clearfix"></div>
+
 
         <h3>UIC stations</h3>
         <p>
@@ -203,6 +211,7 @@
 
         <p>
             Here we selected, through the community area function, all the stations in the Loop, i.e. those more connected to people who come to see the starting or ending of the Marathon.</br>
+            The line chart of the total number of bikes is, correctly, different from the standard pattern with the 2 peaks during the weekdays, in fact here it spans all over the day and mainly around noon and early afternoon, possibly connected to the presence of the event in this interval. The number of bikes also is higher than the average here, since the event recalls many people to watch the marathon.
         </p>
 
         <h4>Lollapalooza 2013 (Grant Park, Aug 2-4)</h4>
@@ -216,7 +225,7 @@
         <p>
             Here we selected the 3 stations most closed to Grant Park, the place where this huge annual event takes place.</br>
             There are several interesting things to notice: from the pie chart we know that around 70% of riders belong to the age interval 20-30, which makes sense given that most of the attendees of the event are young people.</br>
-            The most crowded time interval is the late afternoon and evening.
+            The most crowded time interval is the late afternoon and evening, accordingly with the time of the event.
         </p>
 
         <div class="col-sm-6 col-md-12">
@@ -295,14 +304,15 @@
         </p>
 
         <p>
-            After a close look at many examples, we can say that there's a clear relation between the imcrease in the number of rides in the morning correspondent to the sunrise time: the "bikes out per hour of day" chart clearly shows this.</br>
-            This pattern is more complicated to be stated for the sunset: even if many times the sunset coincides the the point of the chart in which the number of bikes decreases, sometimes the bad weather conditions or other factors influence the chart.
+            After a close look at many examples, we can say that there's no strong influence by the sunrise/sunset times on the rides. In fact, the line charts show that the general pattern of the 2 peaks (morning and evening) are always present and they're always related to that hours, i.e. even if in winter the sun sets much earlier, people, mainly workers, are not influenced by this and keep their normal schedule.</br>
+            We can say that sunset and sunrise times are <b>minor factors</b> which influence the part of riders which is not obliged to move due to a strict schedule. In this sense, the sunrise and sunset times can slightly modify the shape of the line chart, without moving its peaks and overall behavior.
 
             <div class="col-sm-6 col-md-3">
                 <img src="image/discovery30.png" class="img-responsive center" alt="Responsive image" />
             </div>
             <div class="col-sm-6 col-md-6">
                 <img src="image/discovery31.png" class="img-responsive center" alt="Responsive image" />
+                <p>Here the sunset time coincides with the normal peak around 6 PM.</p>
             </div>
             <div class="clearfix"></div>
 
@@ -311,8 +321,28 @@
             </div>
             <div class="col-sm-6 col-md-6">
                 <img src="image/discovery33.png" class="img-responsive center" alt="Responsive image" />
+                <p>Here even if the sunset time is 6:33 PM, the peak around 6 PM is always present.</p>
             </div>
             <div class="clearfix"></div>
+        </p>
+
+        <p>
+            To further support our hypothesis, we can select, through the filter, only the users who are "customers". These are those who didn't subscribe to the service, so they should be more likely to be indifferent to the strict time schedule of workers (who instead are likely to be subscribers). Indeed, the picture below supports this:
+        </p>
+
+        <div class="col-sm-6 col-md-3">
+            <img src="image/discovery40.png" class="img-responsive center" alt="Responsive image" />
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery41a.png" class="img-responsive center" alt="Responsive image" />
+            <p>Only subscribers chart: the 2 main peaks are clearly identifiable and support the main pattern (workers during weekdays).</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img src="image/discovery41b.png" class="img-responsive center" alt="Responsive image" />
+            <p>Only customers chart: the shape is much less regular and the line starts decreasing earlier in the evening, possibly according to the early sunset at 4:32 PM.</p>
+        </div>
+
+        <div class="clearfix"></div>
         </p>
 
     </div>
