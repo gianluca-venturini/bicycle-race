@@ -367,7 +367,7 @@
 				Charts display information about the selected stations. Since there are two different comparison modalities they will adapt to the selected one:
 				<ul>
 					<li>
-						<strong>Compare all:</strong> the user can select unbounded number of stations and it can compare all of them in the same time. Every trip is intended from and to the selected stations. See the explanation of every graph (that you can find below) for details on how the informations are displayed.
+						<strong>Compare all:</strong> the user can select unbounded number of stations and it can compare all of them in the same time. Every trip is intended from and to the selected stations. See the explanation of every graph (that you can find below) for details on how the information is displayed.
 						<strong>Compare two:</strong> the user can select up to two stations and all graphs will display only trips between this two stations. This modality enable the possibility for the user to pick every couple of stations and see fluw from one to the other. 
 					</li>
 				</ul>
@@ -385,13 +385,102 @@
 			</p>
 
 			<h4>Bikes out per day of the week</h4>
+			<p>
+				A bar graph representation gives the trend of bike usage spread across the seven days of the week for the overall data. This view helps the user to look for patterns in usage over the week. For instance, some stations record a very low bike usage during the weekend. This chart is one of the dynamic charts. When more than one station is selected, this chart shows the trend of the cumulative data of all the selected stations. Data in this case is more in the form of bins rather than being continuous. We decided to use bars to display this data as bars are more suited to represent bins of data(in this case, data for each day)
+			</p>
+			<div class="col-sm-6 col-md-6 col-md-offset-3">
+          		<img src="image/dayOfTheWeek.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Day of the Week</p>
+      		</div>
+      		<div class="clearfix"></div>
 			<h4>Bikes out per hour of the day</h4>
+			<p>
+				This chart gives a usage trend of bikes for selected stations as a spread over the 24 hours of the day for the overall data. It is a multi-line graph where each line represents the usage of bikes for one of the selected stations. In this form, the data is more continuous as we have a clear idea of usage from one hour of the day to the next. Thus we have used line graph to show this continuity. When multiple stations are selected, lines representing different stations are given different colors to help the user easily distinguish between different stations. However, as the number of stations increase(and colors increase in turn!) a few issues arise. Too many colors can adversely affect the ease with which the users differentiate between stations. Even if the user somehow gets beyond the issue of dealing with many colors and looking them up from the legend, it becomes impossible to show legends for these colors in a limited space. For this reason, we remove color information from these graphs(even other graphs where colors represent stations) when the number of stations go beyond a reasonable limit. However, in order to allow the user to still distinguish between data from different stations, we have added an element of interactivity to these graphs. When the user clicks on a line in the chart, the corresponding station is highlighted on the map.
+			</p>
+			<div class="col-sm-4 col-md-4">
+          		<img src="image/hourOfTheDay.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Hour of the Day</p>
+      		</div>
+      		<div class="col-sm-4 col-md-4">
+          		<img src="image/hourOfTheDay2.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Hour of the Day, Few stations</p>
+      		</div>
+      		<div class="col-sm-4 col-md-4">
+          		<img src="image/hourOfTheDay3.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Hour of the Day, Many stations</p>
+      		</div>
+      		<div class="clearfix"></div>
 			<h4>Bikes out per hour of the day (summary of all stations)</h4>
-			<h4>Trips per hour of the day</h4>
-			<h4>Trips per hour of the day (summary of all stations)</h4>
+			<p>
+				This chart gives an idea about the pattern for the cumulative data for all the selected stations. With this graph it becomes easy to see the overview of general usage pattern during different times of the day. We have also shown the same data in a different representation in which we created a star plot of the trips infromation and put it on a pie representing the 24 hours of the day. This gives a connection between the two ends of the chart and thus helps the user to make more sense of the pattern in the data.
+			</p>
+			<div class="col-sm-6 col-md-6">
+          		<img src="image/hourOfTheDaySum.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Hour of the Day, Sum</p>
+      		</div>
+			<div class="col-sm-6 col-md-6">
+          		<img src="image/star.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Hour of the Day, Sum</p>
+      		</div>
+      		<div class="clearfix"></div>
+			<h4>Trips per day of the year</h4>
+			<p>
+				The data of all trips that have occurred from July 2013 to December 2013 for stations is visualized in this chart. This representation helps the user to see the overall usage pattern on different days and how usage changes during different parts of the year. This is a multi-line graph. Each line represents one station.  
+			</p>
+			<div class="col-sm-6 col-md-6">
+          		<img src="image/dayOfTheYear.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Day of the Year</p>
+      		</div>
+      		<div class="col-sm-6 col-md-6">
+          		<img src="image/dayOfTheYear2.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Day of the Year, Many stations</p>
+      		</div>
+      		<div class="clearfix"></div>
+			<h4>Trips per day of the year (summary of all stations)</h4>
+			<p>
+				The cumulative data, for all selected stations, from July 2013 to December 2013 is shown in this chart. This is the most high level view of the entire data for the selected stations.
+			</p>
+			<div class="col-sm-6 col-md-6 col-md-offset-3">
+          		<img src="image/dayOfTheYearSum.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Day of the Year, Sum</p>
+      		</div>
+      		<div class="clearfix"></div>
 			<h4>Imbalance chart</h4>
+			<p>
+				This chart shows the relative difference in the inflow and outflow information for the selected stations in a bi-directional bar graph. Each bar represents the difference between inflow and outflow for one station. If the inflow is more than the outflow, the bar extends upwards to an extent proportional to the difference and it extends downwards if the outflow is more. The data for the imbalance is sorted and the data of stations is displayed in descending order. If many stations are selected, then ten stations that have the largest imbalances are displayed.
+			</p>
+			<div class="col-sm-6 col-md-6 col-md-offset-3">
+          		<img src="image/imbalance.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Inflow vs Outflow</p>
+      		</div>
+      		<div class="clearfix"></div>
 			<h4>Demographic pie charts</h4>
+			<p>
+				These charts show general information about the rider demographic. One of the charts shows the break up of riders on the basis of gender. The second one shows the break up of riders on the basis of age, where the riders are grouped into different age bins. The third chart shows the ratio of subscribers versus pay-and-use customers. These graphs show cumulative data over all the selected stations.
+			</p>
+			<div class="col-sm-6 col-md-6 col-md-offset-3">
+          		<img src="image/demograph.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Demographics</p>
+      		</div>
+      		<div class="clearfix"></div>
+			<h4>Static Charts</h4>
+			<p>
+				These charts show bar graphs that display distribution of bikes by total time taken, total distance covered, and rides by their distances. The mean values are shown as lines to help users see the ditribution around the means. Additionally box-and-whisker plots that accompany these graphs show quartile information for the same data. 
+			</p>
+			<div class="col-sm-6 col-md-6 col-md-offset-3">
+          		<img src="image/static.png" class="img-responsive center" alt="Responsive image"/>
+          		<p>Distrbution Charts (Static)</p>
+      		</div>
+      		<div class="clearfix"></div>
 
+      		<hr>
+ 
+			<h3>A small demo of the charts</h3>
+			<div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+				<iframe width="600" height="338" allowfullscreen="" src="//www.youtube.com/embed/A3BtZBHa0Ko" frameborder="0"></iframe>
+			</div>
+
+			<hr>
 		</div> <!-- /container -->
 	</body>
 </html>
