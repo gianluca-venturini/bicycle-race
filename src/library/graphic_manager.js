@@ -232,7 +232,8 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
         .on("mouseenter", function () {
             this.mouse = undefined;
             d3.event.stopPropagation();
-        })
+        });
+        /*
         .on("mousemove", function () {
             var mouse = this.mouse;
             if (this.mouse != undefined) {
@@ -259,6 +260,7 @@ GraphicManager.prototype.addSvgChart = function (x, y, width, height) {
                 this.mouse = mouseNow;
             }
         });
+    */
 
     this.svgs.push(svg);
 
