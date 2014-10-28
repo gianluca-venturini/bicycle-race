@@ -224,7 +224,7 @@ NormalChart.prototype.drawBox = function(){
 		.attr("x",-5)
 		.attr("y", function(d){return yscale(d);})
 		.attr("dy","0.35em")
-		.text(function(d){return d3.format(",")(d);});
+		.text(function(d){return d3.format(".3f")(d);});
 
 
 }
